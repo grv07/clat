@@ -330,7 +330,6 @@ def check_quiz_link(quiz_key):
 Use for get progress time of in %
 '''
 def check_progress_time(progress_time):
-
 	data =  round(float((float(progress_time/60)*100/RESTRICT_MODULE_TIME)))
 	if data >= 100:
 		data = 100

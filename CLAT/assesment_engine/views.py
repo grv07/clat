@@ -16,7 +16,7 @@ from student.models import EnrolledCourses, UserCourseProgress
 from course_test_handling.models import Tests
 from django.contrib.auth.models import User
 from CLAT.settings import SITE_NAME
-
+from qna_api.user_manager import register_user
 
 # app_folder = os.path.abspath(os.path.join(os.path.dirname(__file__) , "../"))
 # sys.path.insert(0,app_folder + "/mettl-api-sdk/src")
@@ -44,7 +44,7 @@ def test_finish_mail(to_email, full_name, module_name, pdf_link, status, marks, 
 
 @csrf_exempt
 def start_asm_notification(request):
-	logger.info('assesment_engine.start_asm_notification >> Test Start')
+	# logger.info('assesment_engine.start_asm_notification >> Test Start')
 	asm_responce = json.loads(
 		'''
 	{
@@ -62,18 +62,19 @@ def start_asm_notification(request):
 '''  
 		)
 	asm_responce = json.loads(request.body)
+	print asm_responce
 
-	if asm_responce['EVENT_TYPE'] == 'startAssessment':
+	# if asm_responce['EVENT_TYPE'] == 'startAssessment':
 		
-		logger.info('assesment_engine.start_asm_notification >> asm_responce[EVENT_TYPE] == startAssessment '+str(asm_responce['email']))
+	# 	logger.info('assesment_engine.start_asm_notification >> asm_responce[EVENT_TYPE] == startAssessment '+str(asm_responce['email']))
 
-		asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_responce['email'], schedule_key = asm_responce['invitation_key'])
-		assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_responce['email'], asm_responce['invitation_key'])
-		asm_reg_user.test_status = TEST_STATUS[0]
+	# 	asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_responce['email'], schedule_key = asm_responce['invitation_key'])
+	# 	assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_responce['email'], asm_responce['invitation_key'])
+	# 	asm_reg_user.test_status = TEST_STATUS[0]
 
-		asm_reg_user.save()
+	# 	asm_reg_user.save()
 
-		return HttpResponse(json.dumps(True), content_type = "application/json")
+	return HttpResponse(json.dumps(True), content_type = "application/json")
 
 
 @csrf_exempt
@@ -174,19 +175,8 @@ def grade_asm_notification(request):
 def can_take_test(user, course):
 	return EnrolledCourses.objects.is_student_enrolled(user, course)
 
-def register_student(username, useremail, schedule_key):
-
-	public  = METTL_CONFIG[0]
-	private = METTL_CONFIG[1]
-	is_prod = METTL_CONFIG[2]
-	
-	cr = CandidateRegister(public , private , is_prod)
-	candidates = Candidates()
-	candidates.addCandidate({"First Name" : username, "Email Address" : useremail})
-	c = {"rd" : candidates}
-	json_output = json.loads(cr.registerCandidates(c, schedule_key))
-
-	return json_output
+def register_student(username, email, schedule_key):
+	return register_user(username, email, schedule_key)
 
 def get_all_assesments(request):
 	public  = METTL_CONFIG[0]
@@ -197,44 +187,48 @@ def get_all_assesments(request):
 
 @login_required
 @student_required
-def assessment_inline(request, course_uuid, schedule_key):
+def assessment_inline(request, course_uuid, test_key):
 	course = CourseDetail.objects.get(course_uuid = course_uuid)
-	logger.info('assesment_engine.assessment_inline >> User Take test for >>>'+str(course))
-	if can_take_test(request.user, course):
 
-		logger.info('assesment_engine.assessment_inline >> Under True << can_take_test(request.user, course) >>>'+str(course)+' UID:'+str(request.user.id))
-		json_output = register_student(request.user.username,request.user.email,schedule_key)
-		reg_status = json_output['status']
-		if reg_status == 'SUCCESS':
-			logger.info('assesment_engine.assessment_inline >> Under  True << reg_status == SUCCESS UID:'+str(request.user.id))
-			try:
-				test_status = (json_output['registrationStatus'][0])['status']
-				test = Tests.objects.get(schedule_key = schedule_key)
+	json_output = json.loads(register_student(request.user.username, request.user.email, test_key))
+	if json_output['status'] == 'success':
+		return redirect('http://localhost:9000/#/open/test/'+test_key)
+	# logger.info('assesment_engine.assessment_inline >> User Take test for >>>'+str(course))
+	# if can_take_test(request.user, course):
+
+	# 	logger.info('assesment_engine.assessment_inline >> Under True << can_take_test(request.user, course) >>>'+str(course)+' UID:'+str(request.user.id))
+	# 	json_output = register_student(request.user.username,request.user.email,schedule_key)
+	# 	reg_status = json_output['status']
+	# 	if reg_status == 'SUCCESS':
+	# 		logger.info('assesment_engine.assessment_inline >> Under  True << reg_status == SUCCESS UID:'+str(request.user.id))
+	# 		try:
+	# 			test_status = (json_output['registrationStatus'][0])['status']
+	# 			test = Tests.objects.get(schedule_key = schedule_key)
 				
-				logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
+	# 			logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
 				
-				if test_status == 'ToBeTaken':
-					assessment_reg_user = AssesmentRegisterdUser.objects.initiate(student = request.user, course=course, 
-						schedule_key = schedule_key, student_email = request.user.email,
-					registrationStatus_status = test_status, test = test)
+	# 			if test_status == 'ToBeTaken':
+	# 				assessment_reg_user = AssesmentRegisterdUser.objects.initiate(student = request.user, course=course, 
+	# 					schedule_key = schedule_key, student_email = request.user.email,
+	# 				registrationStatus_status = test_status, test = test)
 
-					test_url =  (json_output['registrationStatus'][0])['url']
-					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
-					return HttpResponseRedirect(test_url)
-				elif test_status == 'Success':
-						assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, schedule_key = schedule_key, test = test)
-						assment_reg_user.registrationStatus_status = test_status
-						assment_reg_user.save()
+	# 				test_url =  (json_output['registrationStatus'][0])['url']
+	# 				logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
+	# 				return HttpResponseRedirect(test_url)
+	# 			elif test_status == 'Success':
+	# 					assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, schedule_key = schedule_key, test = test)
+	# 					assment_reg_user.registrationStatus_status = test_status
+	# 					assment_reg_user.save()
 
-						logger.info('assesment_engine.assessment_inline >> markes as Success UID'+str(request.user.id))
+	# 					logger.info('assesment_engine.assessment_inline >> markes as Success UID'+str(request.user.id))
 						
-						messages.info(request,'This test mark as completed.')
-						return redirect('/course/details/'+course_uuid)
-			except Exception as e:
-				logger.error('assesment_engine.assessment_inline >> '+str(e.args)+' UID:'+str(request.user.id))
-				return redirect('/course/details/'+course_uuid)
-	logger.error('assesment_engine.assessment_inline >> You cant take this test UID:'+str(request.user.id))
-	messages.info(request,"You can't take this test.")
+	# 					messages.info(request,'This test mark as completed.')
+	# 					return redirect('/course/details/'+course_uuid)
+	# 		except Exception as e:
+	# 			logger.error('assesment_engine.assessment_inline >> '+str(e.args)+' UID:'+str(request.user.id))
+	# 			return redirect('/course/details/'+course_uuid)
+	# logger.error('assesment_engine.assessment_inline >> You cant take this test UID:'+str(request.user.id))
+	# messages.info(request,"You can't take this test.")
 	return redirect('/home/')
 
 

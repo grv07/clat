@@ -377,7 +377,6 @@ def enroll_student(request):
 								enrolled.delete()
 							return (1,course,)
 						stu_inter = StudentInterests.objects.filter(user = user)
-						
 						if stu_inter.count() == 1:
 							interests_obj = stu_inter[0]
 							if course.course_sectors_and_associates not in interests_obj.category:
@@ -388,7 +387,8 @@ def enroll_student(request):
 							interest_added = StudentInterests.objects.create(user = user,category = course.course_sectors_and_associates)
 							# print interest_added
 						from CLAT.services.cron_engine import enroll_success
-						if not enroll_success(enrolled, request.POST.get('txnid'), total_modules):
+
+						if not enroll_success(enrolled, request.POST.get('txnid', None), total_modules):
 							logger.error('under student.view.enroll_student unable to email post course enroll message.'+' UID-'+str(request.user.id))
 						return (0,enrolled,)					
 					else:
@@ -396,14 +396,25 @@ def enroll_student(request):
 				else:
 					return (2,course,)
 		except Exception as e:
+			print e.args
 			logger.error('under student.enroll_student >>>> '+str(e.args)+' UID-'+str(request.user.id))
 			return (-1,enrolled,)
 
 @login_required
 @student_required
-def enroll(requestt):
+def enroll(request):
 	status, extra = enroll_student(request)
-	if status == 0:cache
+	if status == 0:
+		messages.success(request, "Sucessfully enrolled  in "+str(extra.course.course_name.upper()))
+		return redirect('/dashboard/') 
+	elif status == 1:
+		messages.error(request,'Unable to enroll in '+extra.course_name.upper()+' .')
+		return redirect('/course/details/'+extra.course_uuid+'/') 
+	elif status == 2:
+		messages.info(request,'You are already enrolled in '+extra.course_name.upper()+' .')
+		return redirect('/course/videos/'+extra.course_uuid+'/')
+	else:
+		return HttpResponse(constants.TRANSACTION_ERROR_SERVER)
 
 @login_required
 def unenroll_student(request,course_uuid):

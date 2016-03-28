@@ -119,10 +119,9 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
                          {%if module|check_progress_status:enrolledcourse %}
                             
                           {%with schedule_data=module|take_test_key:user %}
-                          <!-- {{schedule_data}}--!>
                           {% if schedule_data %}
                               {%if schedule_data.0 %}
-                                <a href="/inline/test/{{course.course_uuid}}/{{ schedule_data.0}}" onclick="refresh_it()" target="_blank">
+                                <a href="/inline/test/{{course.course_uuid}}/{{schedule_data.0}}/" onclick="refresh_it()" target="_blank">
                                    <li class="submitss" id="filter">Inline Quiz<br>
                                        <span style="color:green;">{% if schedule_data.2 == 1 %} 3 {% elif schedule_data.2 == 2 %} 2 {% else %} 1 {% endif %}attempt(s) remaining.</span>
                                    </li>
@@ -183,7 +182,7 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
                         </li>
                         
                         {% if module|get_inline_url:course %}
-                            <!-- <a href="/inline/test/{{course.course_uuid}}/{{ schedule_key}}" target="_blank"> -->
+                            <!-- <a href="/inline/test/{{course.course_uuid}}/{{ schedule_key}}" target="_blank">
                               <li class="submitss" id="filter">Inline Quiz <sup style='color:red;'>NA</sup></li>
                             <!-- </a> -->
                         {%endif%}

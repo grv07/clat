@@ -82,9 +82,7 @@ def check_progress_status(module_name, enrolledcourse):
 @register.filter(name = 'time_progress')
 def time_progress(course_module, user):
 		try:
-			print type(course_module)
 			stu_tracker = StudentTracker.objects.get(student = user, module_name = course_module.week_module_name)
-			print stu_tracker
 			progress = Progress.objects.get(tracker = stu_tracker) 
 			# print progress
 			return check_progress_time(progress.time_progress)
