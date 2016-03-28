@@ -1,0 +1,5 @@
+django-extensions==1.6.1
+django-kronos==0.9
+django-admin-resumable-js==1.2
+django-allauth==0.25.2
+Pillow==3.1.1

@@ -1,0 +1,64 @@
+{% load static %}
+{% load default_tags %}
+<!-- Review part start -->
+<section id="review" >
+    <div class="con">
+
+    <div class="col-sm-4" style=" margin-top:40px;">
+    <div class="cir-img"><img src="{% static '/static/images/icons/Diploma 1-100.png' %}" height="100%" width="100%"></div>
+    <h4> Course Ratings </h4>
+      <ul class="bar">
+      <li><p>5 star</p><div class="full-fill"><div class="fill" id="rating_bar_5" style="width:{{total_rating_dict.5}}%"></div></div></li>
+      <li><p>4 star</p><div class="full-fill"><div class="fill" id="rating_bar_4" style="width:{{total_rating_dict.4}}%"></div></div></li>
+      <li><p>3 star</p><div class="full-fill"><div class="fill" id="rating_bar_3" style="width:{{total_rating_dict.3}}%"></div></div></li>
+      <li><p>2 star</p><div class="full-fill"><div class="fill" id="rating_bar_2" style="width:{{total_rating_dict.2}}%"></div></div></li>
+      <li><p>1 star</p><div class="full-fill"><div class="fill" id="rating_bar_1" style="width:{{total_rating_dict.1}}%"></div></div></li>
+      </ul>
+    </div>
+
+
+    <div class="col-sm-4" style=" margin-top:40px;">
+    <div class="cir-img">
+    <img src ='{{user|get_img}}' style="height="100%" width="100%";margin:-5px;"/>
+    </div>
+    {% if is_student_enrolled %}
+      {% if rating %}
+        <h4>Your Review</h4>
+            <p class="p">{{ rating.review_text }}.<br><span style="color: black;">You rated {{ rating.ratings }} stars</span></p>
+            <div class="review-btn" id="remove_review" onclick="remove_review();">Remove It</div>
+      {% else %}
+        {% if user.is_authenticated %}
+          <h4>Add Your Review</h4>
+          <p class="p" id='u_review'></p>
+          <p class="p" style="color: black;" id='u_star'></p>
+          <div class="review-btn" id="add_review">Add Review</div>
+        {% endif %}
+    {% endif %}
+    {% endif %}
+
+    </div>
+
+    <div class="col-sm-4" style=" margin-top:40px;">
+    <h4> Students Review</h4>
+    <ul class="sreview" >
+
+    {% for review in filtered_reviews %}
+        <li>
+          <div class="img-con">
+           <div class="sreview-img">
+             <img src ='{{ review.user|get_img }}' style="height:100%;width:100%;margin:-5px;"/>  
+          </div>
+          </div>
+          <h5>{{ review.user.student.full_name }}</h5>
+          <span class="ss">{{ review.review_text }}</span>
+        </li>
+    {% empty %}
+        No more reviews so far!!!
+    {% endfor %}
+
+    {% if filtered_reviews %}
+       <a href="/course/reviews/{{course_id}}/" style="text-decoration:none;"><span class="more"> + More </span></a>
+    {% endif %}
+    </div></div>
+</section>
+<!-- Review part ends -->

@@ -1,0 +1,98 @@
+{%extends 'new_home.html'%}
+{% load static %}
+{% load default_tags %}
+{% block head_js_css %}
+<style>
+.errorlist li{
+  color: red;
+  font-size: 15px;
+}
+</style>
+{% endblock %}
+{%block body%}
+
+<section id="privacy" style="margin-top: 50px;">
+
+<div class="con">
+	<div class="col-md-6" id="login-show" style='margin-bottom: 177.4px; width:85%;'>
+	<h1 style="border:none; margin-top:-40px; font-weight:300 !important">Ask Question to Instructor.</h1>
+<hr>
+
+<p style='font-size:20px;'>
+	Hi, already an eQUEST student? <br>Do you have questions or issues about a specific course or module ?<br> 
+	Please post it on your course’s discussion forum.<br>
+
+	Not a student yet and have a general question about eQUEST?<br> 
+	Please visit our FAQ’s.<br>
+	<br>
+	<span style='color:green;'>Still not found any help? Ask to us below.</span>
+</p>
+<br>
+
+<form method="post" id="contact_form" action="" style='margin-bottom:20px;'>
+{% csrf_token %}
+	 <div class="boss">
+        <div class="text-name">Course Name <span style="color:red;">*</span></div>
+        <input type="text" class="text-sbox hidden" name="course_id" value='{{course.id}}' id="sname" style="width:90%; display:none;"/>
+        <input type="text" class="text-sbox" name="course_name" value='{{course.course_name}}' id="sname" style="width:90%;" required readonly/>
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> <br><br>
+        <p>{{form.course_name.error}}</p>
+
+      </div>
+
+      <div class="boss">
+        <div class="text-name">Email <span style="color:red;">*</span></div>
+        <input type="email" class="text-sbox" placeholder="username@domainname"  name="user_email" value='{{user.email}}' id="sname" style="width:90%;" required readonly />
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> <br><br>
+        <p>{{form.user_email.errors}}</p>
+      </div>  
+    
+     <div class="boss">
+        <div class="text-name">Full Name <span style="color:red;">*</span></div>
+        <input type="text" maxlength="30" class="text-sbox" placeholder="Enter username"  name="username" value ='{{user}}' id="sname" required readonly/>
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> <br><br>
+        <p>{{form.username.errors}}</p>
+    </div>
+
+     <div class="boss">
+        <div class="text-name">I am a - </div>
+        <select class="select1" name="iama">
+            <option value = 'Student'>Student</option>
+            <option value = 'Professor'>Professor</option>
+            <option value = 'Journalist'>Journalist</option>
+            <option value = 'UniversityAdministrator'>University Administrator</option>
+        </select><br><br>
+         <p>{{form.iama.error}}</p>
+
+      </div>
+      <div class="boss">
+        <div class="text-name">Module Name<span style="color:red;">*</span></div>
+        <select class="select1" name="module_name" required>
+            {%for course_module in course|module_list %}
+					<option value="{{course_module.week_module_name}}">{{course_module.week_module_name}}</option>
+			{%endfor%}
+        </select> <br><br>
+        <p>{{form.module_name.error}}</p>
+
+      </div>
+     <div class="boss">
+        <div class="text-name">Message <span style="color:red;">*</span></div>
+        <textarea type="text" class="text-sbox" placeholder="Enter Message"  name="message" id="sname" style='width:90%;height:100px;' minlength="30" maxlength="500" required></textarea>
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span><br><br>
+        <p>{{form.message.error}}</p>
+    </div>
+
+      <div class="boss">
+        <input type="submit" class="mit"  name="login" id="contact_submit_button" value="Contact Now"/>
+      </div>
+      <div class="boss">
+        <div class="text-name" style=" text-align:center !important; width:100% !important;"> <span style="color:red;">*</span> Required Fields</div>
+      </div>      
+    </form>
+</div>
+</div>
+</section>
+{%endblock%}
+
+{% block footer_css_js %}
+{%endblock%} 

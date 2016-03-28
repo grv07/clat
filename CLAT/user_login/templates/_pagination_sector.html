@@ -1,0 +1,27 @@
+<style type="text/css">
+.btn{ height:auto; width:auto; padding:6px 15px; border-radius:4px; position:relative; float:left; left:0px; background-color:#09f; color:#fff;} 
+.btn:hover{ cursor:pointer; background-color:#06F; margin:0;}
+.current{ height:auto; width:auto; position:relative; float:left; padding:10px; left:0px;}
+</style>
+<div class="col-lg-4">
+    <div  style="display:block; width:280px;height:29px; margin:0px auto;" >
+  
+      <span class="step-links">
+            {% if course_list.has_previous %}
+                <a href="javascript:void(0);" data-ppage-num="{{ course_list.previous_page_number }}" onclick="paginate($(this).data('ppage-num'))" class="btn" style="text-decoration: none;">Previous</a>    
+            {% else %}
+<a href="javascript:void(0);" class="btn" style="text-decoration: none;" disabled>Previous</a>  
+            {% endif %}
+
+            <span class="current">
+                Page {{ course_list.number }} of {{ course_list.paginator.num_pages }}
+            </span>
+
+            {% if course_list.has_next %}
+                <a href="javascript:void(0);" data-npage-num="{{ course_list.next_page_number }}" onclick="paginate($(this).data('npage-num'))" class="btn" style="text-decoration: none;">Next</a>
+            {% else %}
+        <a href="javascript:void(0);" class="btn" style="text-decoration: none;" disabled>Next</a>
+            {% endif %}
+        </span> 
+    </div>
+</div>

@@ -1,0 +1,41 @@
+{% extends 'new_home.html' %}
+
+{% load static %}
+
+{% block slider %}
+{% endblock %}
+
+{% block body %}
+<br style="line-height:8em;">
+<div class="iframewrapper" style="position: relative;padding-bottom: 30%;height: 520px;margin-bottom: 3%;margin-left: 10%;margin-right: 10%;">
+    <iframe id="youtube-video" src="https://www.youtube.com/embed/{{link}}?enablejsapi=1&rel=0&iv_load_policy=3" frameborder="0" enablejsapi="1" allowfullscreen style="position: absolute;top: 0;left: 0;width:100%;height: 100%;margin:auto;"></iframe>  
+</div> 
+    <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-video', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(){
+            console.log("hey Im ready");
+        }
+
+        function onPlayerStateChange(){
+            console.log("my state changed");
+        }
+    </script>
+{% block courses_list %}
+{% endblock %}
+{% endblock %}
+
+

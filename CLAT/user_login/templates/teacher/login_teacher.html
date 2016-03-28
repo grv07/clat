@@ -1,0 +1,38 @@
+{% extends 'teacher/teacher_home.html' %}
+{% block body %}
+<br>
+<div id="login" class="row">
+ <form role="form" id="login_form" method="post" action="/teacher/login/" class="offset-s2 offset-m3 col s10 m9" >
+            {% csrf_token %}
+                <div class="input-field col s12 m9">
+                <h5 class="center-align">Please login as a teacher</h5>
+                </div>
+
+            {% if t_login_error %}
+                    <div class="input-field col s12 m9">
+            <p style="color: red;">Invalid Credentials</p>
+         </div>
+            {% endif %}
+            {% if t_not_active %}
+         <div style="text-align: center;">
+            <p style="color: blue;">Your account exist but it is not yet active. Contact the server administrator.</p>
+         </div>
+            {% endif %}
+            <div class="input-field col s12 m9">
+         <input type="text"  placeholder="Enter Your Username" name="username" id='username' autocomplete="off" required>
+         </div>
+                    <div class="input-field col s12 m9">
+
+         <input type="password" placeholder="Password" style="margin-top: 20px;" name="password" required>
+         </div>
+                    <div class="input-field col s9">
+         <button class="btn waves-effect waves-light" type="submit">Login</button>
+         <a class="btn" href="/troubleshoot/teacher/" style="float: right;margin-top: 5px;">Forgot Password?</a>
+                </div>
+ </form>
+</div>
+<br>
+<div id="register" class="row">
+<h5 class="center-align">If you don't have an account, please <a class="waves-effect waves-teal btn-flat" href="/teacher/register/">Register</a> first</h5>
+</div>
+{% endblock %}

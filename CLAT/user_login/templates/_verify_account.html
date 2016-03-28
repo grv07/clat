@@ -1,0 +1,33 @@
+<!-- Modal -->
+<div id="acc_verify" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        <h4 class="modal-title">Verfiy Your Account</h4>
+      </div>
+      <div class="modal-body">
+        <p>Verify your account.</p>
+        <div style="margin:10px;">
+        </div>
+              <div class="form-group">
+              <input type="text" id="user_phone" name="" value="{{request.session.phone_number}}" placeholder="User phone" class="form-control" disabled="true">
+              </div>
+              <a href="/skip/clear?next={{request.path}}" class="btn btn-default">Not Now >></a>
+              <button type="submit" class="btn btn-info" onclick="send_msg($('#user_phone').val())">Submit</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function send_msg(mob_nbr){
+    $.getJSON('/send/otp/', {}, function (data) {
+                   console.log(data)
+                    if data == true:
+                      
+                });
+  }
+</script>

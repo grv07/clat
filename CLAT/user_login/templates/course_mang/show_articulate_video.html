@@ -1,0 +1,10 @@
+{% extends 'new_home.html' %}
+{%load static %}
+{%block body%}
+<div class=""  onclick="alert('done')">
+    <iframe src="http://{{ request.META.HTTP_HOST }}/static/video/articulate/{{data.course_uuid}}/{{data.week_uuid}}/{{data.module_name}}/{{data.folder_name}}/story.html" width="100%" class="start_art"></iframe>
+</div>
+<script type="text/javascript" language="javascript">
+$('.start_art').css('height', $(window).height()+'px');
+</script>
+{%endblock%}

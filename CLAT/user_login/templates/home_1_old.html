@@ -1,0 +1,638 @@
+        {%load static %}
+        <!DOCTYPE html>
+        <!-- <label id="course_durations-error" class="error" for="course_durations">Please enter a valid course duration</label> -->
+        <!--[if IE 8]>
+        <html class="ie ie8"> <![endif]-->
+        <!--[if IE 9]>
+        <html class="ie ie9"> <![endif]-->
+        <!--[if gt IE 9]><!-->
+        <html>
+            
+        <!--<![endif]-->
+
+        <head>
+            <meta charset="utf-8">
+            <link rel="icon" href="{% static 'logo/Equest_DarkBlue_Symbol.gif' %}" type="image/jpg"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="keywords"
+                  content="template, tour template, city tours, city tour, tours tickets, transfers, travel, travel template"/>
+            <meta name="description"
+                  content="Citytours - Premium site template for city tours agencies, transfers and tickets.">
+            <meta name="author" content="Ansonika">
+            <title>EQuest</title>
+            <!-- Favicons-->
+            <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+            <link rel="apple-touch-icon" type="image/x-icon"
+                  href="{% static '/static/img/apple-touch-icon-57x57-precomposed.png' %}">
+            <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72"
+                  href="{% static '/static/img/apple-touch-icon-72x72-precomposed.png' %}">
+            <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114"
+                  href="img/apple-touch-icon-114x114-precomposed.png">
+            <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144"
+                  href="img/apple-touch-icon-144x144-precomposed.png">
+
+            <!-- BASE CSS -->
+            <link href="{% static '/static/css/base.css'%}" rel="stylesheet">
+
+            <!-- Google web fonts -->
+            <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=Gochi+Hand' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+
+            <!-- REVOLUTION SLIDER CSS -->
+            <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://raw.githubusercontent.com/kartik-v/bootstrap-star-rating/master/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" /> 
+            <link href="{% static '/static/rs-plugin/css/settings.css' %}" rel="stylesheet">
+            <link href="{% static '/static/css/extralayers.css'%}" rel="stylesheet">
+            <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+            <!-- jQuery library -->
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
+                    type="text/javascript"></script>
+
+            <!--include jQuery Validation Plugin-->
+            
+            <!-- Latest compiled JavaScript -->
+            <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+            <script src="http://notifyjs.com/dist/notify-combined.min.js"></script>
+
+            {% block header_css_js %}
+            {% endblock %}
+            <!--[if lt IE 9]>
+            
+            <script src="{% static 'static/js/html5shiv.min.js'%}"></script>
+            <script src="{% static 'static/js/respond.min.js'%}"></script>
+            <![endif]-->
+            
+            <style>
+            .modal {
+                z-index: 999999
+            }
+            .error {
+                color: red;
+            }
+            *{
+                font-family: sans-serif;
+            }
+            html,body{
+                height: 100%;
+                width: 100%;
+            }
+           </style>
+
+        </head>
+
+
+        <body style="margin-top:10%;margin-bottom:-3%;">
+        
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                     
+                    {% include '_register.html' %}
+
+                </div>
+
+            </div>
+        </div>
+        <!--[if lte IE 8]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+            your browser</a>.</p>
+        <![endif]-->
+
+        <div id="preloader">
+            <div class="sk-spinner sk-spinner-wave">
+                <div class="sk-rect1"></div>
+                <div class="sk-rect2"></div>
+                <div class="sk-rect3"></div>
+                <div class="sk-rect4"></div>
+                <div class="sk-rect5"></div>
+            </div>
+        </div>
+        <!-- End Preload -->
+
+        <div class="layer"></div>
+        <!-- Mobile menu overlay mask -->
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        {% block header %}
+        <header style='height:15%;'>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <div id="logo">
+                            <a href="/home/"><img src="{% static '/static/logo/logo.gif'%}" width="160"
+                                                      alt="City tours" data-retina="true"
+                                                      class="logo_normal"></a>
+
+                        </div>
+                    </div>
+                    <nav class="col-md-6 col-sm-6 col-xs-6">
+                        <a class="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="javascript:void(0);"><span>Menu mobile</span></a>
+
+                        <div class="main-menu col-md-4">
+
+                            <a href="#" class="open_close" id="close_in"><i class="icon_set_1_icon-77"></i></a>
+                            <ul>
+                                <li class="submenu">
+                                    <a href="javascript:void(0);" class="show-submenu"><img
+                                            src="{% static '/static/img/menu-alt.png' %}"> Catalogue <i
+                                            class="icon-down-open-mini"></i></a>
+                                    <ul>
+                                        <li><a href="index.html">With Hotels and Tours</a></li>
+                                        <li><a href="index_2.html">With Only tours</a></li>
+                                        <li><a href="index_3.html">Single image</a></li>
+                                        <li><a href="index_4.html">Header video</a></li>
+                                        <li><a href="index_7.html">With search panel</a></li>
+                                        <li><a href="index_5.html">With map</a></li>
+                                        <li><a href="index_6.html">With search bar</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <!-- End main-menu -->
+                        <ul id="top_tools" class="col-md-6">
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search...">
+                                                    <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button" style="margin-left:0;">
+                                                        <i class="icon-search"></i>
+                                                    </button>
+                                                    </span>
+                                </div>
+                            </form>
+
+
+                        </ul>
+                    </nav>
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <ul id="top_links">
+                            <li>
+                                <div class="dropdown dropdown-access">
+                                    {% if not  user.is_authenticated%}
+                                    <a type="button" class="login_signup btn btn-lg" data-toggle="modal" data-target="#myModal">
+                                        <img src="{% static '/static/img/login.png'%}" width="18px" style="margin-right:5px;">
+                                        Sign in/Login</a>
+                                    {%else%}
+
+                                    
+                                    <a class="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="javascript:void(0);"><span>Menu mobile</span></a>
+
+                                    <div class="main-menu col-md-4">
+
+                                        <a href="#" class="open_close" id="close_in"><i class="icon_set_1_icon-77"></i></a>
+                                        <ul>
+                                            <li class="submenu">
+                                                <a href="javascript:void(0);" class="show-submenu"><img
+                                                        src="{% static '/static/img/menu-alt.png' %}"> {{user}} <i
+                                                        class="icon-down-open-mini"></i></a>
+                                                <ul>
+                                                    <li style="text-align:center;"><a href="/logout/">Logout</a></li>
+                                                    <li style="text-align:center;"><a href="/upload/course/">Upload Course</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+
+                                    </div>
+                                    {%endif%}
+                                    <div class="dropdown-menu">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <a href="#" class="bt_facebook">
+                                                    <i class="icon-facebook"></i>Facebook </a>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <a href="#" class="bt_paypal">
+                                                    <i class="icon-google"></i>Goggle+ </a>
+                                            </div>
+                                        </div>
+                                        <div class="login-or">
+                                            <hr class="hr-or">
+                                            <span class="span-or">or</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="inputUsernameEmail" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="inputPassword"
+                                                   placeholder="Password">
+                                        </div>
+                                        <a id="forgot_pw" href="#">Forgot password?</a>
+                                        <input type="submit" name="" value="Sign in" id="Sign_in" class="button_drop">
+                                        <input type="submit" name="" value="Sign up" id="Sign_up" class="button_drop outline">
+                                    </div>
+                                </div>
+                                <!-- End Dropdown access -->
+                            </li>
+                            <li>
+                                <!--<div class="dropdown dropdown-access">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="access_link">Sign Up</a>
+                                    <div class="dropdown-menu">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <a href="#" class="bt_facebook">
+                                                    <i class="icon-facebook"></i>Facebook </a>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <a href="#" class="bt_paypal">
+                                                    <i class="icon-google"></i>Google+ </a>
+                                            </div>
+                                        </div>
+                                        <div class="login-or">
+                                            <hr class="hr-or">
+                                            <span class="span-or">or</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="inputUsernameEmail" placeholder="Full Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="inputUsernameEmail" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                        </div>
+                                        <input type="submit" name="" value="Sign Up" id="Sign_up" class="button_drop">
+                                          </div>
+                                </div><!-- End Dropdown access -->
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- container -->
+        </header>
+        {%endblock%}
+        <!-- End Header -->
+        <!-- Slider -->
+
+        {%block slider%}
+        <div class="tp-banner-container">
+            <div class="tp-banner">
+                <ul>
+                    <!-- SLIDE  -->
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on"
+                        data-title="Intro Slide">
+                        <!-- MAIN IMAGE -->
+                        <img src="{% static '/static/img/slides_bg/dummy.png'%}" alt="slidebg1"
+                             data-lazyload="{% static '/static/img/slides_bg/slide_1.jpg'%}"
+                             data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                        <!-- LAYER NR. 1 -->
+                        <div class="tp-caption white_heavy_40 customin customout text-center text-uppercase" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="-20"
+                             data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                             data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="1000" data-start="1700" data-easing="Back.easeInOut" data-endspeed="300"
+                             style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;">Affordable Paris Tours
+                        </div>
+                        <!-- LAYER NR. 2 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0 text-center" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="15"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2600" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.05" data-endelementdelay="0.1"
+                             style="z-index: 9; max-width: auto; max-height: auto; white-space: nowrap;">
+                            <div style="color:#ffffff; font-size:16px; text-transform:uppercase">
+                                City Tours / Tour Tickets / Tour Guides
+                            </div>
+                        </div>
+                        <!-- LAYER NR. 3 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0" data-x="center" data-y="center"
+                             data-hoffset="0" data-voffset="70"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2900" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1" data-linktoslide="next"
+                             style="z-index: 12;"><a href='all_tour_list.html' class="button_intro">View tours</a> <a
+                                href='single_tour.html' class=" button_intro outline">Read more</a>
+                        </div>
+                    </li>
+                    <!-- SLIDE  -->
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on"
+                        data-title="Intro Slide">
+                        <!-- MAIN IMAGE -->
+                        <img src="{% static '/static/img/slides_bg/dummy.png'%}" alt="slidebg1"
+                             data-lazyload="{% static '/static/img/slides_bg/slide_4.jpg'%}"
+                             data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                        <!-- LAYER NR. 1 -->
+                        <div class='tp-caption white_heavy_40 customin customout text-center text-uppercase" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="-20"
+                             data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;'
+                             data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="1000" data-start="1700" data-easing="Back.easeInOut" data-endspeed="300"
+                             style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;">More than 100 tours available
+                        </div>
+                        <!-- LAYER NR. 2 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0 text-center" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="15"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2600" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.05" data-endelementdelay="0.1"
+                             style="z-index: 9; max-width: auto; max-height: auto; white-space: nowrap;">
+                            <div style="color:#ffffff; font-size:16px; text-transform:uppercase">
+                                Historic Buildings / Open Bus Tours / Museums Guides
+                            </div>
+                        </div>
+                        <!-- LAYER NR. 3 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0" data-x="center" data-y="center"
+                             data-hoffset="0" data-voffset="70"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2900" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1" data-linktoslide="next"
+                             style="z-index: 12;"><a href='all_tour_list.html' class="button_intro">View tours</a> <a
+                                href='single_tour.html' class=" button_intro outline">Read more</a>
+                        </div>
+                    </li>
+
+                    <!-- SLIDE  -->
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on"
+                        data-title="Intro Slide">
+                        <!-- MAIN IMAGE -->
+                        <img src="{% static '/static/img/slides_bg/dummy.png'%}" alt="slidebg1"
+                             data-lazyload="{% static '/static/img/slides_bg/slide_6.jpg'%}"
+                             data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                        <!-- LAYER NR. 1 -->
+                        <div class="tp-caption white_heavy_40 customin customout text-center text-uppercase" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="-20"
+                             data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                             data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="1000" data-start="1700" data-easing="Back.easeInOut" data-endspeed="300"
+                             style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;">Discover fantastic
+                            places
+                        </div>
+                        <!-- LAYER NR. 2 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0 text-center" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="15"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2600" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.05" data-endelementdelay="0.1"
+                             style="z-index: 9; max-width: auto; max-height: auto; white-space: nowrap;">
+                            <div style="color:#ffffff; font-size:16px; text-transform:uppercase">
+                                We offer a variety of services and options
+                            </div>
+                        </div>
+                        <!-- LAYER NR. 3 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0" data-x="center" data-y="center"
+                             data-hoffset="0" data-voffset="70"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2900" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1" data-linktoslide="next"
+                             style="z-index: 12;"><a href='all_tour_list.html' class="button_intro">View tours</a> <a
+                                href='single_tour.html' class=" button_intro outline">Read more</a>
+                        </div>
+                    </li>
+
+                    <!-- SLIDE  -->
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on"
+                        data-title="Intro Slide">
+                        <!-- MAIN IMAGE -->
+                        <img src="{% static '/static/img/slides_bg/dummy.png'%}" alt="slidebg1"
+                             data-lazyload="{% static '/static/img/slides_bg/slide_5.jpg'%}"
+                             data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                        <!-- LAYER NR. 1 -->
+                        <div class="tp-caption white_heavy_40 customin customout text-center text-uppercase" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="-20"
+                             data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                             data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="1000" data-start="1700" data-easing="Back.easeInOut" data-endspeed="300"
+                             style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;">CityTours provides tour
+                            guides
+                        </div>
+                        <!-- LAYER NR. 2 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0 text-center" data-x="center"
+                             data-y="center" data-hoffset="0" data-voffset="15"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2600" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.05" data-endelementdelay="0.1"
+                             style="z-index: 9; max-width: auto; max-height: auto; white-space: nowrap;">
+                            <div style="color:#ffffff; font-size:16px; text-transform:uppercase">
+                                Visit museum with a dedicated tour guide
+                            </div>
+                        </div>
+                        <!-- LAYER NR. 3 -->
+                        <div class="tp-caption customin tp-resizeme rs-parallaxlevel-0" data-x="center" data-y="center"
+                             data-hoffset="0" data-voffset="70"
+                             data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                             data-speed="500" data-start="2900" data-easing="Power3.easeInOut" data-splitin="none"
+                             data-splitout="none" data-elementdelay="0.1" data-endelementdelay="0.1" data-linktoslide="next"
+                             style="z-index: 12;"><a href='all_tour_list.html' class="button_intro">View tours</a> <a
+                                href='single_tour.html' class=" button_intro outline">Read more</a>
+                        </div>
+                    </li>
+
+
+                </ul>
+                <div class="tp-bannertimer tp-bottom"></div>
+            </div>
+        </div>
+        {%endblock%}
+        <!-- End Slider -->
+        {% if messages %}
+
+            <ul class="messages">
+                {% for message in messages %}
+                 <div class="alert alert-dismissable" style="position:fixed;top:0;left:0;width:100%;text-align:center;z-index:100000;font-size:20px;font-weight:bold;background-color:black;">
+                        <span style="color:{% if message.tags == 'success' %}green{% elif message.tags == 'info' %}yellow{% elif message.tags == 'error' %}red{% endif %};">
+                            {{ message.tags|upper }} :
+
+                        </span>
+                       <span style="color:white;">{{ message }}</span>
+                        </div>
+                {% endfor %}
+            </ul>
+    {% endif %}
+        {%block body%}
+        <section class="container margin_60" style=" width:70%;">
+
+            <div class="main_title">
+                <h2><strong>Most Popular Courses </strong></h2>
+                <p>Equest provide you better knowledge in 25 fields.</p>
+            </div>
+             {%block courses_list_pagination %}
+                    {% include '_pagination_sector.html' %}
+            {%endblock%}
+            <div class="row">
+                {%block courses_list %}
+                    {% include 'course_mang/course_list.html' %}
+                {%endblock%}
+            </div>
+            {%block courses_list_pagination_btm %}
+                    {% include '_pagination_sector.html' %}
+            {%endblock%}
+        </section>
+        {%endblock%}
+        <!-- End section -->
+
+        {%block footer%}
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <!--<h3>Need help?</h3>
+                        <a href="tel://004542344599" id="phone">+45 423 445 99</a>
+                        <a href="mailto:help@citytours.com" id="email_footer">help@citytours.com</a>-->
+                        <img src="{% static '/static/img/footer_logo.png'%}" width="180px">
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <!--<h3>About</h3>-->
+                        <ul class="footer_bottom_link">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">blog</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <!--<li><a href="#">Terms and condition</a></li>-->
+                        </ul>
+                        <ul class="footer_bottom_link_2">
+                            <li><a href="#">Sitemap</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Privacy policy</a></li>
+                            <li><a href="#">Accessibility Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="newsletter">
+                            <input type="text" autocomplete="off" name="field-keywords" placeholder="" class="Updates">
+
+                            <h3 class="newsletter_heading">Subscribe For Updates</h3>
+                        </div>
+                        <div id="social_footer_right">
+                            <ul class="social_footer_right">
+                                <li><a href="#"><img src="{% static '/static/img/fb_icon.png'%}"></a></li>
+                                <li><a href="#"><img src="{% static '/static/img/twiter_icon.png'%}"></a></li>
+                                <li><a href="#"><img src="{% static '/static/img/plus_icon.png'%}"></a></li>
+                                <li><a href="#"><img src="{% static '/static/img/you_icon.png'%}"></a></li>
+                                <li><a href="#"><img src="{% static '/static/img/in_icon.png'%}"></a></li>
+                                <h3 class="newsletter_heading">Connect With Us </h3>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- End row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="social_footer">
+                            <p>© EQuest2015 designed by MMBO</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End row -->
+            </div>
+            <!-- End container -->
+        </footer>
+        {%endblock%}
+        <!-- End footer -->
+
+        <div id="toTop"></div>
+        
+        <!-- Back to top button -->
+
+        <!-- Common scripts -->
+        {% block foot_script %}
+        <script src="{% static '/static/js/jquery-1.11.2.min.js'%}"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+        <script src="{% static '/static/js/common_scripts_min.js'%}"></script>
+        <script src="https://raw.githubusercontent.com/kartik-v/bootstrap-star-rating/master/js/star-rating.min.js" type="text/javascript">
+        </script>
+        <script src="{% static '/static/js/functions.js'%}"></script>
+        <script src="https://raw.githubusercontent.com/javiertoledo/bootstrap-rating-input/master/src/bootstrap-rating-input.js"></script>
+        <script src="{%static '/static/js/jquery.barrating.js' %}"></script>
+        <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
+        <script src="{% static '/static/rs-plugin/js/jquery.themepunch.tools.min.js'%}"></script>
+        <script src="{% static '/static/rs-plugin/js/jquery.themepunch.revolution.min.js'%}"></script>
+        <script src="{% static '/static/js/revolution_func.js'%}"></script>
+        <script src="{% static '/static/custom/js/footer_js.js'%}"></script>
+         
+        {% block footer_css_js %}
+        {% endblock %}
+
+        <script>
+        window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
+            //Search bar
+            $(function () {
+                "use strict";
+                $("#searchDropdownBox").change(function () {
+                    var Search_Str = $(this).val();
+                    //replace search str in span value
+                    $("#nav-search-in-content").text(Search_Str);
+                });
+            });
+            $("#state").change(function(event) {
+            $.ajax({
+                    url : "/load_cities/",
+                    data : { 'state' : $(this).val()},
+                    type : "GET",
+
+                    success : function(json_from_view) {
+                                    $('#city').html('');
+
+                for(var i=0;i<json_from_view.length;i++){
+                $('#city').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+                }
+                    },
+                    error : function(xhr,errmsg,err) {
+                        $('#results').html("Cities are not loading!!!"); 
+                }
+                });
+
+            });
+        
+        </script>
+
+        {% if login_error %}
+           <script>
+             $('.login_signup').trigger('click',function(){alert('ok...')});
+             $('.sign_in').trigger('click',function(){});
+           </script>
+        {% endif %}
+
+        {% if login_page %}
+           <script>
+             $('.login_signup').trigger('click',function(){alert('ok...')});
+             $('.sign_in').trigger('click',function(){});
+           </script>
+        {% endif %}
+        
+        {% if register_error %}
+           <script>
+             $('.login_signup').trigger('click',function(){alert('ok...')});
+             $('.sign_up').trigger('click',function(){});
+           </script>
+        {% endif %} 
+        {% endblock %}
+        </body>
+        </html>
+
+
+
+
+
+        

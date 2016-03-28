@@ -1,0 +1,35 @@
+{% extends 'new_home.html' %}
+
+{% load static %}
+
+{% block slider %}
+{% endblock %}
+
+{% block body %}
+<br style="line-height:8em;">
+<div class="container" style="margin-bottom: 40px;">
+<div class="row">
+<div class="col-md-1 col-sm-1">
+
+</div>
+<div class="col-md-10 col-sm-10" style="margin-left: 8%;margin-right: 10%;"> 
+    <video id="vid1" controls style="width:100%;height: auto;">
+        <source src="http://{{ request.META.HTTP_HOST }}/static/video/mp4/{{data.course_uuid}}/{{data.week_uuid}}/{{data.module_name}}/{{data.video_file_name}}"
+                type="video/mp4">
+    </video>
+
+</div>
+<div class="col-md-1 col-sm-1">
+</div>
+</div>
+</div>
+ <script type="application/javascript">
+        document.getElementById('vid1').addEventListener('loadedmetadata', function () {
+            this.currentTime = 0;
+        }, false);
+    </script>
+{% block courses_list %}
+{% endblock %}
+{% endblock %}
+
+

@@ -1,0 +1,116 @@
+{% load static %}
+{% load default_tags %}
+<div class="con">
+    <div class="col-sm-2"> 
+
+    {% if user.teacher %} 
+      <a href="/teacher/" style=" text-decoration:none" > 
+    {% else %}
+      <a href="/home/" id='home' style=" text-decoration:none" > 
+    {%endif%}
+      <!-- <div class="icon" title="Go To Home Page"><img src="{%static '/static/images/logo.png'%}" alt="eQUEST logo"  width="100%"></div> -->
+      </a>
+            </div>
+    <div id="menu1" data-icon="&#xe070;"></div>
+    <div id="drop" style="display: none;">
+        <div class="cons1">
+        <div class="col-md-2" style="padding-top:15px !important;">
+
+        <div class="search-bos" id="search_box" title="Type course name to search."> 
+      <a href="/allcourses/" style=" text-decoration:none">
+        <div class="all-cou-img" title="Click to view all courses."><img src="{%static '/static/images/icons/Activity-100.png'%}" height="100%" width="100%"></div>
+        </a>
+        <form id="search_course_form" action="/allcourses/" method="get">
+          <div class="ui-widget">
+            <input type="text" class="txt" placeholder="I want to learn about" name="course_name" id="course_name" style="border:none !important"  autocomplete="off" required />
+          </div>
+          <a href="javascript:void(0);" class="search-icon" data-icon="&#xe073;" id="search_link" style="text-decoration: none;"></a>
+        </form>
+      </div>
+        </div></div>
+
+         <div class="col-sm-2"> {% if not user.is_authenticated%}
+    <div class="sign-btn e_regid" id="e_regid"><a style="text-decoration:none"  href="javascript:void(0)">Login/Register</a> </div>
+    {%else%}
+    <div class="sign-btn-1" id="userlogin" > <span style='color:blue;font-weight: bold;'>{{user}}</span>
+      <div class="user-menu-1">
+        <div class="line-1">
+          <div class="rotate-1"></div>
+        </div>
+        {% if user.teacher and not user.teacher.is_superuser %} <a  href="/teacher/" style="text-decoration:none;">
+        <li>My Courses</li>
+        </a> 
+        <a  href="/profile/" style="text-decoration:none;">
+        <li>Profile</li>
+        </a> 
+        {% elif user.is_superuser %}
+        <a  href="/anaylse/" style="text-decoration:none;">
+        <li>Anaylse</li>
+        </a>
+        {% else %} <a  href="/dashboard/" style="text-decoration:none;">
+        <li>My Courses</li>
+        </a> <a  href="/profile/" style="text-decoration:none;">
+        <li>Profile</li>
+        </a> 
+        <a  href="/certificates/" style="text-decoration:none;">
+        <li>Certificate</li>
+        </a>{% endif %}
+        <a  href="/logout/" style="text-decoration:none;">
+        <li><strong>Sign Out</strong></li>
+        </a> 
+        </div>
+    </div>
+    {%endif%} </div>
+    </div>
+
+    <div class="col-md-1 mm" style="margin-left:22%; margin-right:45px;" >
+      <div class="search-bos" id="search_box_1" title="Type course name to search."> 
+      <a href="/allcourses/" style=" text-decoration:none">
+        <div class="all-cou-img" title="Click to view all courses."><img src="{%static '/static/images/icons/Activity-100.png'%}" height="100%" width="100%"></div>
+        </a>
+        <form id="search_course_form_1" action="/allcourses/" method="get">
+          <div class="ui-widget">
+            <input type="text" class="txt" placeholder="I want to learn about" name="course_name" id="course_name_1" style="border:none !important"  autocomplete="off" required>
+          </div>
+          <a href="javascript:void(0);" class="search-icon" data-icon="&#xe073;" id="search_link_1" style="text-decoration: none;"></a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-2 mm"> {% if not user.is_authenticated%}
+    <div class="sign-btn e_regid" id="e_regid">
+    <a style="text-decoration:none" href="javascript:void(0)">Login/Register <span class="glyphicon glyphicon-envelope"></span></a> </div>
+    {%else%}
+    <div class="sign-btn" id="userlogin"> <span style='color:blue;font-weight: bold;'>
+    <img src ='{{user|get_img}}' style="width:20px;height:20px;margin:-5px;"/>
+    &nbsp;&nbsp;&nbsp;{{user}}&nbsp;<img src ="{%static '/static/custom/img/default/down.png'%}" style="width:20px;height:20px;margin:-5px;"/></span>
+      <div class="user-menu">
+        <div class="line">
+          <div class="rotate"></div>
+        </div>
+        {% if user.teacher and not user.teacher.is_superuser %} <a  href="/teacher/" style="text-decoration:none;">
+        <li>My Course</li>
+        </a>
+        <!-- <a  href="/profile/" style="text-decoration:none;">
+        <li>Profile</li> -->
+        </a> 
+        {% elif user.is_superuser %}
+        <a href="/anaylse/" style="text-decoration:none;">
+        <li>Anaylse</li>
+        </a>
+        {% else %} <a  href="/dashboard/" style="text-decoration:none;">
+        <li>My Courses</li>
+        </a> <a  href="/profile/" style="text-decoration:none;">
+        <li>Profile</li>
+        </a> 
+        <a  href="/certificates/" style="text-decoration:none;">
+        <li>Certificate</li>
+        </a> {% endif %}
+        <a  href="/logout/" style="text-decoration:none;">
+        <li><strong>Sign Out</strong></li>
+        </a>
+        </div>
+    </div>
+    {%endif%} </div>
+  </div>

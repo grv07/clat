@@ -1,0 +1,281 @@
+{% load static %}
+{% load is_owner_tags %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>eQuest</title>
+  
+<link rel="icon" type="image/gif" href="{% static '/static/logo/Equest_DarkBlue_Symbol.gif' %}"/>
+
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+ <link href="{%static '/static/css/default.css'%}" rel="stylesheet" type="text/css">
+<link href="{%static '/static/css/strap.css'%}" rel="stylesheet" type="text/css">
+<link href="{%static '/static/css/fonts.css'%}" rel="stylesheet" type="text/css">
+<link href="{%static '/static/css/animate.css'%}" rel="stylesheet"  type="text/css">
+<link href="{%static '/static/css/styles.css'%}" rel="stylesheet"  type="text/css">
+<link href="{%static '/static/css/login.css'%}" rel="stylesheet"  type="text/css">
+<link rel="stylesheet" type="text/css" href="{%static '/static/custom/css/header.css' %}">
+ <!-- Compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css"> -->
+<!-- Compiled and minified JavaScript -->
+<script type="text/javascript" src="{%static '/static/js/jquery.min.js'%}"></script>
+  <script src="{% static '/static/custom/js/notifIt.min.js' %}"></script>
+
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static '/static/custom/css/notifIt.css' %}" />
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/>
+{% block head_js_css %}
+    
+{%endblock head_js_css %}
+<script type="text/javascript">
+  $(document).ready(function read() {  $(".e_regid").click(function(){ $("#logpanel").show(); $("#register").show();$("#login").hide();    });});
+  $(document).ready(function() {  $(".logid").click(function(){ $("#logpanel").show(); $("#register").hide();$("#login").show();    });});
+  $(document).ready(function() {  $(".lo1").click(function(){  $("#login").show();$("#register").hide();    });});
+  $(document).ready(function() {  $(".re1").click(function(){  $("#login").hide();$("#register").show();    });});
+  $(document).ready(function() {  $(".close-button").click(function(){  $("#logpanel").hide();    });});
+  $(document).ready(function() {  $("#pu").click(function(){ $("#pop").show(); $("#popup").show();    });});
+  $(document).ready(function() {  $("#cbutton").click(function(){  $("#pop").hide();    });});
+  $(document).ready(function() {  $("#cbutton").click(function(){  $("#pop").hide();    });});
+  $(document).ready(function() {  $("#menu1").click(function(){  $("#drop").slideToggle();    });});
+  $(document).ready(function() {  $(".sign-btn").click(function(){  $(".user-menu").slideToggle();    });});
+  // $(document).ready(function() {  $(".sign-btn").click(function(){  $(".user-menu").slideToggle();    });});
+
+</script>
+</head>
+
+<body id="ex3">
+<section id="logpanel">
+  <div id="register">
+    <div class="boss">
+      <li class="re1 active">Register</li>
+      <li class="lo1 e_login">Login</li>
+      <div class="close-button" data-icon="z"></div>
+    </div> 
+     <div class="login-with facebook" style="margin-top:80px;"> <div class="s" data-icon=";"></div> Register with Facebook</div>
+    <div class="login-with gmail"> <div class="s" data-icon="'"></div> Register with Google</div>
+  
+  
+  <h3> OR</h3>
+  <a href="/register/" style=" text-decoration:none" ><div class="boss">
+        <input type="submit" style="padding:10px 30px !important; margin-left:40px !important" class="ssubmit" name="register" value="Create a new account"/>
+      </div></a>
+
+  </div>
+  
+  
+  <!--  Login Con   -->
+  <div id="login">
+    <div class="boss">
+      <li class="re1" >Register</li>
+      <li class="lo1 active e_login">Login</li>
+      <div class="close-button" data-icon="z"></div>
+    </div>
+            <a href="/accounts/facebook/login/?process=login">
+
+        <div class="login-with facebook"> <div class="s" data-icon=";"></div>
+        Login with Facebook
+        </div>
+        </a>
+              <a href="/accounts/google/login/?process=login">
+
+    <div class="login-with gmail"> <div class="s" data-icon="'"></div>
+    Login with Google
+    </div>
+    </a>
+  <h3> OR</h3>
+    {% include '_login_form.html'%}
+  </div>
+
+</section>
+
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<section id="container">
+<header>
+
+<div class="con" >
+<div class="col-sm-2">
+<a href="/home/" style=" text-decoration:none" >
+{% if user.teacher %}
+<a href="/teacher/" style=" text-decoration:none" >
+{% endif %}
+<div class="icon" ><img src="{%static '/static/images/logo.png'%}" alt="edx"  width="105"></div>
+</a></div>
+<div id="menu1" data-icon="&#xe070;"></div>
+
+
+ 
+<div id="drop">
+<div class="cons1">
+
+
+ </div></div>
+ <div class="col-md-1 mm" style="margin-left:22%; margin-right:45px;" >
+<div class="search-bos">
+<a href="/allcourses/" style=" text-decoration:none" >
+<div class="all-cou-img"><img src="{%static '/static/images/icons/Activity-100.png'%}" height="100%" width="100%"></div></a>
+<form id="search_course_form" action="/allcourses/" method="get">
+<input type="text" class="txt" placeholder="I want to learn about" name="course_name" id="course_name" style="border:none !important" required>
+<a href="javascript:void(0);" class="search-icon" data-icon="&#xe073;" id="search_link" style="text-decoration: none;"></a>
+</form>
+</div> 
+</div>
+</div>
+
+
+<div class="col-sm-2 mm">
+  {% if not user.is_authenticated%}
+  <div class="sign-btn e_regid" id="e_regid"><a style="text-decoration:none"  href="javascript:void(0)">Login/Register</a>
+  </div>
+  
+  {%else%}
+
+
+
+
+<div class="sign-btn" id="userlogin" >{{user}}
+
+<div class="user-menu">
+
+<div class="line"><div class="rotate"></div></div>
+{% if user.teacher %}
+
+<a  href="/teacher/" style="text-decoration:none;"><li>Dashboard</li></a>
+<!-- <a  href="/account/" style="text-decoration:none;"><li>Account</li></a>
+ -->
+ <a  href="/profile/" style="text-decoration:none;"><li>Profile</li></a>
+<a  href="/logout/" style="text-decoration:none;"><li><strong>Sign Out</strong></li></a>
+{% else %}
+<a  href="/dashboard/" style="text-decoration:none;"><li>Dashboard</li></a>
+<a  href="/profile/" style="text-decoration:none;"><li>Profile</li></a>
+<!-- <a  href="/account/" style="text-decoration:none;"><li>Account</li></a>
+ -->
+ <!-- <a  href="javascript:void(0);"  style="text-decoration:none;"><li> Video Lecture</li></a>
+ -->
+ <a  href="/certificate/" style="text-decoration:none;"><li>Certificate</li></a>
+<a  href="/logout/" style="text-decoration:none;"><li><strong>Sign Out</strong></li></a>
+{% endif %}
+
+</div>
+
+</div>
+  {%endif%}
+</div>
+
+ </div>
+</header>
+{% block body %}
+<section id="slider"></section>
+<section id="slider1">
+<div class="con">
+<div class="col-md-3" >
+<div class="slider-content">
+<iframe src="{%static '/static/slider.html'%}" frameborder="0" scrolling="no" height="100%" width="100%"></iframe>
+</div></div>
+<div class="col-md-1">
+<div class="video-co"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/7fXzsKqtqbw" frameborder="0" allowfullscreen></iframe></div>
+</div></div>
+
+</section>
+
+<section id="course">
+<div class="con">
+{% if user.teacher %}
+<h1> Your Courses</h1>
+{% else %}
+<h1> Our Most Popular Courses</h1>
+
+{% endif %}
+
+{% block course_list %}
+
+<!-- Modal for delete action confirmation -->
+<!-- <div class="modal fade" style="animation: none;overflow: visible;" id="confirm_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="font-style: bold;color:black;text-align: center;" id="modal_header">Confirm your action!</h2>
+            </div>
+            <div class="modal-body" id="modal_body_content">
+                <h2>Do you really want to delete the video? If yes, then click on delete button.</h2>
+                <p id="course_name"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn" style="background-color:#F3162F;font-style: bold;color:black;" id="confirm">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+    // For Modal's Delete button action confirmation
+    $('#confirm_modal').on('show.bs.modal', function(e) {
+        $('html,body').animate({scrollTop:0},0);
+        $('#course_name').html('Course to be deleted : '+$(e.relatedTarget).data('course-name'));
+        $(this).find('#confirm').attr('href',$(e.relatedTarget).data('delete-href'));
+});
+</script>
+ -->
+
+<div class="row courses-list" id='uniqe'>
+    {%block course%}
+      {%include 'course_mang/course_list.html'%}
+    {%endblock%}
+</div>
+{% endblock %}
+
+
+</section>
+{% endblock %}
+{% include '_footer.html' %}  
+
+
+<!-- Notification message template -->
+{% include '_notifications.html' %}
+
+<div class="after-footer">
+<div class="con">
+<p style="  width:60%; margin-left:20%; text-align:center;">© eQuest. All Rights Reserved. Copyright 2015. </p>
+</div>
+</div>
+{% if login_error %}
+     <script>
+       // alert('OK...'+$('#reg_lgn_id'))
+       $('#reg_lgn_id').trigger( "click" );
+       // $('.e_login').trigger('click',function(){});
+     </script>
+  {% endif %}
+
+{% block footer_css_js %}
+
+{%endblock%}  
+
+<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script src="{%static '/static/eq/eqq/js/custom.js'%}"></script>
+<script src="{% static '/static/custom/js/footer_js.js'%}"></script>
+<script>
+function checkForCourseName(){
+  if($('#course_name').val().replace(/ /g,'')===''){
+      alert('Please enter something to search');
+      return false;
+    }
+    return true;
+}
+  $('#search_link').click(function(event) {
+    if(checkForCourseName())    
+      $('#search_course_form').submit();
+  return false;
+  });
+$('#search_course_form').submit(function(event) {
+  if(!checkForCourseName())    
+      return false;
+  return true;
+});
+</script>
+</body>
+</html>

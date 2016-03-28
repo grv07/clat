@@ -1,0 +1,67 @@
+{% load static %}
+{% load is_owner_tags %}
+{% load course_tags %}
+{% load default_tags %}
+{% load rating_tags %}
+{%for course in course_list %}
+{%if course.can_enroll %}
+<a href="/course/details/{{course.course_uuid}}/" style="text-decoration:none" >
+<div class="col-sm-4" style='height:450px;width:30%;'>
+<a href="/course/details/{{course.course_uuid}}/">
+<img src="{{course|get_course_img}}" alt="Demo Image">
+</a>
+<a href="/course/details/{{course.course_uuid}}/" style=" text-decoration:none">
+<h4 style='font-size: 16px;'>{{course.course_name}}</h4>
+</a>
+<p><span style=" color:#273791; ">Duration : </span>{% if course.course_durations == '01' %} {{ course|course_week }} {% else %} {{ course.course_durations }} {% endif %}weeks</p>
+<p> <span style=" color:#273791;">*Stage I Fee: </span> Rs.{{course.amount}}/- (Inclusive of Tax)</p>
+<p> <span style=" color:#273791;">Effort: </span> {{course.effort}}</p>
+<p> <span style=" color:#273791;">Level: </span> {{course.level}}</p>
+<p> <span style=" color:#273791;">Language : </span> {{course.language}}</p>
+
+<p><span style=" color:#273791; float:left;">Ratings: &nbsp;&nbsp;</span>
+
+{%if user.is_authenticated %}
+    {%if course|is_owner:user.id %}
+    {%for rate in course|course_ratings%}
+        <img src="/static/custom/img/{{rate}}" style="height:20px;width:20px;" />
+    {%empty%}
+        {%include 'rating/_star_empty.html' %}
+    {%endfor%}
+    {%else%}
+        {%for rate in course|is_course_rated %}
+           <img src="/static/custom/img/{{rate}}" style="height:20px;width:20px;" />
+        {%empty%}
+            {% include 'rating/_star_empty.html' %}
+        {%endfor%}
+    {%endif%}
+{%else%}
+        {%for rate in course|course_ratings%}
+            <img src="/static/custom/img/{{rate}}" style="height:20px;width:20px;" />
+        {%empty%}
+            {%include 'rating/_star_empty.html' %}
+        {%endfor%}
+{%endif%}
+</p>
+</div>
+</a>
+{%endif%}
+{% empty %}
+  
+  <section class="copyrights">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12 col-sm-12">
+
+         <h1 style="color:red;">Sorry : No course found!!!</h1>
+<a href="/allcourses" style="text-decoration: none;box-align: center;">
+<div class="find-courses">View all courses</div>
+</a>
+</div>
+    <div class="col-md-6 col-sm-12">
+        
+        </div>
+        </div>
+    </div>
+</section>
+{% endfor %}

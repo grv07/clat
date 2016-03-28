@@ -1,0 +1,22 @@
+{%if user.is_authenticated %}
+       {%if course|is_owner:user.id %}
+              {%for rate in course|course_ratings%}
+              <i class='glyphicon {{rate}}'></i>
+              {%endfor%}
+       {%else%}
+              {%for rate in course|is_course_rated:user.id%}
+                     <i class='glyphicon {{rate}}'></i>
+              {%empty%}
+                     <div>
+                         <input class="my_class{{course.course_uuid}} rating"
+                                data-clearable=""
+                                data-max="5" data-min="1" id="some_id"
+                                data-course-key="{{course.course_uuid}}"
+                                name="your_awesome_parameter"
+                                type="number"
+                                onchange="addRatings($(this).data('course-key'));/*console.log($('input.my_class').rating().val())*/"
+                                data-empty-value="0"/>
+                     </div>
+              {%endfor%}
+       {%endif%}
+{%endif%}

@@ -1,0 +1,300 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% load is_owner_tags %}
+{% load default_tags %}
+
+{% block head_js_css %}
+{% endblock head_js_css %}
+
+{% block slider %}
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" type="text/css" href="{% static '/static/css/normalize.css' %} " />
+<link rel="stylesheet" type="text/css" href="{% static '/static/css/component.css' %} " />
+<link rel="stylesheet" type="text/css" href="{% static '/static/css/demo.css' %} " />
+
+
+<style type="text/css">
+#addreview{ display:none;}
+</style>
+<script type="text/javascript">
+
+$(document).ready(function() {  $("#abo").click(function(){ $("#abou").show(); $("#what").hide();$("#persu").hide(); $("#essential").hide();   });});
+$(document).ready(function() {  $("#wha").click(function(){ $("#abou").hide(); $("#what").show();$("#persu").hide(); $("#essential").hide();   });});
+$(document).ready(function() {  $("#per").click(function(){ $("#abou").hide(); $("#what").hide();$("#persu").show(); $("#essential").hide();   });});
+$(document).ready(function() {  $("#ess").click(function(){ $("#abou").hide(); $("#what").hide();$("#persu").hide(); $("#essential").show();   });});
+$(document).ready(function() {  $("#add_review").click(function(){ $("#addreview").slideToggle();});});
+
+</script>
+<script type="text/javascript">
+
+
+var make_button_active = function()
+{
+  //Get item siblings
+  var siblings =($(this).siblings());
+
+  //Remove active class on all buttons
+  siblings.each(function (index)
+    {
+      $(this).removeClass('active');
+    }
+  )
+
+
+  //Add the clicked button class
+  $(this).addClass('active');
+}
+
+//Attach events to menu
+$(document).ready(
+  function()
+  {
+    $(".menuss .submenu").click(make_button_active);
+  }
+)
+
+</script>
+
+
+  <script src="{% static '/static/js/modernizr.custom.js' %}"></script>
+  <script type="text/javascript" src="{% static '/static/js/classie.js' %}"></script>
+
+
+<section id="intro" style="margin-top: 50px;">
+<div class="con">
+
+<div class="col-sm-3" >
+      {% include 'course_mang/show_demo_video.html' %}
+</div>
+
+<div class="col-md-2"><h1>{{course.course_name}}</h1>
+<p>
+{% autoescape on %}
+{{ course.course_information.short_description }}
+{% endautoescape %}</p>
+</div>
+
+<div class="col-sm-3">
+
+{%if course.can_enroll%}
+  
+  {% if is_student_enrolled %}
+    <a href="/course/videos/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a>
+    <br>
+  {% else %}
+      {% if user and not user.teacher %}
+       <form method="post" action="/order/checkout/" id="enroll_course_form">
+        {% csrf_token %}
+           <!-- <input type="hidden" name="course_uid" value="{{ course.course_uuid }}"> -->
+           <input type="hidden" name="productinfo" value="{{course.course_uuid}}">
+           <input type="hidden" name="amount" value="{{ course.amount }}">
+           <input type="hidden" name="txnid" value="{{ txnid }}">
+           <input type="hidden" name="email" value="{{ user.email }}">
+           <input type="hidden" name="phone" value="{{ user.student_profile.phone_number }}">
+           <input type="hidden" name="firstname" value="{{ user.student_profile.full_name }}">
+
+           <button type="submit" class="enroll-btn" style=" text-decoration:none">Pay Now</button>
+      </form>
+        {% endif %}
+  {% endif %}
+
+  {% if user.teacher and course.teacher_id == user.id %}
+    <a href="/course/videos/teacher/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a><br>
+  {% endif %}
+
+{%else%}
+    <div class="enroll-btn">Uploading...</div><br>
+      {% if user.teacher and course.teacher_id == user.id %}
+         <a href="/course/videos/teacher/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a><br>
+      {% endif %}
+      {% if user.is_superuser %}
+         <a href="/course/admin/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a><br>
+      {% endif %}
+      
+{% endif %}
+
+</div>
+{% if user.teacher and course.teacher_id == user.id %}
+    <div class="col-sm-8">
+    <br><a class="ssubmit" href="/create/modules/{{course.course_uuid}}/" style="float: left;">Add Modules</a>
+    <a class="ssubmit" href="/upload/videos/{{course.course_uuid}}/" style="float: right;">Add Videos</a>
+    </div>
+{% endif %}
+</div>
+</section>
+
+<section id="about">
+<div class="con">
+
+<div class="col-lg-1"> 
+<div class="menuss">
+
+<div id="abo" class="submenu active"><div class="ficons" ><img src="{% static '/static/images/icons/Document-100.png' %}" height="100%" width="100%"></div>About the course</div>
+<div id="wha" class="submenu"><div class="ficons" ><img src="{% static '/static/images/icons/Reading-100.png' %}" height="100%" width="100%"></div>What you will learn</div>
+<div id="per" class="submenu"><div class="ficons" ><img src="{% static '/static/images/icons/Class-50.png' %}" height="100%" width="100%"></div>Certification Benefits</div>
+<div id="ess" class="submenu"><div class="ficons" ><img src="{% static '/static/images/icons/Survey-100.png' %}" height="100%" width="100%"></div>Eligibility</div>
+
+</div>
+
+<div class="full">
+
+<div id="abou">
+<div class="col-lg-4">
+<h3>About this course</h3>
+<p>
+{% autoescape on %}
+{{ course.course_information.description|to_newline|safe }}
+{% endautoescape %}
+
+</p></div>
+</div>
+
+<div id="what">
+<div class="col-lg-4">
+<h3>What you'll learn</h3>
+<p> 
+{% autoescape on %}
+{{ course.course_information.objective|to_newline|safe }}
+{% endautoescape %}
+</p>
+</div></div>
+
+
+<div id="persu">
+<div class="col-lg-4">
+<h1 style="  margin-top:25px; padding:25px;">Pursue a Verified Certificate to highlight the knowledge and skills you gain </h1>
+
+<div class="col-lg-1">
+<div class="col-lg-4">
+<div class="circle-icon" data-icon="/"> </div>
+<div class="col-lg-2">
+<p>
+{% autoescape on %}
+{{ course.course_information.crt_benefits|to_newline|safe }}
+{% endautoescape %}
+</p>
+</div>
+</div>
+
+
+<div class="col-sm-3"  >
+<img src="{% static 'images/cert-verified-thumb.png' %}" style=" margin-top:120px;" height="100%" width="100%" />
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="essential">
+<h3>Essential</h3>
+<p>
+{% autoescape off %}
+   {{ course.course_information.eligibility|to_newline }}
+{% endautoescape %}
+</p>
+</div>
+</div></div>
+
+<div class="col-sm-3" style="margin-top:70px !important;" >
+<div class="full">
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Watch-50.png' %}" height="100%" width="100%"></div> <strong>Duration:</strong> </div> <div class="col-md-50"> {{ course_duration }} weeks</div> </li>
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Cosine-50.png' %}" height="100%" width="100%"></div><strong> Effort :</strong> </div> <div class="col-md-50">  {{course.effort}}</div> </li>
+<li><div class="col-md-50"><div class="ficons"> <img src="{% static '/static/images/icons/Banknotes-100.png' %}" height="100%" width="100%"></div> <strong>*Stage I Fee :</strong> </div> <div class="col-md-50"> Rs.{{course.amount}}/- (Inclusive of Tax)</div> </li>
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Ascending Sorting-100.png' %}" height="100%" width="100%"></div> <strong>Level: </strong> </div> <div class="col-md-50"> {{course.level}}</div> </li>
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Reading-100.png' %}" height="100%" width="100%"></div> <strong>Languages :</strong> </div> <div class="col-md-50"> {{course.language}}</div> </li>
+<li style="border-bottom:none !important"><div class="col-md-50" ><div class="ficons"><img src="{% static '/static/images/icons/Visible-100.png' %}" height="100%" width="100%"></div> <strong>Interaction Mode:</strong> </div> <div class="col-md-50"> Animation Video , Lectures</div> </li>
+</div>
+<p>
+  <p>*Participation Certificate will Awarded by eQUEST</p>
+  <p>*Please read the certification policy for more details</p>
+</p>.
+<div class="col-lg-4">
+    <h3 style=" color:#04a5e5; width:90%; margin-left:5px; text-align:center; font-size:16px; margin-bottom:5px;">Share with a friend </h3>
+    <div class="sreview-img" style="margin-left:20px;">
+       <img src="{% static '/static/images/icons/Facebook-50.png' %}" height="100%" width="100%" style="  border-radius:50%">
+    </div>
+    <div class="sreview-img">
+       <img src="{% static '/static/images/icons/Google Plus-50.png' %}" height="100%" width="100%" style=" border-radius:50%">
+    </div>
+    <div class="sreview-img">
+       <img src="{% static '/static/images/icons/Twitter-50.png' %}" height="100%" width="100%" style=" border-radius:50%">
+    </div>
+    <div class="sreview-img">
+       <img src="{% static '/static/images/icons/LinkedIn-50.png' %}" height="100%" width="100%"style=" border-radius:50%">
+    </div>
+</div> 
+
+</div>
+</div>
+</section>
+
+{%include 'rating_managment/_user_rating.html'%}
+
+<section id="addreview">
+<div class="con">
+<div class="col-lg-4 search-box" >
+        <form id="theForm" class="simform" autocomplete="off" method="post">
+          <div class="simform-inner">
+            <ol class="questions">
+              <li>
+                <span><label for="review_rating">Rate the course (1-5)</label></span> 
+                 <input id="review_rating" name="review_rating" type="text" placeholder="Enter between 1-5 (both inclusive)"/>
+              </li>
+              <li>
+                <span><label for="review_text">Write a review</label></span>
+                <input type="text" id="review_text" name="review_text" placeholder="Between 10 to 150 characters" maxlength="150"/>
+              </li>
+            </ol><!-- /questions -->
+            <button class="submit" type="submit">Send answers</button>
+            <div class="controls">
+              <button class="next"></button>
+              <div class="progress"></div>
+              <span class="number">
+                <span class="number-current"></span>
+                <span class="number-total"></span>
+              </span>
+              <span class="error-message"></span>
+            </div><!-- / controls -->
+          </div><!-- /simform-inner -->
+          <span class="final-message"></span>
+        </form><!-- /simform -->
+</div>
+</div>
+</section>
+<!-- Append code of disqus -->
+<div id="disqus_thread" style="margin-left: 5%;width: 90%;"></div>
+{%endblock%}
+
+{% block footer_css_js %}
+
+<script type="text/javascript">
+    var disqus_shortname = 'equestco';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script src="{% static '/static/js/stepsForm.js' %}"></script>
+<script type='text/javascript' > 
+  var csrfmiddlewaretoken = '{{ csrf_token }}';
+  var c_id = '{{course.id}}';
+</script>
+<script src="{% static '/static/custom/js/user_rating.js'%}"></script>
+<script type="text/javascript">
+    var disqus_shortname = 'equestco';    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+{%endblock%} 

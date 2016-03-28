@@ -1,0 +1,169 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% load default_tags %}
+{% load test_tags %}
+
+{% block slider %}
+{% endblock %}
+{% block footer_css_js %}
+<style>
+.chart {
+  clear: both;
+  padding: 0;
+  width: 100%;
+}
+@media (min-width: 700px) {
+  .chart {
+    background: url("http://cl.ly/QSpc/bg-chart.png") right top repeat-x;
+    height: 460px;
+    margin: 0 auto emCalc(-32px);
+  }
+}
+.chart li {
+  display: block;
+  height: 125px;
+  padding: emCalc(25px) 0;
+  position: relative;
+  text-align: center;
+  vertical-align: bottom;
+  -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px;
+  border-radius: 4px 4px 0 0;
+  -moz-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  -webkit-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+}
+@media (min-width: 700px) {
+  .chart li {
+    display: inline-block;
+    height: 430px;
+    margin: 0 1.8% 0 0;
+  }
+}
+.chart .axis {
+  display: none;
+  top: emCalc(-45px);
+  width: 8%;
+}
+@media (min-width: 700px) {
+  .chart .axis {
+    display: inline-block;
+  }
+}
+.chart .label {
+  background: #cccccc;
+  margin: -9px 0 71px 0;
+}
+.chart .percent {
+  letter-spacing: -3px;
+  opacity: .4;
+  width: 100%;
+  font-size: 30px;
+  font-size: 1.875rem;
+}
+@media (min-width: 700px) {
+  .chart .percent {
+    position: absolute;
+    font-size: 20px;
+    font-size: 1.375rem;
+  }
+}
+.chart .percent span {
+  font-size: 30px;
+  font-size: 1.375rem;
+}
+.chart .skill {
+  font-weight: 800;
+  opacity: .5;
+  white-space: nowrap;
+  word-break: breakall;
+  text-transform: uppercase;
+  width:100%;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+@media (min-width: 700px) {
+  .chart .skill {
+    bottom: 20px;
+    position: absolute;
+    font-size: 16px;
+    font-size: 0.8rem;
+  }
+}
+.chart .teal {
+  background: #4ecdc4;
+  border: 1px solid #4ecdc4;
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzc2ZDhkMSIvPjxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjNGVjZGM0Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
+  background-size: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #76d8d1), color-stop(70%, #4ecdc4));
+  background-image: -moz-linear-gradient(#76d8d1, #4ecdc4 70%);
+  background-image: -webkit-linear-gradient(#76d8d1, #4ecdc4 70%);
+  background-image: linear-gradient(#76d8d1, #4ecdc4 70%);
+}
+</style>
+
+<script>
+$(document).ready(function() {
+  if($(window).width() < 700){
+    $('.chart .bar').css('width','100%');
+  }
+})
+</script>
+{%endblock%} 
+
+{% block body %}
+
+<div style="margin-top: 100px;" id="progressgrouping">
+    <fieldset style="float:right;margin-bottom: 20px;">
+    <legend>Note :</legend>
+      <input type="text" id="inlinetestbox" size="1" style="background-color: #4ECDC4;" readonly>&nbsp;Inline Test (IT)
+  </fieldset>
+</div>
+
+<ul class="chart">
+  <li class="axis">
+    <div class="label">100%</div>
+    <div class="label">80%</div>
+    <div class="label">60%</div>
+    <div class="label">40%</div>
+    <div class="label">20%</div>
+    <div class="label">0%</div>
+  </li>
+
+
+        {% for inline in week_module_name|get_all_inline_test:course%}
+
+          {% with height=inline.schedule_key|test_progress:user%}
+{% if height >= 0 %}
+              <li class="bar teal" style="height: {{ height }}%;width: {{ bar_width }}%" title="{{ height }}%">
+              {% if height <= 17 %}
+                <div class="percent" style="bottom: 110%;">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>              
+                  <div class="skill" style="position: relative;bottom: -100%;">IT-{{ forloop.counter }}</div>
+              {% else %}
+                <div class="percent">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>
+                  <div class="skill">IT-{{ forloop.counter }}</div>
+                {% endif %}
+{% if inline.schedule_key %}
+    <div style="position: relative;bottom: -90%;" title="View test report">
+                  <a href="/download/report/inline/{{ inline.schedule_key }}/" target="_blank"><span style="font-size:12px;">Report</span>
+                    <i class="fa fa-eye"></i>
+                  </a>
+                </div>
+{% endif %}
+</li>
+{% else %}
+         <li class="bar teal" style="height:0;width: {{ bar_width }}%">
+        <div class="skill" style="position: relative;bottom: -10%;">IT - {{ forloop.counter }}</div>
+
+  </li>
+{% endif %}
+
+
+        {% endwith %}
+       {% endfor %}
+
+</ul>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

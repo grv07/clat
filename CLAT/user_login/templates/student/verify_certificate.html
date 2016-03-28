@@ -1,0 +1,73 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% block body %}
+
+<script type="text/javascript">
+	function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+<section id="revi" style="margin-top:60px;">
+<div class="con"  >
+
+	<h1 style="color:#06F !important;text-align:center; font-weight:400 !important">Verify Certificate Here</h1>
+
+	<div style="text-align:center;margin-left:10%;margin-right:10%;overflow: hidden; padding-right: 2px;">		
+	<h4>A convenient way to verify a certificate assigned by e-QUEST.</h4>
+ 
+		<form  method="POST" action="/verify/certificate/" autocomplete="off" id="verify_cert_form" autocomplete="off">
+	          {% csrf_token %}
+
+	     <div class="col-md-4" style="margin-left: 20%;">
+			        <input type="text" class="text-sbox" placeholder="Enter Certificate ID" value="{{form.username.value|default:''}}"  name="cert_id" id="cert_id" style="width:60%;" required>
+
+	<span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> 
+
+		      <!-- {%if not_avail%} -->
+		      		<!-- <span style="color:red;">Certificate not avail with this registration id</span> -->
+			  <!-- {%endif%} -->
+	<button type="submit" class="text-sbox" name="verify_cert_form_button" id="verify_cert_form_button" style="width:100px;cursor: pointer;">Verify</button>
+</div>
+
+		 
+	    </form>
+
+	</div>
+
+	<div class="col-md-6" >
+	   {%if not code%}
+	   	<div class="col-md-2" >	
+	   		<h2 style='color:green;margin:22px'>&nbsp;&nbsp;Default Certificate Image</h2>
+	   		<img src="../../../static/images/cert-verified-thumb.png" width="100%" style=" margin-left:0px !important; max-width:100% 
+	   		!important" />
+	   	</div>
+	   	
+	   {%else%}
+	   <div class="col-md-2" >
+	   		<h2 style='color:blue;margin:22px'>&nbsp;&nbsp;Certificate Image
+	   			<a href="javascript:void(0)" style=' margin-left:3%;color:green' onclick="printDiv('printableArea')"><img style='margin-bottom: -3%;' src='../../../static/images/icons/Print-50.png'></a>
+	   		</h2>
+            <p id='printableArea'>
+            <img src="http://{{ request.META.HTTP_HOST }}/lms/media/certificate/{{code.strip}}/cert.png" width="100%" style=" margin-left:0px !important; max-width:100% !important" />
+            </p>
+ 		</div>
+ 		<div class="col-md-2">
+		   	<h2 style='color:green;margin:22px'>&nbsp;&nbsp;Certificate Information</h2>		
+			<ul id="cert">
+				<li>User Name: <span style='color:red;'>{{username}}</span></li>	
+				<li>Course Name: <span style='color:red;'>{{coursename}}</span></li>
+				<li>Marks Scored: <span style='color:red;'>{{marks_score}} / {{total_marks}}</span></li>
+			</ul>
+	    </div>
+	   {%endif%}
+	</div>
+</div>
+</section>
+{% endblock %}

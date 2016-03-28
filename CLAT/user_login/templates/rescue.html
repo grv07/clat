@@ -1,0 +1,146 @@
+{% extends 'new_home.html' %}
+{% load static %}
+
+{% block slider %}
+{% endblock %}
+{% block head_js_css %}
+<style>
+a{
+  text-decoration: none; color: #EC5C93; 
+}
+.login{
+  border-bottom: 2px solid #C5C5C8;
+  border-radius: 5px;
+  text-align: center;
+  color: #36383C;
+  text-shadow: 0 1px 0 #FFF;
+  width : 320px;
+  margin: 0 auto;
+  padding: 30px 20px 20px 30px;
+  box-shadow: 0 0 3px #000;
+}
+h1{
+  font-size: 1.6em;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+p{
+  font-family:'Helvetica Neue';
+  font-weight: 300;
+  color: #7B808A;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+/*input[class="text-sbox"]{
+  background: transparent;
+  border: 1;
+  margin-left: 10%;
+  margin-right: :10%;
+  width: 80%;
+  line-height: 2em;
+  box-sizing: border-box;
+  color: #71747A;
+  font-family:'Helvetica Neue';
+  text-shadow: 0 1px 0 #FFF;
+  font-size: 18px;
+}*/
+button{
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+  line-height: 1.2em;
+  background: white;
+  border-radius: 5px;
+  border:0;
+  border-top: 1px solid black;
+  box-shadow: 0 0 0 1px black, 0 2px 2px black;
+  color: black;
+  font-size: 1.5em;
+  text-shadow: 0 1px 2px black;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+  <div class="login" style="height: 459px;margin-bottom: 5%;margin-top: 10%;width: 52%;">
+  <h1 style="color:threeddarkshadow; ">Rescue your credentials</h1><hr>
+ <form action="{{ request.get_full_path }}" method="post" id="passwordresetform">
+    {% csrf_token %}
+    <div class="boss">
+    <h3 style="font-weight: bold;">Select the way you want to receive the activation link -</h3>
+    </div>
+    <div class="col-sm-4">
+    <input type="radio" id="emailoption" name="option" value="emailoption" checked><label for="emailoption">Email</label>
+    </div>
+    <div class="col-sm-4">
+    <input type="radio" id="mobileoption" name="option" value="mobileoption"><label for="mobileoption">Mobile</label>
+    </div>
+    <div class="boss">
+    <br>
+    <input name="email" id="email" type="email" placeholder="Type your email here..." autocomplete="off" style="width:100%;height:50px;">
+    <input name="phone_number" id="phone_number" type="text" placeholder="Type your phone number here..." autocomplete="off" maxlength="10" style="display:none;width:100%;height:50px;">
+    </div>
+    <div>
+       <button type="submit" class="ssubmit">Submit</button>
+    </div>
+</form>
+  </div>
+<script>
+$('input[type="radio"]').click(function(e) {
+  var type_selected = e.target.id;
+  if(type_selected === 'mobileoption'){
+    $('#email').css('display','none');
+    $('#phone_number').css('display','inline-block');
+  }
+  if(type_selected === 'emailoption'){
+    $('#email').css('display','inline-block');
+    $('#phone_number').css('display','none');
+  }
+});
+
+$(function () {
+  $.validator.addMethod('phoneUK', function(phone_number, element) {
+                    var pattern = /^([789]\d{9})$/;
+                    return pattern.test(phone_number)
+                    }, 'Phone number must be in Indian format.');
+
+        $("#passwordresetform").validate(
+                {
+                    rules: {
+                        email: {
+                            required: true,
+                            remote:'/db_email/'
+                        },
+                        phone_number: {
+                            required: true,
+                            remote:'/verify_phone_number/?m=troubleshoot',
+                            phoneUK: true
+                        }
+                    },
+                    errorElement: 'p',
+                highlight: function(element) {
+                    $(element).parent().addClass("has-error");
+                    $(element).addClass('error')
+                },
+                unhighlight: function(element) {
+                    $(element).parent().removeClass("has-error");
+                    $(element).removeClass('error')
+                },
+                    messages: {
+                        email: {
+                            required: "Please enter your email.",
+                            remote: 'Please enter your email.'
+                        },
+                        phone_number: {
+                        required :  "Please enter phone number.",
+                        phoneUK  : "Phone number must be in Indian format.", 
+                        remote : "Please enter your phone number.",
+                        }
+                    }
+                });
+
+    });
+
+</script>
+{% endblock %}

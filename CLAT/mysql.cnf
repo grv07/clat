@@ -1,0 +1,7 @@
+# my.cnf
+[client]
+database = 'clatlms'
+user = 'root'
+password = 'root'
+default-character-set = 'utf8'
+

@@ -1,0 +1,40 @@
+  {% load static %}
+<script type="text/javascript" src="{%static '/static/custom/js/login_register.js'%}" ></script>
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+      <!-- <div class="modal-header"> -->
+        <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button> -->
+        <!-- </div> -->
+     
+   <ul class="nav nav-tabs">
+      <li class="active "><a data-toggle="tab" href="#home" class="sign_in">Login</a></li>
+      <li class=''><a data-toggle="tab" href="#menu1" class="sign_up">Register</a></li>
+    </ul>
+<div class="tab-content" style="padding: 12%;">
+      <div id="home" class="tab-pane fade in active">
+      {% include '_login_form.html' %}
+
+  <div class="widget about-widget wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.5s;">
+              <div class="widget-title">
+                  <h4>Login Using </h4>
+              </div><!-- end widget-title -->
+              <ul class="social">
+                  <li class="facebook"><a href="/accounts/facebook/login/?process=login"><i class="fa fa-facebook"></i></a></li>
+                  <li class="twitter"><a href="/accounts/twitter/login/?process=login"><i class="fa fa-twitter"></i></a></li>
+                  <li class="google"><a href="/accounts/google/login/?process=login"><i class="fa fa-google-plus"></i></a></li>
+              </ul>
+          </div>
+      </div>
+      <div id="menu1" class="tab-pane fade">
+      {% include '_reg_form.html' %}  
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->

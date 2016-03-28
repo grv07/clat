@@ -1,0 +1,348 @@
+{% load static %}
+{% load default_tags %}
+ <!DOCTYPE html>
+  <html>
+
+    <head>
+      <title>eQuest</title>
+   	  <link rel="icon" type="image/gif" href="{%static '/static/logo/Equest_DarkBlue_Symbol.gif' %}"/>
+
+  	  <!-- Compiled and minified CSS -->
+  	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+      
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+  	  <!-- Compiled and minified JavaScript -->
+  	  <script type="text/javascript" src="{%static '/static/js/jquery.min.js'%}"></script>
+  	  <script src="{% static '/static/custom/js/notifIt.min.js' %}"></script>
+
+      <link rel="stylesheet" type="text/css" media="screen" href="{% static '/static/custom/css/notifIt.css' %}" />
+
+  	  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
+
+      <script type="text/javascript">
+      	$(document).ready(function(){
+      		$('select').material_select();
+            $(".button-collapse").sideNav();
+        });
+      </script>
+      {%block head_script %}
+
+      {%endblock%}     
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <style type="text/css" media="screen">
+      .body_height { 
+      	min-height:650px;height:auto; 
+      }
+      .error{
+        	color:red !important;
+        }
+      	
+        hr.style-four {
+        height: 50px;
+        border: 0;
+        box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+       }
+       hr.sep{
+        border-color: red;
+       }
+      </style>
+    </head>
+
+    <body class='body_height'>
+	   <nav class="lighten-1" role="navigation" style="background-color: white;">
+    <div class="nav-wrapper container">
+    {% if user.teacher and not user.is_superuser %}
+      <a id="logo-container" href="/teacher/" class="brand-logo"><img src="{%static '/static/images/logo.png'%}" alt="edx"  width="105"></a>
+    {% elif user.is_superuser %}
+    <a id="logo-container" href="/home/" class="brand-logo"><img src="{%static '/static/images/logo.png'%}" alt="edx"  width="105"></a>
+    {% endif %}
+      <a href="#" data-activates="mobile-demo" class="button-collapse" style="background-color: #BDBDBD;"><i class="mdi-navigation-menu"></i></a>
+      <ul class="right hide-on-med-and-down">
+         {% if user.is_authenticated %}
+          {% if not user.is_superuser %}
+          <li style="background-color: gray;">
+      <a href="/upload/art_course/">
+          Create New Course
+          </a>
+          </li>
+          {% endif %}
+          <li style="margin-left: 10px;background-color: gray;"><a href="/logout/">Logout</a></li>
+        {% else %}
+          <li style="background-color: green;"><a href="/teacher/login/">Login</a></li>
+          <li style="margin-left: 10px;background-color: orange;"><a href="/teacher/register/">Register</a></li>
+          {% endif %}
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+          {% if user.is_authenticated %}
+            <li>
+            <a href="/upload/art_course/">
+                Create New Course
+            </a>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/logout/">Logout</a></li>
+            {% else %}
+            <li><a href="/teacher/login/">Login</a></li>
+            <li class="divider"></li>
+            <li><a href="/teacher/register/">Register</a></li>
+          {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+
+	 	  <div id="body" class='body_height'>
+ 	  {% block body %}
+
+
+ 	  {% if user.is_authenticated %}
+ 	   
+
+    <div id="delete_course_modal" class="modal">
+        <div class="modal-content" style="height:400px;">
+        <div id="delete_modal_body" class="row">
+      <div class="input-field col s12 m12">
+          <h5 id="confirm_question_1">Do you really want to delete the course?</h5>
+          </div>
+          <div id="register" class="row">
+      <div class="input-field col s12 m12">
+          <h3 class="black-text" id="confirm_detail_1_1">Course Name : <span id="course_to_delete_name" style="color:blue;"></span></h3>
+          </div>
+          </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        <a href="javascript:void(0);" class=" modal-action modal-close waves-effect waves-green btn-flat" id="confirm_operation_1">Delete It</a>
+        <a href="javascript:void(0);" id="cancel_operation_1" class=" modal-action modal-close waves-effect waves-green btn-flat" onclick="$('#delete_course_modal').closeModal();">Cancel</a>
+        </div>
+    </div>
+
+    <div id="transactionModal" class="modal bottom-sheet" style="max-height: 85%;">
+      <div class="modal-content">
+        <div class="row">
+        <div class="col l6 m6 s6">
+          <h4 class="center">Transaction Details</h4>
+        </div>
+        <div class="col l3 m3 s3">
+          <button class="btn-floating btn-large blue" type="button" style="display: none;" id="enroll_button" title="Click to enroll student.">
+          <i class="large material-icons">add</i>
+        </button>
+        </div>
+        <div class="col l3 m3 s3">
+          <button class="btn-floating btn-large red modal-action modal-close" type="button" title="Click to close the modal.">
+          <i class="large material-icons">close</i>
+        </button>
+        </div>
+        </div>
+        <p id="transaction_details">
+          <table>
+            <thead>
+              <tr>
+                <th data-field="details">Details</th>
+                <th data-field="value">Values</th>
+              </tr>
+            </thead>
+            <tbody id="details_tbody">              
+            </tbody>
+          </table>
+        </p>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+        
+
+ 	  <div class="section no-pad-bot" id="index-banner">
+ 		    <div class="container">
+ 		      <h1 class="header center black-text">Dashboard</h1>
+ 		      <div class="row center"> 
+            <div class="input-field col l6 m6 s6">
+ 		            <h5 class="header col s12 light">Here, you can manage your courses.</h5>
+            </div>
+            <div class="input-field col l6 m6 s6">
+                <div class="input-field col l10 m10 s10">
+                  <input placeholder="Enter Transaction ID" id="txnid" name="txnid" type="search" class="validate">
+                </div>
+                <div class="input-field col l2 m2 s2">
+                  <button class="btn-floating btn-small teal" type="submit" id="verify_payment_button">
+                    <i class="small material-icons">search</i>
+                  </button>
+                </div>
+            </div>
+ 		      </div>
+ 		        {% for course in courses_owned %}
+ 		    <div class="card-panel grey lighten-5 z-depth-1 hoverable">
+           		<div class="row valign-wrapper">
+             		<div class="col s6 m2">
+                     <img src="{{ course|get_course_img  }}" alt="Course Picture" class="rectangle responsive-img">
+ 		        	</div>
+ 		        	<div class="col s10">
+ 		        	<h5>{{course.course_name}}</h5>
+	
+		        	<a href="/course/details/{{course.course_uuid}}/" class="waves-effect waves-light btn" style="margin: 3px 3px 3px 3px;">View Details</a>
+   					<a href="manage/{{course.course_uuid}}/" class="waves-effect waves-light btn" style="margin: 3px 3px 3px 3px;">Manage</a>
+		        	<a class="waves-effect waves-light btn delete_confirm_button" data-course-name="{{course.course_name}}" data-course-uuid="{{course.course_uuid}}" style="margin: 3px 3px 3px 3px;">Delete</a>	
+ 		        	</div>
+ 
+ 		        </div>
+ 		    </div>
+        {% empty %}
+          <div class="row center">
+            <h5 class="header col s12 light">Seems like you haven't created any course.</h5>
+            <a href="/upload/art_course/">
+            <div class="btn waves-effect waves-lights" style="background-color:  red;text-decoration: none;">Create a course</div>
+            </a>
+          </div>
+ 		        {% endfor %}
+ 		      </div>
+ 		    </div>
+ 	  {% else %}
+ 		  <div class="section no-pad-bot" id="index-banner">
+ 		    <div class="container">
+ 		      <br><br>
+ 		      <h1 class="header center orange-text">Welcome to eQuest</h1>
+ 		      <div class="row center">
+ 		        <h5 class="header col s12 light">Hello Teacher!!!</h5>
+ 		      </div>
+ 		      <div class="row center">
+ 		      </div>
+ 		      <br><br>
+ 		    </div>
+ 		  </div>
+ 		  {% endif %}
+ 	  {% endblock %} 
+    </div>
+ 	  <footer class="page-footer grey">
+ 	    <div class="container">
+ 	      <div class="row">
+ 	        <div class="col l6 s12">
+ 	          <img src="{%static '/static/images/footer-logo.png'%}" alt="eQuest"   width="70" class="rectangle responsive-img">
+            <img src="{%static '/static/images/qci-logo.png'%}" alt="qci"   width="60" class="rectangle responsive-img">
+ 	          <p class="grey-text text-lighten-4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris vel tortor vitae nibh condimentum auctor. Integer ac lacus um sociis natoque enatibus et magnis dis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris vel tortor vitae nibh condimentum auctor. Integer ac lacus um sociis natoque enatibus .</p>
+ 
+ 
+ 	        </div>
+ 	        <div class="col l3 s12">
+ 	          <ul>
+ 	            <li><a class="white-text"  href="/about/" style="text-decoration:none;">About</a></li>
+ 	            <li><a class="white-text"  href="https://disqus.com/home/channel/equest/recent/" style="text-decoration:none;">Blog</a></li>
+ 	            <li><a class="white-text"  href="/faq_page/" style="text-decoration:none;">FAQs</a></li>
+ 	            <li><a class="white-text" href="/contact/" style="text-decoration:none;">Contact</a></li>
+ 	          </ul>
+ 	        </div>
+ 	        <div class="col l3 s12">
+ 	          <ul>
+ 	            <li><a class="white-text" href="/termsandservices/" style=" text-decoration:none;">Terms of Service</a></li>
+ 	            <li><a class="white-text" href="/privacy_policy/" style=" text-decoration:none;">Privacy Policy</a></li>
+ 	            <li><a a class="white-text" href="/termsandservices/" style=" text-decoration:none;">Accessibility Policy</a></li>
+ 	          </ul><br>
+            <div class="" id="connect_sites_icons">
+              <h5 class="white-text" style="font-size: 18px;">Connect with us</h5>
+              <img class="rectangle responsive-img" src="{%static '/static/images/icons/Google Plus-50.png'%}" style=" border-radius:50%">
+              <img class="rectangle responsive-img" src="{%static '/static/images/icons/LinkedIn-50.png'%}" style=" border-radius:50%">
+              <img class="rectangle responsive-img" src="{%static '/static/images/icons/Twitter-50.png'%}" style=" border-radius:50%">
+            </div>
+ 	        </div>
+ 	      </div>
+ 	    </div>
+ 	  </footer>
+
+ 
+ 	<!-- Notification message template -->
+ 	{% include '_notifications.html' %}
+     
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+    
+  {%block footer_script %}
+  <script>
+   $('.delete_confirm_button').click(function(event) {
+    $('#delete_course_modal').openModal({dismissible: false});
+    $('#confirm_question_1').html('<p>Do you really want to delete this course?</p>');
+    $('#confirm_detail_1_1').html('<p style="font-size:24px;">Course Name :    <span class="blue-text">'+ $(this).data('course-name') +' </span></p>')
+    $('#confirm_operation_1').attr('data-delete-course-uuid',$(this).data('course-uuid'));
+   });
+ 
+   $('#confirm_operation_1').click(function(event) {
+     $.ajax({
+
+             url : "/course/delete/"+$(event.target).data('delete-course-uuid')+"/",
+             data : {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+             type : "POST",
+
+             success : function(json_from_view) {
+              if(!json_from_view)
+    alert('Course cannot be deleted');
+  window.location = window.location;
+
+            },
+             error : function(xhr,errmsg,err) {
+              alert('Error : Cannot delete the course!');
+         }
+         });
+   });
+  var d = {};
+  $('#verify_payment_button').click(function(event) {
+    var txn_value = $('#txnid').val();
+    if(txn_value.length!=32)
+    {
+      alert("Enter correct Transaction ID");
+    }
+    else{
+     $.ajax({
+             url : "/verify/payment/",
+             data : {'txnid' : txn_value, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+             type : "POST",
+
+             success : function(json_from_view) {
+              var html = '';
+              if(json_from_view[0]!=null){
+                l = ['status','txnid','addedon','transaction_amount','additional_charges','name_on_card','net_amount_debit','productinfo'];
+                h = '';
+                result = json_from_view[1]['transaction_details'][$('#txnid').val()];
+                if(result['status']!='success' || result['net_amount_debit']<=0.0){
+                  h = '<tr><td>No payment have been received with this transaction ID.</td></tr>';
+                  $('#enroll_button').css('display','none');
+                }else{
+                $('#enroll_button').css('display','inline-block');
+                for(var i=0;i<l.length;i++){
+                  h += '<tr><td>'+l[i]+'</td><td>'+result[l[i]]+'</td></tr>';
+                }
+                d = {  'csrfmiddlewaretoken' : '{{ csrf_token }}', 'txnid' : $('#txnid').val(), 'productinfo' : result['productinfo'], 'email' : json_from_view[1]['user']['user_email'], 'amount' : parseInt(result['net_amount_debit'])-parseInt(result['additional_charges']) };
+                }
+                $('#details_tbody').html(h);
+              }else{
+                html = 'Unable to retrieve transaction details';
+                $('#enroll_button').css('display','none');
+              }
+              $('#transaction_details').html(html);
+              $('#transactionModal').openModal({dismissible: false});
+            },
+             error : function(xhr,errmsg,err) {
+              alert('Error : Cannot get transaction details!');
+              window.location.reload();
+         }
+         });
+    }
+   });
+  
+  $('#enroll_button').click(function(event) { 
+           $.ajax({
+             url : "/teacher/enroll/student/",
+             data : d,
+             type : "POST",
+             success : function(json_from_view) {
+              alert(json_from_view);
+            },
+             error : function(xhr,errmsg,err) {
+              alert('Error : Cannot enroll student!');
+            }
+         });
+  });
+
+
+   </script>
+    {%endblock%} 
+
+     </body>
+     
+   </html>

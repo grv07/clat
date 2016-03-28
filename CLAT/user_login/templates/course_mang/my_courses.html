@@ -1,0 +1,11 @@
+{% extends 'new_home.html' %}
+{%load static %}
+{%block courses_list_pagination %}
+    {% include '_pagination_sector.html' %}
+{%endblock%}
+{%block courses_list%}
+    {%include 'course_mang/course_list.html' %}
+{%endblock%}
+{%block courses_list_pagination_btm %}
+    {% include '_pagination_sector.html' %}
+{%endblock%}

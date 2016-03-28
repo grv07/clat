@@ -1,0 +1,234 @@
+{% extends 'teacher/teacher_home.html' %}
+{%load static%}
+{% load course_tags %}
+{%block head_script %}
+{%endblock%} 
+{% block body %}
+
+ <div id="coursemodal" class="modal">
+    <div class="modal-content">
+      <h4>Do you want to <span id="courseoperation"></span> the course <span id="selectedcourse" class="green-text"></span> ?</h4>
+    </div>
+    <div class="modal-footer">
+      <button id="courseoperationyes" class="modal-action modal-close waves-effect waves-green btn-flat" data-course-name="" data-course-uuid="" data-course-operation="" onclick="courseOperation(this);">Confirm</a>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat" onclick="$('#coursemodal').closeModal();">Cancel</a>
+    </div>
+  </div>
+
+<div class="row center" style="margin-top: 20px;">
+  <h5 class="header col s12 light">Here is list of all identities.</h5>
+  <span class="right"><i class="tiny material-icons blue-text">info_outline</i> : Course is not yet launched.</span>
+</div>
+
+<div class="row">
+<div class="col m2 s2">
+<select id="downloadxlsoptions">
+  <option value="" disabled selected>Download XLS for</option>
+  <option value="1">All Courses</option>
+  <option value="2">All Teachers</option>
+  <option value="3">All Students</option>
+</select>
+</div>
+<div class="col m8 s8">
+  <!-- {% for teacher in teacher_list %}
+    <div class="card-panel grey lighten-5 z-depth-1 hoverable">
+      <div class="row valign-wrapper">
+        <div class="col s6 m2">
+        Image
+        </div>
+      <div class="col s10">
+        <h5>{{ teacher.full_name }}</h5>
+      </div>
+
+      </div>
+    </div>
+  {% endfor %} -->
+  <div class="row">
+    <div class="col s12 m12">
+      <ul class="tabs">
+        <li class="tab col m4 s4"><a class="active" href="#teachertab">Teachers</a></li>
+        <li class="tab col m4 s4"><a href="#studenttab">Students</a></li>
+        <li class="tab col m4 s4"><a href="#coursetab">Courses</a></li>
+      </ul>
+    </div>
+    <div id="teachertab" class="col m12 s12">
+    <table>
+        <thead>
+          <tr>
+              <th data-field="teachername">Name</th>
+              <th data-field="teachergender">Gender</th>
+              <th data-field="teacheraddress">Address</th>
+              <th data-field="teacherno">Phone No.</th>
+              <th data-field="teacheredu">Education</th>
+              <th data-field="teacherotheractions">Other Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for teacher in teacher_list %}
+          <tr>
+            <td>{{ teacher.full_name }}</td>
+            <td>{{ teacher.gender }}</td>
+            <td>{{ teacher.address.street1 }},{{ teacher.address.street1 }},{{ teacher.address.city_obj.city_name }},{{ teacher.address.city_obj.state }} - {{ teacher.address.pincode }}</td>
+            <td>{{ teacher.phone_number }}</td>
+            <td>{{ teacher.higher_education }}</td>
+            <td>
+              <select class="teacheroptions" data-student="{{ teacher.id }}">
+                <option value="1">activate</option>
+                <option value="2">de-activate</option>
+              </select>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    <div id="studenttab" class="col m12 s12">
+    <table>
+        <thead>
+          <tr>
+              <th data-field="id">Name</th>
+              <th data-field="studentgender">Gender</th>
+              <th data-field="studentaddress">Address</th>
+              <th data-field="studentno">Phone No.</th>
+              <th data-field="studentedu">Education</th>
+              <th data-field="studentotheractions">Other Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for student in student_list %}
+          <tr>
+            <td>{{ student.full_name }}</td>
+            <td>{{ student.gender }}</td>
+            <td>{{ student.address.street1 }},{{ student.address.street1 }},{{ student.address.city_obj.city_name }},{{ student.address.city_obj.state }} - {{ student.address.pincode }}</td>
+            <td>{{ student.phone_number }}</td>
+            <td>{{ student.higher_education }}</td>
+            <td>
+            <select class="studentoptions" data-student="{{ student.id }}">
+              <option value="1">activate</option>
+              <option value="2">de-activate</option>
+            </select>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    <div id="coursetab" class="col m12 s12">
+    <table>
+        <thead>
+          <tr>
+              <th data-field="coursename">Name</th>
+              <th data-field="courseduration">Duration (in weeks)</th>
+              <th data-field="coursetype">Type</th>
+              <th data-field="courseteacher">Teached By</th>
+              <th data-field="courseotheractions">Other Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for course in course_list %}
+          <tr>
+            <td><a href="/course/details/{{ course.course_uuid }}/">{% if not course.can_enroll %}<i class="tiny material-icons" title="This course is not active.">info_outline</i>{% endif %}{{ course.course_name }}</a></td>
+            <td>{{ course.course_durations }}</td>
+            <td>{{ course.course_sectors_and_associates }}</td>
+            <td>{{ course.teacher.full_name }}</td>
+            <td>
+              <select class="courseoptions" data-course-name="{{ course.course_name }}" data-course-uuid="{{ course.course_uuid }}">
+                <option value="1">report</option>
+                <option value="2">delete</option>
+                {% if not course.can_enroll %}
+                <option value="3">launch</option>
+                {% else %}
+                <option value="4">de-activate</option>
+                {% endif %}
+              </select>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+  </div>
+        
+</div>
+<div class="col m2 s2">
+&nbsp;
+</div>
+</div>
+<script>
+$('#downloadxlsoptions').change(function(event) {
+  $.ajax({
+          url : "/downloadxls/all/",
+
+          data : { '_option' : event.target.value },
+          type : "GET",
+
+          success : function(json_from_view) {
+
+            if(json_from_view[0]){
+              window.location = '/download/file/'+json_from_view[1]+'/';
+          }else{
+            window.location.reload();
+          }
+          },
+          error : function(xhr,errmsg,err) {
+              alert('Error in downloading xls!!!'); 
+      }
+      });
+});
+  
+$('.courseoptions').change(function(e) {
+  $('#selectedcourse').html($(e.target).data('course-name'));
+  $('#courseoperation').html(e.target.options[e.target.selectedIndex].text);
+  $('#courseoperationyes').data('course-name', $(e.target).data('course-name'));
+  $('#courseoperationyes').data('course-uuid', $(e.target).data('course-uuid'));
+  $('#courseoperationyes').data('course-operation',e.target.options[e.target.selectedIndex].text);
+  $('#coursemodal').openModal({dismissible: false});
+});
+
+
+function courseOperation(e){
+  var operation_type = $(e).data('course-operation');
+
+  if(operation_type === 'launch'){
+    $.ajax({
+          url : "/activate/course/",
+
+          data : { '_c_name' : $(e).data('course-name'), 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+          type : "POST",
+
+          success : function(json_from_view) {
+            if(json_from_view){
+            window.location.reload();
+          }else{
+              alert('Cannot activate the course : '+ $(e).data('course-name')+'.'); 
+          }
+          },
+          error : function(xhr,errmsg,err) {
+              alert('Error : We cannot activate the course.Server Error.'); 
+      }
+      });
+    }
+    else if(operation_type === 'delete'){
+      $.ajax({
+            url : "/course/delete/"+$(e).data('course-uuid')+"/",
+           data : {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+           type : "POST",
+           success : function(json_from_view) {
+            if(!json_from_view)
+              alert('Course cannot be deleted');
+            window.location.reload();
+            },
+           error : function(xhr,errmsg,err) {
+            alert('Error : Cannot delete the course!!!');
+       }
+       });
+}
+}
+
+</script>
+{% endblock %}

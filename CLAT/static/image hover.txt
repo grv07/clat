@@ -1,0 +1,4 @@
+     <div class="mix-grid">  <div class="item mix"><div class="mix-inner"><a href="charts.html"><img src="img/equest_logo.png"></a></div>
+        <div class="mix-details"><h4>Image 1</h4></div>
+            </div>
+        </div>

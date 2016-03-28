@@ -1,0 +1,37 @@
+{% extends 'admin/admin_home.html' %}
+{% block body %}
+<br>
+<div id="login" class="row">
+ <form role="form" id="login_form" method="post" action="/teacher/login/" class="offset-s3 col s6" >
+            {% csrf_token %}
+                <h5 class="center-align">Please logijjn as a teacher</h5>
+
+            {% if t_login_error %}
+                    <div class="input-field col s12">
+            <p style="color: red;">Invalid Credentials</p>
+         </div>
+            {% endif %}
+            {% if t_not_active %}
+         <div style="text-align: center;">
+            <p style="color: blue;">Your account exist but it is not yet active. Contact the server administrator.</p>
+         </div>
+            {% endif %}
+            <div class="input-field col s12">
+         <input type="text"  placeholder="Enter Your Username" name="username" id='username'>
+         </div>
+                    <div class="input-field col s12">
+
+         <input type="password" placeholder="Password" style="margin-top: 20px;" name="password">
+         </div>
+                    <div class="input-field col s12">
+         <button class="btn waves-effect waves-light" type="submit">Login</button>
+         <a class="btn" href="/troubleshoot/teacher/" style="float: right;">Forgot Password?</a>
+                </div>
+ </form>
+
+</div>
+<br>
+<div id="register" class="row">
+<h5 class="center-align">If you don't have an acoount, please <a class="waves-effect waves-teal btn-flat" href="/teacher/register/">Register</a> first</h5>
+</div>
+{% endblock %}

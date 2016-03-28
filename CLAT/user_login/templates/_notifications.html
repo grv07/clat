@@ -1,0 +1,19 @@
+{% if messages %}
+
+<script>
+
+function notification(_type, _msg){
+		notif({
+				type: _type,
+				msg: _msg,
+				position: "center",
+				timeout : 5000,
+				multiline: true
+			});
+		};
+    {% for message in messages %}
+       notification("{{ message.tags }}","<p class='white-text' style='color:white;'><span class='left'>&times;</span>{% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</p>");
+    {% endfor %}
+      
+</script>
+{% endif %}

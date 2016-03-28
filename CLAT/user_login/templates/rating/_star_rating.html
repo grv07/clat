@@ -1,0 +1,35 @@
+{% load is_owner_tags %}
+{% load rating_tags %}
+{% load static %}
+{%if user.is_authenticated %}
+            {%if course|is_owner:user.id %}
+            {%for rate in course|course_ratings%}
+                <img src="/static/custom/img/{{rate}}" style="height:20px;width:20px;" />
+            {%empty%}
+                {%include 'rating/_star_empty.html' %}
+            {%endfor%}
+            {%else%}
+                {%for rate in course|is_course_rated:user.id%}
+                   <img src="/static/custom/img/{{rate}}" style="height:20px;width:20px;" />
+                {%empty%}
+                    <span id="starRating" class='stars'>
+                      <input class="star star-5" id="rating5" type="radio" name="rating" value="5">
+                      <label class="star star-5" for="rating5" ></label>
+                      <input class="star star-4" id="rating4" type="radio" name="rating" value="4">
+                      <label class="star star-4" for="rating4"></label>
+                      <input class="star star-3" id="rating3" type="radio" name="rating" value="3">
+                      <label class="star star-3" for="rating3"></label>
+                      <input class="star star-2" id="rating2" type="radio" name="rating" value="2">
+                      <label class="star star-2" for="rating2"></label>
+                      <input class="star star-1" id="rating1" type="radio" name="rating" value="1">
+                      <label class="star star-1" for="rating1"></label>
+                    </span>
+                {%endfor%}
+            {%endif%}
+        {%else%}
+                {%for rate in course|course_ratings%}
+                    <img src="/static/custom/img/{{rate}}" style="height:20px;width:20px;" />
+                {%empty%}
+                    {%include 'rating/_star_empty.html'%}
+                {%endfor%}
+        {%endif%}

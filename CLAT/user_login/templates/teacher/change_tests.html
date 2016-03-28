@@ -1,0 +1,192 @@
+{% extends 'teacher/teacher_home.html' %}
+{% load static %}
+     
+
+
+
+      {%block head_script %}
+
+      {%endblock%}     
+
+ 	  {% block body %}
+		<div class="row" style="margin-top: 4%;">
+		<div class="col s2 m3">
+		&nbsp;
+		</div>
+		<div class="col s8 m6">
+		<form action="{{ request.get_full_path }}" method="post">
+			{% csrf_token %}
+			<div class="input-field row">
+			<h5 class="center black-text">Select a week</h5>
+				<select class="select1" name="week" id='test_week' onchange="getModules(this);">
+			        <option disabled id="test_default_week_option">Select a week</option>
+			        {% for week in course_duration_list %}
+			        <option>{{ week }}</option>
+			        {% endfor %}
+			        <option>FINAL TEST</option>}
+			        option
+       			</select>
+			</div>
+
+			<div class="input-field row" id="elmodulediv">
+			<h5 class="center black-text">Modules under <span class="blue-text" id="weekselected"></span></h5>
+				<select class="select1" name="module" id='test_module' onchange="isInline(this);">
+			        <option disabled id="test_default_week_option">Select week first.</option>
+       			</select>
+			</div>
+
+			<div class="input-field row center" style="display: none;" id="elinlinetestdiv">
+			<h5 class="center black-text">Inline Test Number <span class="blue-text" id="inlineselected"></span></h5>
+	        <select class="select1" name="inlinetestnumber" id='inlinetestnumber' onchange="getInlineTestLink(this);">
+			        <option disabled id="test_default_inline_option">Select the version of Inline Test.</option>
+			        <option>1</option>
+			        <option>2</option>
+			        <option>3</option>
+       			</select>
+			</div>
+
+
+			<div class="input-field row">
+			<h5 class="center black-text">Present Test Link under module <span class="blue-text" id="moduleselected"></span></h5>
+	        <input type="text" name="oldtestlink" id="oldtestlink"  autocomplete="off" value="" readonly>
+			</div>
+
+			<div class="input-field row">
+			<h5 class="center black-text">New Test Link</h5>
+	        <input type="text" class="validate" maxlength="10" name="newtestlink" id="newtestlink" placeholder="Enter new test link..."  autocomplete="off" required>
+			</div>
+
+			<div class="input-field row">
+			<button class="btn waves-effect waves-light blue" type="submit" disabled>Change</button>
+			</div>
+
+		</form>
+		</div>
+		<div class="col s2 m3">
+		&nbsp;
+		</div>
+		</div>
+ 	  {% endblock %} 
+    
+  {%block footer_script %}
+  <script>
+  var submit_button = $('button[type="submit"]');
+
+  	function getModules(e){
+  		var week_value = e.value;
+  		if(week_value != 'FINAL TEST'){
+      $.ajax({
+            url : "/load_modules/",
+            data : { 'week' : week_value,'_c_id' : '{{course.course_uuid}}'},
+            type : "GET",
+
+            success : function(json_from_view) {
+              $('#test_module').empty().html('');
+               if(json_from_view.length!=0){
+        for(var i=0;i<json_from_view.length;i++){
+        $('#test_module').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+        }
+        $('#weekselected').html('week '+week_value);
+      }
+      else{
+      $('#test_module').append('<option value="">No modules present.</option>');
+      submit_button.prop('disabled',true);
+      }
+        $('#test_module').material_select();
+        $('#elmodulediv').find('.caret').remove();
+        },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+              alert("Error : Modules are not loading!!!");
+              submit_button.prop('disabled',true);
+        }
+        });
+  }else{
+  	submit_button.prop('disabled',false);
+  	$('#test_module').prop('disabled',false);
+  }
+    }
+
+    function getOtherTestLinks(module_value){
+	$.ajax({
+        url : "/gettestlink/",
+        data : { 'module' : module_value,'_c_id' : '{{course.course_uuid}}'},
+        type : "GET",
+
+        success : function(json_from_view) {
+           if(json_from_view){
+           	$('#oldtestlink').val(json_from_view);
+           	$('#moduleselected').html(module_value);
+           	submit_button.prop('disabled',false);
+           	}        		
+      else{
+      $('#oldtestlink').val('No test link present.');
+      submit_button.prop('disabled',true);
+      }
+    },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+          alert("Error : Old Test link cannot be retrieved!!!"); 
+          submit_button.prop('disabled',true);
+    }
+    });
+
+    }
+
+
+    function isInline(e){
+    	var module_value = e.value;
+      $.ajax({
+            url : "/isinline/",
+            data : { 'module' : module_value,'_c_id' : '{{course.course_uuid}}'},
+            type : "GET",
+
+            success : function(json_from_view) {
+               if(json_from_view){
+               	$('#elinlinetestdiv').show();
+               	$('#oldtestlink').val('Select Inline test number above.');
+               	}        		
+          else{
+          $('#elinlinetestdiv').hide();
+          getOtherTestLinks(module_value);
+          }
+        },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+              alert("Error : Test type cannot be decided!!");
+              submit_button.prop('disabled',true); 
+        }
+        });
+    }
+
+
+
+
+    function getInlineTestLink(e){
+    	var inline_version = e.value;
+      $.ajax({
+            url : "/getinlinetest/",
+            data : { 'version' : inline_version,'_c_id' : '{{course.course_uuid}}','module': $('#test_module').val()},
+            type : "GET",
+
+            success : function(json_from_view) {
+               if(json_from_view){
+               	$('#oldtestlink').val(json_from_view);
+	           	submit_button.prop('disabled',false);
+               	}        		
+          else{
+          	$('#oldtestlink').val('No test link present.');
+      		submit_button.prop('disabled',true);
+          }
+        },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+              alert("Error : Old Inline Test link cannot be retrieved!!");
+              submit_button.prop('disabled',true); 
+        }
+        });
+    }
+
+  </script>
+
+    {%endblock%}

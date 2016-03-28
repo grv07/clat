@@ -1,0 +1,50 @@
+{% load static %}
+{% load default_tags %}
+  <div class="con">
+    <div class="col-sm-2"> 
+      <div class="icon"><img src="{%static '/static/images/logo.png'%}" alt="eQUEST logo"  width="100%"></div>
+    </div>
+
+    <div id="menu1" data-icon="&#xe070;"></div>
+    <div id="drop" style="display: none;">
+        <div class="cons1">
+        <div class="col-md-2" style="padding-top:15px !important;">
+
+        <div class="search-bos" id="search_box" title="Type course name to search."> 
+      <a href="/allcourses/" style=" text-decoration:none">
+        <div class="all-cou-img" title="Click to view all courses."><img src="{%static '/static/images/icons/Activity-100.png'%}" height="100%" width="100%"></div>
+        </a>
+        <form id="search_course_form" action="/allcourses/" method="get">
+          <div class="ui-widget">
+            <input type="text" class="txt" placeholder="I want to learn about" name="course_name" id="course_name" style="border:none !important"  autocomplete="off" required />
+          </div>
+          <a href="javascript:void(0);" class="search-icon" data-icon="&#xe073;" id="search_link" style="text-decoration: none;"></a>
+        </form>
+      </div>
+        </div></div>
+    </div>
+
+    <div class="col-md-1 mm" style="margin-left:22%; margin-right:45px;" >
+      <div class="search-bos" id="search_box_1" style='border:none'> 
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-2 mm"> {% if not user.is_authenticated%}
+    <div class="sign-btn e_regid" id="e_regid">
+    <a style="text-decoration:none" href="javascript:void(0)">Login/Register <span class="glyphicon glyphicon-envelope"></span></a> </div>
+    {%else%}
+    <div class="sign-btn" id="userlogin"> <span style='color:blue;font-weight: bold;'>
+    <img src ='{{user|get_img}}' style="width:20px;height:20px;margin:-5px;"/>
+    &nbsp;&nbsp;&nbsp;{{user}}&nbsp;<img src ="{%static '/static/custom/img/default/down.png'%}" style="width:20px;height:20px;margin:-5px;"/></span>
+      <div class="user-menu">
+        <div class="line">
+          <div class="rotate"></div>
+        </div>
+        <a  href="/logout/" style="text-decoration:none;">
+        <li><strong>Sign Out</strong></li>
+        </a>
+        </div>
+    </div>
+    {%endif%} </div>
+  </div>

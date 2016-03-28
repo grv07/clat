@@ -1,0 +1,104 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% load default_tags %}
+{% block slider %}
+{% endblock %}
+
+{% block body %}
+
+
+<style type="text/css">
+.col8{ height:12px; line-height:12px; width:8.3333%; position:relative; float:left; left:0px; top:0px; border-right: solid 1px #ccc;}
+
+</style>
+<section id="dash">
+
+<!-- <div class="user-notif">
+<div class="con">
+<h3>
+Thanks for Registering!</h3>
+<p>You've successfully created an account on edX. We've sent an account activation message to sumit.sharma2590@gmail.com. To activate your account and start enrolling in courses, click the link in the message.</p>
+</div></div> -->
+
+<div class="con"  >
+<div class="col-lg-4">
+
+<h1 style=" font-weight:400 !important; padding-top:0px ;">ENROLLED COURSES</h1>
+<div class="da">
+
+{% if total_courses_enrolled|length == 0 %}
+<h4 style=" font-weight:400 !important; text-align:center;">Looks like you haven't enrolled in any courses yet.</h4>
+<a href="/allcourses/" style="text-decoration: none;">
+<div class="find-courses"> Find Courses Now</div>
+</a>
+<p style="text-align:center">Check out our recently launched courses and what's new in your favorite subjects<br />
+Find New Courses</p> 
+{% else %}
+
+{% for course in total_courses_enrolled %}
+<div class="col-lg-4" style=" border-bottom: solid 1px #666; min-height:200px; margin:10px 0px;" >
+<h2 style=" margin:0px; width:100%; text-align:center;">{{course.course_name}}</h2>
+<div class="col-sm-3" >
+
+<a href="/course/details/{{course.course_uuid}}/" style="text-decoration: none;">
+<img src="/CLAT_videos/media/{{ course.course_image.picture }}" alt="Demo Image" class="dash-img"  >
+
+</a>
+{% if view_report_link %}
+
+<p>
+<span style="margin-right: 3px; width:100%; float:left;">Total Marks : {{total_marks}}</span><br />
+<span style="margin-right: 3px; width:100%;">Correct Answers : {{total_correct_answers}}/{{total_question}}</span>
+<a href="{{view_report_link}}" target="_blank" style="text-decoration:none; color:#666;">
+<div class="ssubmit" style=" margin:0px 0 20px 50px !important;"> View Final Report</div>
+</a>
+</p>
+{% endif %}
+</div>
+
+<div class="col-lg-1">
+<ul class="bar2">
+<li><p>Time </p>
+<div class="dd full-fill2">
+    {% for module in course|module_list %}
+	    <div class="white" style="width:{{course|module_width}}%;"><div class="fill2" style="width:{{module|time_progress:user}}%;"></div></div>
+    {% endfor %}
+</div>
+<!-- <div class="full-fill2"><div class="fill2" style=" width:{{course|time_progress:user.id}}%;"></div></div> -->
+<div class="full-down" style=" top:2px !important">
+	<div class="col-lg-4">
+	{% for module in course|module_list %}
+	  <div class="col8" style="width:{{course|module_width}}%; color:white; !important">{{module|time_progress:user}}%</div>
+	  <!-- <div class="col8">2</div> -->
+	{% endfor %}
+	</div>
+</div>
+</li>
+<li><p>Video</p><div class="full-fill2"><div class="fill2" style=" width:{{23}}%;"></div></div></li>
+
+<li><p>Progress</p>
+<div class="full-fill2">
+<div class="fill2 red" style=" width:{{35}}%;"></div>
+<div class="fill2 orange" style=" width:{{15}}%;"></div>
+<div class="fill2 green" style=" width:{{50}}%;"></div>
+</div>
+
+</div>
+</li></ul>
+
+
+</div>
+
+
+</div>
+
+{% endfor %}
+</div>
+{% endif %}
+
+
+
+</div></div>
+ </div>
+</div></div></section>
+{% endblock %}

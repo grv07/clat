@@ -1,0 +1,92 @@
+{% extends 'teacher/teacher_home.html' %}
+{%load static%}
+{% load course_tags %}
+{%block head_script %}
+{%endblock%} 
+{% block body %}
+<br><br>
+<div class="row">
+<div class="col s0 m2">
+&nbsp;
+</div>
+<div class="col s12 m8">
+
+{% for week_number,modules_list in weeks.items %}
+    <span>Week {{ week_number }}</span><hr><br>
+
+    <div class="row">
+        <div class="col s4 m4"><span class="blue-text">Module Name</span></div>
+        <div class="col s4 m4"><span class="blue-text">Old Module Number</span></div>
+        <div class="col s4 m4"><span class="blue-text">New Module Number</span></div>
+    </div>
+    
+    {% for module in modules_list %}
+        <div class="row">
+          <div class="col s6 m6">{{ module.week_module_name }}</div>
+          <div class="col s2 m2">{{ module.module_number|default:'Not Decided' }}</div>
+          <div class="input-field col s2 m2">
+              <input type="number" name="{{ module.module_name|cut:'' }}" id="{{ module.module_number }}" required />
+          </div>
+          <div class="col s2 m2">
+      	       <button type="submit" class="update-ordering waves-effect waves-light btn" data-module-name="{{ module.week_module_name }}" data-module-number="{{ module.module_number }}">Update</button>
+          </div>
+        </div>
+    {% endfor %}
+{% endfor %}
+</div>
+<div class="col s0 m2">
+&nbsp;
+<input type="hidden" id="total_modules" name="total_modules" value="{{ total_modules }}">
+</div>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+<script>
+$('.update-ordering').click(function(event) {
+	
+  module_name = $(event.target).data('module-name');
+	module_number = $(event.target).data('module-number');
+
+	if($('#'+module_number).val().replace(/ /g,'')===''){
+		
+    alert('Cannot left it blank!!!');
+	
+  }
+	else if(!(/^\d+$/.test($('#'+module_number).val()))){
+		alert('Only numbers allowed!!!');
+	}
+	else if(parseInt($('#'+module_number).val()) > parseInt($('#total_modules').val()))
+	{
+		alert('Ordering cannot be greater than total modules!!!');
+	}
+	else if(parseInt($('#'+module_number).val()) == 0)
+	{
+		alert('Ordering cannot be 0!!!');
+	}
+	else if(parseInt($('#'+module_number).val()) === module_number){
+		alert('No need to change its ordering. It is already set for '+module_name);
+	}
+	else{
+		$.ajax({
+              url : "{{ request.get_full_path }}",
+              data : { '_c_module_name':module_name,'_c_old_number':module_number,
+              '_c_new_number':$('#'+module_number).val(),'csrfmiddlewaretoken': '{{ csrf_token }}' },
+              type : "POST",
+
+              success : function(json_from_view) {
+                if(json_from_view){
+                window.location.reload();
+              }else{
+                  alert('Cannot save the ordering for '+ module_name +'!!!'); 
+              }
+              },
+              error : function(xhr,errmsg,err) {
+                  alert('Error in updating the ordering');
+              }
+          });
+	}
+});	
+</script>
+{% endblock %}
+

@@ -1,0 +1,361 @@
+{% extends 'new_home.html' %}
+{% load static %}
+
+{% block slider %}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+   <div class="jumbotron" style="background:white;border-bottom-style:ridge;border-width:2px;">
+
+	<div class="row">
+	<div class="col-md-4">
+      {%include 'course_mang/show_demo_video.html'%}
+<hr>
+
+<br><a href="/create/modules/{{course.id}}/" style="float: left;" class="btn btn-block btn-primary" style="color:white;font-weight:bold;">Add Modules
+</a>
+<a class="btn" href="/upload/videos/{{course.id}}/" style="float: right;">Add GHGJH Videos</a>
+	</div>
+	<div class="col-md-5">
+	<div class="row">
+	<div class="col-md-12">
+	<p style="font-size:20px;font-weight: bold;line-height: 1em;margin-bottom:.45em;color:black;">{{ course.course_name }}</p>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-md-12">
+	<p style="font-size: 20px;margin-bottom: 0.585em;color:gray;">Reading, discussing, and writing about Bram Stoker’s classic vampire novel, <span style="font-style:italic;">Dracula</span>.</p>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-md-12">
+		<img src="{% static 'test/2.png' %}" alt="Logo Image">
+	</div>
+	</div>
+	</div>
+	<div class="col-md-3">
+	<div class="row">
+	<div class="col-md-12">
+	<br>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-md-12">
+	<center><h5 style="color:gray;font-weight:bold;">Last Updated on {{ course.updated_date|date:"M d, Y"  }}</h5></center><br>
+	</div>
+	</div>
+		<div class="row">
+	<div class="col-md-12">
+	<a href="#">
+	<a href="/course/videos/{{course.id}}/" class="btn btn-block btn-primary" style="background:green;color:white;font-weight:bold;">{{ course.course_status|default:"Enroll Now" }}</a>
+	</a>
+	</div>
+	</div>
+		<div class="row">
+	<div class="col-md-12"><br>
+	<input type="checkbox" name="notify" value="true" checked><span style="font-size:12px;">I would like to receive email from Berkeley and learn about its other programs.</span>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+</div>
+<br>
+<br>
+<div class="container" style="margin-top:-3%;">
+<div class="row">
+<div class="col-md-9" >
+   <div class="jumbotron" id="firstsection" style="background:white;border-style:ridge;border-width:2px;">
+		<div id="about">
+	<div class="row" style="margin:auto;">
+		<span style="font-weight:bold;font-size:20px;color:black;">About this course</span>
+		<span style="color:blue;float:right;" class="disabled">Reviews&nbsp;
+    {% include 'rating/_star_rating.html' %} 
+    </span><br>
+    <span style="color:black;float:right;font-family: 8px;" id="rating_info"></span>
+    <br><br>
+		<p style="font-size:15px;color:gray;">
+			{{ course.course_description|default:"Default Course description" }}
+		</p><br>
+		<div class="panel-group" id="accordion">
+  <div class="panel panel-default" style="border:0;">
+    <div class="panel-heading" style="background:white;">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#collapseOne" data-parent="#accordion" style="color:blue;" id="collapse_link">See More...</a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p style="font-size:15px;color:gray;">
+          The novel Dracula is categorized in many different ways: vampire, horror, and gothic fiction. It also addresses concepts such as women in Victorian culture, colonialism, sexuality, and post-colonialism. Although Stoker was not the first writer to tell the story of a vampire, he is credited for giving the vampire its modern form. This story has been adapted to many different forms in film and theater.
+
+          Participants in this course will read, discuss, and write about the text and its influence. As in most book clubs, the focus will be on lively discussion. Course materials will include background information for understanding the text, as well as vocabulary and language support. Assessment will include quizzes and short writing assignments.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+	</div>
+	<br>
+	<div id="learn">
+	<div class="row" style="margin:auto;">
+ 	<span style="font-weight:bold;font-size:20px;color:black;">What you'll learn</span>
+ 	<br><br>
+ 	<ul style="color:gray;">
+ 	<li>Read, discuss, and write about the text and its influence</li>
+  	<li>Background information for understanding the text</li>
+ 	<li>Vocabulary and language support</li>
+
+ 	</ul>
+
+	</div>
+	</div>
+	<br><br>
+	<div id="author">
+		<div class="row" style="margin:auto;">
+	<span style="font-weight:bold;font-size:20px;color:black;">Meet the instructor
+				</span>
+				</div><br>
+	<div class="row" style="margin:auto;">
+		<div class="col-md-4">
+ <div class="thumbnail" style="border:0;">
+		<img src="{% static 'test/3.jpg' %}" alt="Author Image" class="img-circle">
+      </div>
+      <div class="caption" style="text-align : center;">
+        <span style="color:blue;font-size:16px;font-weight:bold;">Maggie Sokolik</span>
+         <p style="font-size:16px;">Director of College Writing Programs<br>
+         <span style="color:black;">University of California, Berkeley</span>
+         </p>
+      </div>
+		</div>
+				<div class="col-md-8">
+</div>
+		</div>
+		</div>
+		<hr><br>
+		<div id="merits">
+		<div class="row" style="margin:auto;">
+	<span style="font-weight:bold;font-size:20px;color:black;">Pursue a Verified Certificate to highlight the knowledge and skills you gain</span>
+				</div><br>
+				
+						<div class="row" style="margin:auto;">
+						<div class="col-md-7">
+							<ul>
+								<li><span style="color:black;font-size:18px;">
+								Official and Verified
+								</span>
+<p style="font-size:15px;">Receive a credential signed by the instructor, with the institution logo to verify your achievement and increase your job prospects</p>
+								</li>
+								<li>
+								<span style="color:black;font-size:18px;">
+								Easily Shareable
+								</span>
+	<p style="font-size:15px;">Add the certificate to your CV, resume or post it directly on LinkedIn</p></li>
+								<li>
+						<span style="color:black;font-size:18px;">
+								EProven Motivator
+								</span>
+	<p style="font-size:15px;">Get the credential as an incentive for your successful course completion</p>
+									
+								</li>
+
+
+							</ul>
+
+						</div>
+						<div class="col-md-5"><br><br>
+					<img src="{% static 'test/4.png' %}" alt="Author Image">
+	
+
+						</div>
+
+
+						</div>
+
+				</div><br><hr><br>
+				<div id="enroll">
+				<div class="row" style="margin:auto;">
+				<div class='col-md-3'></div>
+								<div class='col-md-6'>
+			<a href="#">
+	<button class="btn btn-block btn-primary" style="background:green;color:white;font-weight:bold;">{{ course.course_status|default:"Enroll Now" }}</button>
+	</a><br><br>
+	<input type="checkbox" name="notify" value="true" checked="">&nbsp;&nbsp;<span style="font-size:12px;">I would like to receive email from Berkeley and learn about its other programs.</span>
+								</div>
+				<div class='col-md-3'></div>
+
+				</div>
+				</div><br>
+	</div>  	
+	</div>
+   </div>
+
+   <div class="col-md-3" id="secondcolumn">
+   <div class="jumbotron" id="secondsection" style="background:white;border-style:ridge;border-width:2px;padding:10px;">  
+   <div class="row" style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Level :</span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">Introductory</span>
+
+      </div>
+ 	</div><hr>
+ 	<div class="row" style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Length </span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">{{ course.course_durations|default:'Unknown' }} minutes</span>
+
+</div>
+ 	</div><hr>
+ 	 	<div class="row" style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Effort </span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">3 hours per week</span>
+
+</div>
+ 	</div><hr>
+ 	 	<div class="row"style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Subject </span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">{{ course.course_sectors_and_associates|default:"Unknown" }}</span>
+
+</div>
+ 	</div><hr>
+ 	 	 	 	<div class="row" style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Institution </span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">UC BerkeleyX</span>
+
+</div>
+ 	</div><hr>
+ 	 	 	<div class="row" style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Languages </span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">English</span>
+
+</div>
+ 	</div><hr>
+ 	 	 	<div class="row" style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Video Transcripts </span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">English</span>
+
+</div>
+ 	</div><hr>
+ 	 	 	 	<div class="row" style="margin:auto;">
+   <div class="col-md-6">
+   <span style="color:gray;font-size:100%;">Price </span>
+   </div>
+      <div class="col-md-6">
+         <span style="color:black;font-size:100%;">FREE<br>Add a Verified Certificate for $50</span>
+
+</div>
+	</div>
+   </div>
+   <div class="jumbotron" id="thirdsection" style="background:white;border-style:ridge;border-width:2px;padding:1%;">
+   <div class="row" style="margin:auto;">
+   <div class="col-md-12">
+         <p style="font-size:10px;">
+      <span>Viewing top </span>
+      <span id="viewing_comments">0</span>
+      <span> of </span>
+      <span id="total_comments_present"> {{total_comments}} </span>
+      <span>comments</span>
+	  </p>
+
+    <div class="commentarea" id="commentarea" style="height:50%;overflow-y: scroll;word-break:break-all;">
+    <p id="welcome_comment"></p>
+        <ul class="commentlist" id="commentlist" style="height:460px;">       
+        </ul>
+    </div>
+    </div>
+    </div>
+    <div class="row" style="margin:auto;">
+   <div class="col-md-12" id="more_comments_row">
+      <p style="font-size:100%;">
+      <a href = "#" style="float:left;" id="more_comments">
+      See More...
+      </a>
+      </p>   
+   </div>
+   <div class="col-md-12" id="done_loading_comments" style="display:none;">
+      <p style="font-size:100%;">
+      You have viewed all comments.
+      </p>   
+   </div>
+   </div>
+
+   <div class="row">
+   <div class="col-md-12">
+        <form class="form-inline" id="comment_form" role="form" action="postcomment/" method="get">
+
+            <div class="form-group">
+                <textarea style="width:100%;resize:none;text-transform: lowercase;" cols="40" class="form-control" rows="4" placeholder="Your comments here... (must be 20 characters long)" name="commentbox" id="commentbox"></textarea>
+
+            </div>
+			<div class="form-group">
+  				<span id="characters" style="color:blue;font-size:100%;">150</span> characters remaining.
+			</div>
+			<div class="form-group">
+  				<span id="result" style="color:red;font-size:100%;"></span>
+			</div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="comment_post_button" disabled>Add comment</button>
+            </div>
+        </form>
+        </div>
+        </div>
+   </div>
+   </div>  
+</div>
+</div>
+
+
+<input type="hidden" id="course_key" name="course_key" value="{{ course.course_uuid }}">
+<!-- <input type="hidden" id="rating_given" name="rating_given" value="{{rating_given}}"> -->
+<script src="{% static '/static/custom/js/comments.js' %}"></script>
+<script>
+
+       // Collapse the 'see more' button and change it to 'hide' and vice-versa
+            var collapse_link=$('#collapse_link');
+            $('#collapseOne').on('show.bs.collapse', function(){
+              collapse_link.html('Hide');
+            });
+            $('#collapseOne').on('hide.bs.collapse', function(){
+              collapse_link.html('See More...');
+            });
+
+
+      //For getting corresponding value of selected star
+      $('input[type="radio"]').change(
+        function(){
+          addRatings(this.value,document.getElementById('course_key').value);
+        });
+
+      //Rate the stars according to the rating given earlier or empty if rating is not given, i.e 0.
+      var rating_given=document.getElementById('rating_given').value;
+      if(rating_given!='0'){
+        var the_referenced_rating_inputradio=document.getElementById('rating'+rating_given);
+        if(the_referenced_rating_inputradio.checked!=true)
+        the_referenced_rating_inputradio.checked=true;
+      }
+</script>
+{%block courses_list %}
+{%endblock%}
+{%endblock%}

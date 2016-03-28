@@ -1,0 +1,23 @@
+{%load static%}
+<script src="{% static '/static/custom/js/login_register.js' %}"></script>
+{% if login_error %}
+  <p class="login_err" style="color:red;margin-top:0%;font-size:17px;">Please enter valid credentials</p> 
+{%endif%}
+<form  action="/user/login/" method="POST" role="form" id="login_form">
+      <div class="boss">
+        <div class="text-name">Username</div>
+        <input type="text" class="text-sbox" placeholder="Enter username"  name="username" id="username" autocomplete="off" required>
+             {% csrf_token %}
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> </div>
+        <div class="boss">
+          <div class="text-name">Password</div>
+          <input type="password" class="text-sbox" name="password" id="password" placeholder='Password' required>
+          <span style="color:#F00;font-size:14px;font-family: Calibri;  margin-left:20px;margin-top:5px" id="lpwd"></span> <span class="text-name" id="error" style="color:#F00; margin-top:5px "></span>
+        </div>
+        <div class="boss text-name">
+          <input name="remembered" value="true" type="checkbox" style="margin-left: 20px;">&nbsp;Remember Me
+        </div>
+        <div class="boss">
+          <input type="submit" class="ssubmit"  name="login" id="login_form" value="Login"/>
+          <a href="/troubleshoot/student/" class="ssubmit" style="text-decoration: none;float: left;">Forgot login details?</a></div>
+</form>

@@ -1,0 +1,30 @@
+{% extends 'new_home.html' %}
+{%load static %}
+{% block header_css_js %}
+    
+    <link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css" />
+    <script src="https://jonthornton.github.io/jquery-timepicker/lib/bootstrap-datepicker.js"></script>
+    <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/lib/bootstrap-datepicker.css" />
+
+    <script type="text/javascript" src="{% static '/static/custom/Datepair.js'%}"></script>
+
+{% endblock %}
+{%block slider%}
+{%endblock%}
+{%block body%}
+<div class="" style="margin-top: 5%;margin-left: 20%;margin-right: 20%;margin-bottom: 2%;">
+    {% if form.errors %}
+    <div style="background-color: antiquewhite">
+        <p style="font-size:22px; color: brown;margin: 10px;">We couldn't create your course.</p>
+        <p style="background-color: brown;height: 5px;"></p>
+    </div>
+    {%endif%}
+    {% include 'course_mang/articulate_upload.html' %}
+</div>
+{%endblock%}
+{%block courses_list %}
+{%endblock%}
+{%block footer_css_js%}
+   <script type="text/javascript" src="{%static '/static/custom/js/course_upload_js.js'%}" ></script>
+{%endblock%}

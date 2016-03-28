@@ -1,0 +1,97 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% load is_owner_tags %}
+{% load default_tags %}
+
+{% block slider %}
+{% endblock %}
+
+{% block body %}
+
+<section id="revi">
+<div class="con"  id="pro">
+
+<div class="col-lg-1" >
+<div class="full">
+
+<div id="abou">
+<div class="col-lg-4">
+<h3>About this course</h3>
+{% autoescape on %}
+{{ course.course_information.course_description|to_newline|safe }}
+{% endautoescape %}
+</p></div>
+</div>
+<h1>{{ total_reviews|length }} Reviews for {{ course.course_name }}</h1>
+
+<div class="col-lg-4" style="border-bottom: solid 1px #ccc" >
+
+{% for review in total_reviews %}
+<div class="col-lg-4" style="border-bottom: solid 1px #ccc" >
+<div class="col-sm-3"><div class="course-icon"><img src="{{ review.user|get_img }}" width="100%" height="100%" /></div></div>
+<div class="col-md-4">
+<div class="review-star-con"> 
+{% if review.ratings == 1 %}
+<div class="staricons2" data-icon="["></div>
+</div>
+{% elif review.ratings == 2 %}
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+</div>
+{% elif review.ratings == 3 %}
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+</div>
+{% elif review.ratings == 4 %}
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+</div>
+{% elif review.ratings == 5 %}
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+<div class="staricons2" data-icon="["></div>
+</div>
+{% endif %}
+<p>{{ review.review_text }}</p>
+</div>
+</div>
+{% endfor %}
+</div>
+
+
+
+
+</div>
+</div>
+
+
+<div class="col-sm-3" >
+<div class="full">
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Watch-50.png' %}" height="100%" width="100%"></div> <strong>Duration:</strong> </div> <div class="col-md-50"> 5 weeks</div> </li>
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Cosine-50.png' %}" height="100%" width="100%"></div><strong> Effort :</strong> </div> <div class="col-md-50">  3-5 hours per week</div> </li>
+<li><div class="col-md-50"><div class="ficons"> <img src="{% static '/static/images/icons/Banknotes-100.png' %}" height="100%" width="100%"></div> <strong>Fee :</strong> </div> <div class="col-md-50">  Free</div> </li>
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Ascending Sorting-100.png' %}" height="100%" width="100%"></div> <strong>Level: </strong> </div> <div class="col-md-50"> Introductory</div> </li>
+<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Reading-100.png' %}" height="100%" width="100%"></div> <strong>Languages :</strong> </div> <div class="col-md-50"> English</div> </li>
+<li style="border-bottom:none !important"><div class="col-md-50" ><div class="ficons"><img src="{% static '/static/images/icons/Visible-100.png' %}" height="100%" width="100%"></div> <strong>Interaction Mode:</strong> </div> <div class="col-md-50"> Animation Video , Lectures</div> </li>
+</div>
+
+
+<div class="col-lg-4">
+<h3 style=" color:#04a5e5; width:90%; margin-left:5px; text-align:center; font-size:16px; margin-bottom:5px;">Share with a friend </h3>
+<div class="sreview-img" style="margin-left:20px;"><img src="{% static '/static/images/icons/Facebook-50.png' %}"height="100%" width="100%" style="  border-radius:50%"></div>
+<div class="sreview-img"><img src="{% static '/static/images/icons/Google Plus-50.png' %}" height="100%" width="100%" style=" border-radius:50%"></div>
+<div class="sreview-img"><img src="{% static '/static/images/icons/Twitter-50.png' %}" height="100%" width="100%" style=" border-radius:50%"></div>
+<div class="sreview-img"><img src="{% static '/static/images/icons/YouTube-50.png' %}" height="100%" width="100%" style=" border-radius:50%"></div>
+<div class="sreview-img"><img src="{% static '/static/images/icons/LinkedIn-50.png' %}" height="100%" width="100%"style=" border-radius:50%"></div>
+</div> 
+</div>
+</div>
+</section>
+{%block courses_list %}
+{%endblock%}
+{%endblock%}

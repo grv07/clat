@@ -1,0 +1,114 @@
+<form class="form-horizontal" action="/register/student/" method="POST" id="reg_form">
+    <label class="" for="username">User name&nbsp;<span style='color:red'>*</span></label>
+    <div class="form-group">
+        <input type="text" id="username" name="username" value="{{form.username.value|default:''}}" placeholder="Enter your user name" class="form-control {%if form.username.errors%}has-error{%endif%}">
+        <span style="color:red;">{{form.username.errors}}</span>
+            <input type="text" id="next" name="next" value="{{next|default:'/home/'}}" placeholder=""
+                   class="form-control hidden">
+
+            {% csrf_token %}
+    </div>
+    <label class="" for="username">Full name&nbsp;<span style='color:red'>*</span></label>
+    <div class="form-group">
+        <input type="text" id="full_name" name="full_name" value="{{form.full_name.value|default:''}}" class="form-control {%if form.full_name.errors%}has-error{%endif%}" 
+               placeholder="Enter your full name">
+        <span style="color:red;">{{form.full_name.errors}}</span>       
+    </div>
+    
+    <label class="" for="email">E-mail&nbsp;<span style='color:red'>*</span></label>
+    <div class="form-group {%if form.email.errors%}has-error{%endif%}">
+        <input type="text" id="email" name="email" value="{{form.email.value|default:''}}" class="form-control"
+               placeholder="Enter your e-mail">
+        <span style="color:red;">{{form.email.errors}}</span>       
+    </div>
+
+    <label class="" for="reg_password">Password&nbsp;<span style='color:red'>*</span></label>
+    <div class="form-group">
+        <input type="password" id="reg_password" name="password" class="form-control" 
+               placeholder="Choose a password">
+        <span style="color:red;">{{form.password.errors}}</span>
+    </div>
+    <label class="" for="password_confirm">Password (Confirm)&nbsp;<span style='color:red'>*</span></label>
+
+    <div class="form-group">
+        <input type="password" id="password_confirm" name="password_confirm" placeholder="Enter password again"
+               class="form-control">
+        <span style="color:red;">{{form.password_confirm.errors}}</span>
+    </div>
+    <label class="" for="password_confirm">Phone number&nbsp;<span style='color:red'>*</span></label>
+    <div class="form-group">
+        <input type="tele" id="phone_number" name="phone_number" placeholder="Enter your contact number"
+               class="form-control">
+        <span style="color:red;">{{form.phone_number.errors}}</span>
+    </div>
+    <label class="" for="password_confirm">Country&nbsp;<span style='color:red'>*</span></label>
+
+    <div class="form-group {%if form.country.errors%}has-error{%endif%}">
+        <select name="country" id="country" class="form-control">
+            <option value="India">India</option>
+        </select>
+        <span style="color:red;">{{form.country.errors}}</span>
+    </div>
+
+    <label class="" for="state">State&nbsp;<span style='color:red'>*</span></label>
+
+    <div class="form-group {%if form.city.errors%}has-error{%endif%}">
+        <select name="state" id="state" class="form-control">
+            <option value="">-- Select one --</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Pondicherry">Pondicherry</option>
+            <option value="Haryana">Haryana</option>                      
+            <option value="Punjab">Punjab</option>
+            <option value="Goa">Goa</option>
+            <option value="Chhattisgarh">Chhattisgarh</option>
+            <option value="Kerala">Kerala</option>
+            <option value="Daman and Diu">Daman and Diu</option>
+            <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+            <option value="Jharkhand">Jharkhand</option>
+            <option value="Meghalaya">Meghalaya</option>
+            <option value="Assam">Assam</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Lakshadweep">Lakshadweep</option>
+            <option value="Manipur">Manipur</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Sikkim">Sikkim</option>
+            <option value="West Bengal">West Bengal</option>
+            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Himachal Pradesh">Himachal Pradesh</option>
+            <option value="Nagaland">Nagaland</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Uttarakhand">Uttarakhand</option>
+            <option value="Tripura">Tripura</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Mizoram">Mizoram</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>                
+        </select>
+    </div>
+
+
+    <label class="" for="password_confirm">City&nbsp;<span style='color:red'>*</span></label>
+
+    <div class="form-group {%if form.city.errors%}has-error{%endif%}">
+        <select name="city" id="city" class="form-control">
+            <option value="">-- Select one --</option>
+        </select>
+        <span style="color:red;">{{form.city.errors}}</span>
+    </div>
+
+    <label class="" for="password_confirm">Mailing address&nbsp;<span style='color:red'>*</span></label>
+
+    <div class="form-group {%if form.mailing_address.errors%}has-error{%endif%}">
+        <input type="text" id="mailing_address" value="{{form.mailing_address.value|default:''}}"
+               name="mailing_address" placeholder=""
+               class="form-control">
+        <span style="color:red;">{{form.mailing_address.errors}}</span>
+    </div>  
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
