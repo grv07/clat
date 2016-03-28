@@ -345,66 +345,65 @@ def verify_certificate(request):
 			return render(request,'student/verify_certificate.html')	
 
 
+
 def enroll_student(request):
 	if request.method == 'POST':
 		enrolled = None
 		try:
 			total_modules = 0
-			email = request.POST.get('email', None)
 			course_uuid = request.POST.get('productinfo', None)
-			if email and course_uuid:
-				user = User.objects.get(email = email.replace(' ','+'))
+			if course_uuid:
+				user = request.user
 				course = CourseDetail.objects.get(can_enroll=True, course_uuid = course_uuid)
-				print '----------------',user, course , float(request.POST.get('amount',None)) == float(course.amount)
-				if float(request.POST.get('amount',None)) == float(course.amount) :
-					if not EnrolledCourses.objects.is_student_enrolled(user, course):
-						print 'Student still not enroll ...................'
-						enrolled = EnrolledCourses.objects.enroll_student(user, course)
-						print enrolled
-						if enrolled:
-							try:
-								# cache.set(CACHE_KEYS['d'] % request.user.id,None)
-								all_weeks = course.course_week.all().order_by('added_date')
-								for week in all_weeks:
-									UserCourseProgress.objects.create(course_week = week, enrolled_courses = enrolled)
-								first_module = UserCourseProgress.objects.get(course_week = all_weeks[0], enrolled_courses = enrolled)
-								if first_module:
-									total_modules = len(all_weeks)
-									first_module.access_status = constants.ACCESS_STATUSES[0]
-									first_module.save()
-								else:
-									logger.error('under student.view.verify_certificate cannot get or open first module of course.'+' UID-'+str(request.user.id))
-							except Exception as e:
-								print e.args
-								logger.error('under student.view.enroll_student '+str(e.args)+' UID-'+str(request.user.id))
-								if enrolled:
-									enrolled.delete()
-								return (1,course,)
-							stu_inter = StudentInterests.objects.filter(user = user)
-							
-							if stu_inter.count() == 1:
-								interests_obj = stu_inter[0]
-								if course.course_sectors_and_associates not in interests_obj.category:
-									interests_obj.category = str(interests_obj.category)+";"+str(course.course_sectors_and_associates)
-									interests_obj.save()
-									# print interests_obj.category
+				if not EnrolledCourses.objects.is_student_enrolled(user, course):
+					enrolled = EnrolledCourses.objects.enroll_student(user, course)
+					if enrolled:
+						try:
+							# cache.set(CACHE_KEYS['d'] % request.user.id,None)
+							all_weeks = course.course_week.all().order_by('added_date')
+							for week in all_weeks:
+								UserCourseProgress.objects.create(course_week = week, enrolled_courses = enrolled)
+							first_module = UserCourseProgress.objects.get(course_week = all_weeks[0], enrolled_courses = enrolled)
+							if first_module:
+								total_modules = len(all_weeks)
+								first_module.access_status = constants.ACCESS_STATUSES[0]
+								first_module.save()
 							else:
-								interest_added = StudentInterests.objects.create(user = user,category = course.course_sectors_and_associates)
-								# print interest_added
-							from CLAT.services.cron_engine import enroll_success
-							if not enroll_success(enrolled, request.POST.get('txnid'), total_modules):
-								logger.error('under student.view.enroll_student unable to email post course enroll message.'+' UID-'+str(request.user.id))
-							return (0,enrolled,)					
-						else:
+								logger.error('under student.view.verify_certificate cannot get or open first module of course.'+' UID-'+str(request.user.id))
+						except Exception as e:
+							print e.args
+							logger.error('under student.view.enroll_student '+str(e.args)+' UID-'+str(request.user.id))
+							if enrolled:
+								enrolled.delete()
 							return (1,course,)
+						stu_inter = StudentInterests.objects.filter(user = user)
+						
+						if stu_inter.count() == 1:
+							interests_obj = stu_inter[0]
+							if course.course_sectors_and_associates not in interests_obj.category:
+								interests_obj.category = str(interests_obj.category)+";"+str(course.course_sectors_and_associates)
+								interests_obj.save()
+								# print interests_obj.category
+						else:
+							interest_added = StudentInterests.objects.create(user = user,category = course.course_sectors_and_associates)
+							# print interest_added
+						from CLAT.services.cron_engine import enroll_success
+						if not enroll_success(enrolled, request.POST.get('txnid'), total_modules):
+							logger.error('under student.view.enroll_student unable to email post course enroll message.'+' UID-'+str(request.user.id))
+						return (0,enrolled,)					
 					else:
-						return (2,course,)
+						return (1,course,)
 				else:
-					logger.info('student.enroll_student >>>> amount is not equal UID-'+str(request.user.id))
-					return (-1,enrolled,)
+					return (2,course,)
 		except Exception as e:
 			logger.error('under student.enroll_student >>>> '+str(e.args)+' UID-'+str(request.user.id))
 			return (-1,enrolled,)
+
+@login_required
+@student_required
+def enroll(requestt):
+	status, extra = enroll_student(request)
+	if status == 0:cache
 
 @login_required
 def unenroll_student(request,course_uuid):

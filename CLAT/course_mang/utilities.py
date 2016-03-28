@@ -319,9 +319,9 @@ def fetch_results(schedule_key, user_email):
 """
 Check whether quiz URL is of METTL
 """
-def check_quiz_link(quiz_url,mettl_url='https://tests.mettl.com/authenticateKey/'):
+def check_quiz_link(quiz_key):
 		import re
-		if quiz_url.strip()[:40] == mettl_url and re.match(r'[a-zA-Z0-9]+',quiz_url.split('/')[4]):
+		if re.match(r'[a-zA-Z0-9]{8,22}',quiz_key):
 				return True
 		return False
 

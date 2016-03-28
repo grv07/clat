@@ -159,7 +159,7 @@ def create_modules(request, course_uuid):
                             u_course_progrs = UserCourseProgress.objects.create(course_week = module_created, enrolled_courses = enroll_course)
                     messages.success(request, 'Course module for Week '+week+'  created successfully.')
                     already_present = True
-                return HttpResponseRedirect('/course/details/'+course_uuid+'/')
+                return HttpResponseRedirect('/create/modules/'+course_uuid+'/')
             else:
                 messages.error(request, 'A week can have 4 modules only.Delete old ones.')
                 return redirect('/create/modules/'+course_uuid+'/')

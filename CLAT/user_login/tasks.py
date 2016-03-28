@@ -7,41 +7,41 @@ from django.contrib.auth.models import User
 # logger = logging.getLogger(__name__)
 
 #@shared_task
-def send_mail(html_part, to, subject = 'eQUEST account registration email'):
-	if html_part and to:
-		try:
-			import smtplib
-			import codecs
-			from email.MIMEMultipart import MIMEMultipart
-			from email.MIMEText import MIMEText
-			server = smtplib.SMTP('smtp.qcin.org', 25, timeout=60)
+def send_mail(html_part, to, subject = 'CLAT account registration email'):
+    if html_part and to:
+        try:
+            import smtplib
+            import codecs
+            from email.MIMEMultipart import MIMEMultipart
+            from email.MIMEText import MIMEText
+            server = smtplib.SMTP('smtp.gmail.com', 587)
 
-			#Next, log in to the server
-			server.ehlo()
-			#server.starttls()
-			
-			server.login("ansh.vengaboyz@gmail.com", codecs.decode('9999504540','rot_13'))
-			msg = MIMEMultipart('alternative')
-			msg['Subject'] = subject
-			msg['From'] = 'ansh.vengaboyz@gmail.com'
-			msg['To'] = str(to)
-			if html_part:
-			   part2 = MIMEText(html_part, 'html')
-			   msg.attach(part2)
-			BODY = msg.as_string()
-			# msg = "\nHello!" # The /n separates the message from the headers
-			print server.sendmail("ansh.vengaboyz@gmail.com", str(to), BODY)
-			server.quit()
-		except Exception as e:
-			# logger.error('under CLAT.tasks.send_mail '+str(e.args))
-			print '/Exception in sendng email',e.args
-			# send_mail.retry(countdown = 2, exc = e, max_retries = 2)
-	else:
-		print 'E-Mail Body not define'
+            #Next, log in to the server
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login("ansh.vengaboyz@gmail.com", '9999504540')
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = subject
+            msg['From'] = 'ansh.vengaboyz@gmail.com'
+            msg['To'] = str(to)
+            if html_part:
+               part2 = MIMEText(html_part, 'html')
+               msg.attach(part2)
+            BODY = msg.as_string()
+            # msg = "\nHello!" # The /n separates the message from the headers
+            print server.sendmail("ansh.vengaboyz@gmail.com", str(to), BODY)
+            server.quit()
+        except Exception as e:
+            # logger.error('under edx_lms.tasks.send_mail '+str(e.args))
+            print '/Exception in sendng email',e.args
+            # send_mail.retry(countdown = 2, exc = e, max_retries = 2)
+    else:
+        print 'E-Mail Body not define'
 
 
 #@shared_task
-def send_bulk_mail(html_part, to, subject = 'eQUEST account registration email'):
+def send_bulk_mail(html_part, to, subject = 'CLAT account registration email'):
 	import mandrill
 	if html_part and to:
 		try:

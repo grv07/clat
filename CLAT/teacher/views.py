@@ -485,59 +485,27 @@ def create_quiz(request, course_uuid):
 
 	if request.method == 'POST':
 		quiz_type = request.POST.get('quiz_type')    # quiz_category is module_name for inline and week_number for mid-term
-		schedule_key = request.POST.get('quiz_url1').strip().split('/')[-1]
-		schedules_key_list = []
-		if check_quiz_link(request.POST.get('quiz_url1').strip()):
+		schedule_key = request.POST.get('quiz_key').strip()
+		if check_quiz_link(schedule_key):
 			module_name = request.POST.get('quiz_category')		
 			if quiz_type == constants.QUIZ_TYPES[0]:
-
-				try:
-					schedule_key2 = request.POST.get('quiz_url2').strip().split('/')[-1]
-					schedule_key3 = request.POST.get('quiz_url3').strip().split('/')[-1]
-					
-					if not check_quiz_link(request.POST.get('quiz_url2').strip()) or not check_quiz_link(request.POST.get('quiz_url3').strip()):
-						messages.info(request,'Only Mettl URLs are accepted')
-						return redirect('/teacher/manage/'+course.course_uuid+'/createquiz/')
-					
-					if schedule_key == schedule_key2 or schedule_key2 == schedule_key3 or schedule_key3 == schedule_key:
-						messages.error(request,'Duplicate Quiz URLs not allowed!!!')
-						return redirect('/teacher/manage/'+course.course_uuid+'/createquiz/')
-		   
-					have_any_with = lambda  schedule_key : Tests.objects.filter(schedule_key = schedule_key).count();
-					
-					if have_any_with(schedule_key) or have_any_with(schedule_key2) or have_any_with(schedule_key3):
-						messages.error(request,'Duplicate Quiz URLs not allowed!!!')
-						return redirect('/teacher/manage/'+course.course_uuid+'/createquiz/')	
-					
-
-					if Tests.objects.filter(course = course, module_name = module_name).count() < 3:
+				try:					
+					if Tests.objects.filter(course = course, module_name = module_name).count() == 0:
 						if Tests.objects.create(course = course, schedule_key = schedule_key, module_name = module_name, test_type = constants.TEST_TYPES[0]):
-							schedules_key_list.append(schedule_key)
-							if Tests.objects.create(course = course, schedule_key = schedule_key2, module_name = module_name, test_type = constants.TEST_TYPES[0]):
-								schedules_key_list.append(schedule_key2) 
-								if Tests.objects.create(course = course, schedule_key = schedule_key3, module_name = module_name, test_type = constants.TEST_TYPES[0]):
-									schedules_key_list.append(schedule_key3)
-									messages.success(request,'All Inline tests are created for module '+module_name+'.')
-								else:
-									messages.error(request,'Problem in creating third inline tests.')
-							else:
-								messages.error(request,'Problem in creating second inline tests.')
+							messages.success(request,'Inline Quiz created for module '+module_name+'.')
 						else:
-							messages.error(request,'Problem in creating first inline tests.')
+							messages.error(request,'Problem in creating inline test.')
 					else:
-						messages.warning(request,'All tests are created.')
-
+						messages.warning(request,'Inline test is present already.')
 				except IntegrityError as ie:
 					print ie.args
 					messages.error(request,'Duplicate Quiz URL not allowed.')
 
 			elif quiz_type == constants.QUIZ_TYPES[3]:
-				schedules_key_list = []
 				try:
 					if Tests.objects.filter(course = course, test_type = constants.TEST_TYPES[2]).count() == 0:
 						endterm_quiz = Tests.objects.create(course = course, module_name = module_name, test_type = constants.TEST_TYPES[2], schedule_key = schedule_key)
 						if endterm_quiz:
-							schedules_key_list.append(schedule_key)
 							messages.success(request,'End Term Quiz created for module '+module_name+'.')
 						else:
 							messages.error(request,'Problem in creating End Term Quiz for module '+module_name+'.')
@@ -550,7 +518,6 @@ def create_quiz(request, course_uuid):
 				
 
 			elif quiz_type == constants.QUIZ_TYPES[2]:
-				schedules_key_list = []
 				casestudy_quiz_limit = 0
 				if len(data['course_duration_list']) == 16:
 					casestudy_quiz_limit = 1
@@ -558,7 +525,6 @@ def create_quiz(request, course_uuid):
 					if Tests.objects.filter(course = course, module_name = module_name, test_type = constants.TEST_TYPES[3]).count() <= casestudy_quiz_limit:
 						casestudy_quiz = Tests.objects.create(course = course, module_name = module_name,test_type = constants.TEST_TYPES[3], schedule_key=schedule_key)
 						if casestudy_quiz:
-							schedules_key_list.append(schedule_key)
 							messages.success(request,'Case Study created for module '+module_name+'.')
 						else:
 							messages.error(request,'Problem in creating Case Study for module '+module_name+'.')
@@ -572,12 +538,10 @@ def create_quiz(request, course_uuid):
 
 			elif quiz_type == constants.QUIZ_TYPES[1]:
 				# if len(data['course_duration_list']) == 16:
-				schedules_key_list = []
 				try:
 					if Tests.objects.filter(course = course, module_name = module_name, test_type = constants.TEST_TYPES[1]).count() == 0:
 						midterm_quiz = Tests.objects.create(course = course, module_name = module_name, test_type = constants.TEST_TYPES[1], schedule_key = schedule_key)
 						if midterm_quiz:
-							schedules_key_list.append(schedule_key)
 							messages.success(request,'Mid Term Quiz created for module '+module_name+'.')
 						else:
 							messages.error(request,'Problem in creating Mid Term Quiz for module '+module_name+'.')
@@ -591,11 +555,10 @@ def create_quiz(request, course_uuid):
 			else:
 				message.info(request,'We can not get it , what you try to add.')
 				pass		
-			print [edit_schedule_info(schedule_key) for schedule_key in schedules_key_list]
+			# print [edit_schedule_info(schedule_key) for schedule_key in schedules_key_list]
 		else:
-			messages.info(request,'Only Mettl URL links are accepted.')
-			pass
-			
+			messages.info(request,'Wrong quiz link. Try correct schedule key.')
+			pass			
 	return render(request,'course_test_handling/create_quiz.html',data)
 
 
@@ -722,28 +685,28 @@ def change_testschedules(request, course_uuid):
 	if request.method == 'POST':
 		req_post = request.POST
 		newtestlink = req_post.get('newtestlink')
-		if edit_schedule_info(newtestlink):
-			try:
-				test = Tests.objects.filter(course = course)
+		# if edit_schedule_info(newtestlink):
+		try:
+			test = Tests.objects.filter(course = course)
 
-				if req_post.get('week') != 'FINAL TEST':
-					oldtestlink = req_post.get('oldtestlink')
-					test_obj = test.get(module_name = req_post.get('module'), schedule_key = oldtestlink)
-					test_obj.schedule_key = newtestlink
-					test_obj.save()
-					if test_obj.test_type == constants.TEST_TYPES[0]:
-						messages.success(request,'Test link changed for Inline test - '+ req_post.get('inlinetestnumber') +' under '+ req_post.get('module')+' .')
-					elif test_obj.test_type == constants.TEST_TYPES[1]:
-						messages.success(request,'Test link changed for Mid-term test under '+ req_post.get('module')+' .')
-				else:
-					test_obj = test.get(module_name = constants.END_TEST_MODULE)
-					test_obj.schedule_key = newtestlink
-					test_obj.save()
-					messages.success(request,'Test link changed for End-term test.')
-			except IntegrityError as ie:
-				messages.error(request,'Duplicate Test link not allowed.')
-		else:
-			messages.info(request,'Invalid Test Key : Test link must be a METTL generated key.')
+			if req_post.get('week') != 'FINAL TEST':
+				oldtestlink = req_post.get('oldtestlink')
+				test_obj = test.get(module_name = req_post.get('module'), schedule_key = oldtestlink)
+				test_obj.schedule_key = newtestlink
+				test_obj.save()
+				if test_obj.test_type == constants.TEST_TYPES[0]:
+					messages.success(request,'Test link changed for Inline test - '+ req_post.get('inlinetestnumber') +' under '+ req_post.get('module')+' .')
+				elif test_obj.test_type == constants.TEST_TYPES[1]:
+					messages.success(request,'Test link changed for Mid-term test under '+ req_post.get('module')+' .')
+			else:
+				test_obj = test.get(module_name = constants.END_TEST_MODULE)
+				test_obj.schedule_key = newtestlink
+				test_obj.save()
+				messages.success(request,'Test link changed for End-term test.')
+		except IntegrityError as ie:
+			messages.error(request,'Duplicate Test link not allowed.')
+		# else:
+		# 	messages.info(request,'Invalid Test Key : Test link must be a METTL generated key.')
 		return redirect(request.get_full_path())
 		
 	return render(request,'teacher/change_tests.html',data)

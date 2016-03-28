@@ -85,17 +85,17 @@ $(document).ready(
     <br>
   {% else %}
       {% if user and not user.teacher %}
-       <form method="post" action="/order/checkout/" id="enroll_course_form">
+       <form method="post" action="/enroll/student/" id="enroll_course_form">
         {% csrf_token %}
            <!-- <input type="hidden" name="course_uid" value="{{ course.course_uuid }}"> -->
            <input type="hidden" name="productinfo" value="{{course.course_uuid}}">
-           <input type="hidden" name="amount" value="{{ course.amount }}">
+           <!-- <input type="hidden" name="amount" value="{{ course.amount }}">
            <input type="hidden" name="txnid" value="{{ txnid }}">
            <input type="hidden" name="email" value="{{ user.email }}">
            <input type="hidden" name="phone" value="{{ user.student_profile.phone_number }}">
-           <input type="hidden" name="firstname" value="{{ user.student_profile.full_name }}">
+           <input type="hidden" name="firstname" value="{{ user.student_profile.full_name }}"> -->
 
-           <button type="submit" class="enroll-btn" style=" text-decoration:none">Pay Now</button>
+           <button type="submit" class="enroll-btn" style=" text-decoration:none">Enroll Now</button>
       </form>
         {% endif %}
   {% endif %}
