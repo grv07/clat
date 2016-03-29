@@ -23,14 +23,14 @@ def create_certificate(certificate_id, fullname, coursename, added_date):
 
 		d = ImageDraw.Draw(txt)
 		x_fullname = 325
-		x_coursename = 325	
+		x_coursename = 325
 		# draw text, half opacity
 		if len(fullname) > 20:
 			x_fullname = 275
 		if len(coursename) > 20:
 			x_coursename = 250
 		if len(coursename) > 40:
-			coursename = coursename[:30] 
+			coursename = coursename[:30]
 
 		d.text((x_fullname,350), fullname, font=fnt, fill=(255,255,255,128))
 		# draw text, full opacity

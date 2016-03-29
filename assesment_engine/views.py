@@ -18,18 +18,6 @@ from django.contrib.auth.models import User
 from CLAT.settings import SITE_NAME
 from qna_api.user_manager import register_user
 
-# app_folder = os.path.abspath(os.path.join(os.path.dirname(__file__) , "../"))
-# sys.path.insert(0,app_folder + "/mettl-api-sdk/src")
-
-
-# from com.mettl.api.register.CandidateRegister import CandidateRegister
-# from com.mettl.api.results.Results import Results
-# from com.mettl.model.Candidates import Candidates
-# from com.mettl.api.assessment.AssessmentInfo import AssessmentInfo
-# from com.mettl.api.schedule.CreateSchedule import CreateSchedule
-# from com.mettl.api.schedule.ScheduleInfo import ScheduleInfo
-# from com.mettl.api.schedule.EditScheduleInfo import EditScheduleInfo
-
 
 import logging
 logger = logging.getLogger(__name__)
@@ -42,128 +30,152 @@ def test_finish_mail(to_email, full_name, module_name, pdf_link, status, marks, 
 
 @csrf_exempt
 def start_asm_notification(request):
-	# logger.info('assesment_engine.start_asm_notification >> Test Start')
-	asm_responce = json.loads(
+	logger.info('assesment_engine.start_asm_notification >> Test Start')
+	asm_response = json.loads(
 		'''
-	{
-		"EVENT_TYPE": "startAssessment",
-		"invitation_key": "f1bb27bf",
-		"assessment_id": 66590,
-		"candidate_instance_id": 1452533,
-		"context_data": "{\\"applicant_id\\":874}",
-		"timestamp_GMT": "Fri, 29 Aug 2014 08:55:26 GMT",
-		"source_app": "certification-app",
-		"notification_url": "http://application/path/listening/to/the/start/request",
-		"name": "Amit",
-		"email": "anshul.bisht06+90@gmail.com"
-	}
-'''  
-		)
-	asm_responce = json.loads(request.body)
-	print asm_responce
+		{
+			"EVENT_TYPE": "startTest",
+			"test_key": "fn8jmwq6df", 
+			"username": "anshul02", 
+			"notification_url": "http://localhost:8001/start/asm_notification/", 
+			"sitting_id": 145, 
+			"timestamp_IST": "2016-03-29 10:42:35.829936+00:00", 
+			"test_user_id": 100, 
+			"email": "ansh.vengaboyz@gmail.com"
+		}
+		'''  
+	)
+	asm_response = json.loads(request.body)
 
-	# if asm_responce['EVENT_TYPE'] == 'startAssessment':
+	print asm_response
+
+	if asm_response['EVENT_TYPE'] == 'startTest':
 		
-	# 	logger.info('assesment_engine.start_asm_notification >> asm_responce[EVENT_TYPE] == startAssessment '+str(asm_responce['email']))
+		logger.info('assesment_engine.start_asm_notification >> asm_response[EVENT_TYPE] == startAssessment '+str(asm_response['email']))
 
-	# 	asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_responce['email'], schedule_key = asm_responce['invitation_key'])
-	# 	assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_responce['email'], asm_responce['invitation_key'])
-	# 	asm_reg_user.test_status = TEST_STATUS[0]
+		asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
+		assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
+		asm_reg_user.test_status = TEST_STATUS[0]
 
-	# 	asm_reg_user.save()
+		asm_reg_user.save()
 
 	return HttpResponse(json.dumps(True), content_type = "application/json")
-
 
 @csrf_exempt
 def finish_asm_notification(request):
 	logger.info('assesment_engine.finish_asm_notification >> Finish Start')
-	asm_responce = json.loads(
+	asm_response = json.loads(
 	   '''
 		{
 			"EVENT_TYPE": "finishTest",
-			"invitation_key": "f1bb27bf",
-			"assessment_id": 66590,
-			"candidate_instance_id": 1452533,
-			"context_data": "{\\"applicant_id\\":874}",
-			"timestamp_GMT": "Fri, 29 Aug 2014 09:48:53 GMT",
-			"source_app": "certification-app",
-			"notification_url": "http://application/path/listening/to/the/finish/request",
-			"name": "Amit",
-			"email": "anshul.bisht06+90@gmail.com",
+			"test_key": "fn8jmwq6df", 
+			"username": "anshul02", 
+			"notification_url": "http://localhost:8001/start/asm_notification/", 
+			"sitting_id": 145, 
+			"timestamp_IST": "2016-03-29 10:42:35.829936+00:00", 
+			"test_user_id": 100, 
+			"email": "ansh.vengaboyz@gmail.com",
 			"finish_mode": "NormalSubmission"
-		}'''
+		}
+		'''
 	)
-	asm_responce = json.loads(request.body)
-
-	# asm_responce = str(request.body)
-	if asm_responce['EVENT_TYPE'] == 'finishTest':
+	asm_response = json.loads(request.body)
+	print asm_response
+	asm_response = str(request.body)
+	if asm_response['EVENT_TYPE'] == 'finishTest':
 		
-		logger.info('assesment_engine.finish_asm_notification >> asm_responce[EVENT_TYPE] == finishTest '+str(asm_responce['email']))
-
-		asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_responce['email'], schedule_key = asm_responce['invitation_key'])
-		assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_responce['email'], asm_responce['invitation_key'])
+		logger.info('assesment_engine.finish_asm_notification >> asm_response[EVENT_TYPE] == finishTest '+str(asm_response['email']))
+		asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
+		assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
 		asm_reg_user.test_status = TEST_STATUS[1]
 		asm_reg_user.save()
 
-		return HttpResponse(json.dumps(True), content_type = "application/json")
+	return HttpResponse(json.dumps(True), content_type = "application/json")
 	
 
 @csrf_exempt
 def grade_asm_notification(request):
+	asm_response = json.loads(
+		'''
+		{
+		"test_key": "fn8jmwq6df", 
+		"username": "anshul02", 
+		"quiz_name": "Maths", 
+		"notification_url": "http://localhost:8001/grade/asm_notification/", 
+		"EVENT_TYPE": "gradeTest", 
+		"total_questions": 47, 
+		"result_status": "Pass", 
+		"finish_mode": "NormalSubmission", 
+		"start_time_IST": "2016-03-29 11:26:48.294887+00:00", 
+		"total_marks": 47, 
+		"email": "ansh.vengaboyz@gmail.com", 
+		"attempt_no": 1, "sitting_id": 148, 
+		"timestamp_IST": "2016-03-29 11:27:56.049465+00:00", 
+		"test_user_id": "103", 
+		"incorrect_questions_score": 8.0, 
+		"end_time_IST": "2016-03-29 11:27:55.081703+00:00", 
+		"quiz_id": 13, 
+		"correct_questions_score": 48, 
+		"passing_percentage": 0, 
+		"marks_scored": 24
+		}
+		''')
+	asm_response = json.loads(request.body)
+	print asm_response
 	status = 'failed'
 	logger.info('assesment_engine.grade_asm_notification >> ........Start')
 	try:
-		asm_responce = json.loads(request.body)
-		if asm_responce['EVENT_TYPE'] == 'gradedAssessment':
+		asm_response = json.loads(request.body)
+		if asm_response['EVENT_TYPE'] == 'gradeTest':
 			
-			logger.info('assesment_engine.grade_asm_notification >> asm_responce[EVENT_TYPE] == gradedAssessment '+str(asm_responce['email']))
+			logger.info('assesment_engine.grade_asm_notification >> asm_response[EVENT_TYPE] == gradeTest '+str(asm_response['email']))
 
-			asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_responce['email'], schedule_key = asm_responce['invitation_key'])
-			assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_responce['email'], asm_responce['invitation_key'])
+			asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
+			assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
 			
 
 			asm_reg_user.test_status = TEST_CHECK_FOR[1]
-			asm_reg_user.candidate_instance_id = int(asm_responce['candidate_instance_id'])
+			asm_reg_user.candidate_instance_id = int(asm_response['candidate_instance_id'])
 			
-			max_marks = float(asm_responce['max_marks'])
-			max_marks_scored = float(asm_responce['marks_scored'])
+			max_marks = float(asm_response['total_marks'])
+			max_marks_scored = float(asm_response['marks_scored'])
+			
 			percentage = max_marks_scored/max_marks
 			user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
-				percentile = asm_responce['percentile'], max_marks = max_marks,
-				marks_scored = max_marks_scored, finish_mode = asm_responce['finish_mode'])
+				percentile = asm_response['percentile'], max_marks = max_marks,
+				marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'])
 			user_result.save()
-			logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_responce['email']))
+			logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
 
 			if percentage < 0.75:
-				logger.info('assesment_engine.grade_asm_notification >> percentage < 0.75  User >>> FAIL'+str(asm_responce['email']))
+				logger.info('assesment_engine.grade_asm_notification >> percentage < 0.75  User >>> FAIL'+str(asm_response['email']))
 				asm_reg_user.result_status = TEST_CHECK_FOR[2]
 				asm_reg_user.save()
 			else:
 				status = 'passed'
-				logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_responce['email']))
+				logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_response['email']))
 				asm_reg_user.result_status = TEST_CHECK_FOR[0]
 				asm_reg_user.save()
-			test = Tests.objects.filter(schedule_key = asm_responce['invitation_key'])
+			test = Tests.objects.filter(schedule_key = asm_response['test_key'])
 			msg = 'There is no re-attempt chance.'
 			if test:
 				if test[0].test_type == 'E':
-					enrollcourse = EnrolledCourses.objects.get(course = test[0].course, user = User.objects.get(email = asm_responce['email']))
+					enrollcourse = EnrolledCourses.objects.get(course = test[0].course, user = User.objects.get(email = asm_response['email']))
 					enrollcourse.is_complete = True
 					enrollcourse.save()
 					if percentage >= 0.75:
 						html = PROFESSIONAL_CERTIFICATE_HTML.format(course = test[0].course)
-						send_mail.delay(html, asm_responce['email'], subject = 'Please register for taking the Professional Certificate')
+						send_mail.delay(html, asm_response['email'], subject = 'Please register for taking the Professional Certificate')
 					html = CERTIFICATE_MAIL_HTML.format(link = str(SITE_NAME)+'/download/certificate/'+test[0].course.course_uuid+'/', course = test[0].course.course_name)
-					send_mail(html, asm_responce['email'], subject = 'Congratulations on completing the course')
+					send_mail(html, asm_response['email'], subject = 'Congratulations on completing the course')
 				elif test[0].test_type == 'I':
 					msg = 'If you have failed then you must retake the test on the same module.'
 				if status == 'failed':
 					msg = msg + 'If there is no re-attempt chance left then you must re-register to take the course.'
-				test_finish_mail(to_email = asm_responce['email'], module_name = asm_responce['assessment_name'], \
-								full_name = asm_responce['name'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_responce['invitation_key'] + '/',\
+				test_finish_mail(to_email = asm_response['email'], module_name = asm_response['quiz_name'], \
+								full_name = asm_response['name'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
 								status = status, marks=(max_marks, max_marks_scored, round(percentage*100,2),), msg = msg)
-			return HttpResponse(json.dumps(True), content_type = "application/json")
+	return HttpResponse(json.dumps(True), content_type = "application/json")
 	except Exception as e:
 		logger.info('assesment_engine.grade_asm_notification >> '+str(e.args))
 		# print e.args
@@ -333,53 +345,3 @@ def assessment_student_result(request, asm_reg_user, schedule_key):
 		else:
 			messages.info(request,'Your test result is under processing')
 			return redirect('/home/')   
-
-
-# def createSchedule(request, course_uuid, assessment_id):
-# 	public  = "4a9bbe63-b533-49de-b1bb-9f6adcc38dc5"
-# 	private = "66ba7de5-4bff-4ba9-88a4-12b7d8d568f9"
-# 	is_prod = True
-
-# 	sc = {"assessmentId": assessment_id,    
-# 			"name": "Schedule 1w786",
-# 			"imageProctoring": False,
-# 			"webProctoring": {
-# 			"enabled": False
-# 			},
-# 			"scheduleType": "AlwaysOn",
-# 			"scheduleWindow": None,
-# 			"access": {
-# 			"type": "OpenForAll",
-# 			"candidates": None,
-# 			"sendEmail": False
-# 			},
-# 			"ipAccessRestriction": {
-# 			"enabled": False
-# 			},
-# 			"allowCopyPaste": True,
-# 			"exitRedirectionUrl": "http://equest.co/",
-# 			"showResultsOnTestCompletion": False,
-# 			"sourceApp": "eQuest",
-# 			"testStartNotificationUrl": "http://equest.co/start/asm_notification/",
-# 			"testFinishNotificationUrl": "http://equest.co/finish/asm_notification/",
-# 			"testGradedNotificationUrl": "http://equest.co/grade/asm_notification/",
-# 			}
-
-# 	csh = CreateSchedule(public , private , is_prod)
-# 	url = csh.createScheduleForAssessment(assessment_id, params = sc)
-# 	headers = {'content-type': 'application/json'}
-# 	response = requests.post(url, headers=headers)
-# 	schedule_created = json.loads(response.content)
-# 	print schedule_created
-# 	if schedule_created['status'] == 'SUCCESS':
-# 		schedule_key = schedule_created['createdSchedule']['accessKey']
-# 		sc['exitRedirectionUrl'] = sc['exitRedirectionUrl'] + schedule_key + "/"
-# 		print 'call edit method ............>>>>>>>>>'
-# 		return edit_schedule_info(schedule_key, 66590, 'Schedule 1w786')
-# 	else:
-# 		print '>>>>>>>>>>>>>>>>>>> No schedule created'
-# 	return HttpResponse('Test Link created!!!')
-
-
-
-
