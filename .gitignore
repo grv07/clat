@@ -1,2 +1,6 @@
+*/local_settings.py
+mysql.cnf
+*/prod_settings.py
 *.pyc
 */migrations/*
+*/*.sql
