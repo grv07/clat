@@ -40,8 +40,6 @@ def test_finish_mail(to_email, full_name, module_name, pdf_link, status, marks, 
 			scored = marks[1], total = marks[0], percentage = marks[2], msg = msg), to = to_email, subject = 'Congrats for completing the test')
 	print 'Mail sent on finish test'
 
-
-
 @csrf_exempt
 def start_asm_notification(request):
 	# logger.info('assesment_engine.start_asm_notification >> Test Start')
@@ -216,31 +214,30 @@ def assessment_inline(request, course_uuid, test_key):
 				logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
 				
 				if test_status == 'ToBeTaken':
-					assessment_reg_user = AssesmentRegisterdUser.objects.initiate(student = request.user, course=course, 
-						schedule_key = schedule_key, student_email = request.user.email,
-					registrationStatus_status = test_status, test = test, remaning_attempts)
+					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
+						test = test, defaults = {'remaning_attempts' : json_output['test']['remaining_attempts']-1,'schedule_key':test_key, 
+						'student_email':request.user.email})
 
 					test_url =  json_output['test']['url']
 					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
 					return HttpResponseRedirect(test_url)
+				
 				elif test_status == 'NOT_REMAINING':
-					pass
+					assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, test = test)
+					assment_reg_user.remaning_attempts = 0
+					assment_reg_user.save()
+
+					messages.info(request,"No remaning attempts.")
+					return redirect('/course/details/'+course_uuid)
+
 				elif test_status == 'INCOMPLETE':
 					pass
-						# When status = SUCCESS
-						# assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, schedule_key = schedule_key, test = test)
-						# assment_reg_user.registrationStatus_status = test_status
-						# assment_reg_user.save()
 
-						# logger.info('assesment_engine.assessment_inline >> markes as Success UID'+str(request.user.id))
-						
-						# messages.info(request,'This test mark as completed.')
-						# return redirect('/course/details/'+course_uuid)
 			except Exception as e:
 				print e.args
 				logger.error('assesment_engine.assessment_inline >> '+str(e.args)+' UID:'+str(request.user.id))
 				return redirect('/course/details/'+course_uuid)
-	print e.args			
+	# print e.args			
 	logger.error('assesment_engine.assessment_inline >> You cant take this test UID:'+str(request.user.id))
 	messages.info(request,"You can't take this test.")
 	return redirect('/home/')

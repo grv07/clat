@@ -11,7 +11,7 @@ AssesmentRegisterdUser model & manager
 '''
 class AssesmentRegisterManger(models.Manager):
 
-	def initiate(self, student, course, schedule_key, student_email, registrationStatus_status, test):
+	def initiate(self, student, course, schedule_key, student_email, registrationStatus_status, test, remaning_attempts):
 		try:
 			assment_reg_user = AssesmentRegisterdUser.objects.get(
 				student = student, course = course, schedule_key = schedule_key, test = test)
@@ -20,7 +20,7 @@ class AssesmentRegisterManger(models.Manager):
 			assment_reg_user = None
 		if not assment_reg_user:
 			student_registered = AssesmentRegisterdUser.objects.create(
-				student = student, course = course, schedule_key = schedule_key, student_email = student_email, registrationStatus_status = registrationStatus_status, test = test)
+				student = student, course = course, schedule_key = schedule_key, remaning_attempts = remaning_attempts, student_email = student_email, registrationStatus_status = registrationStatus_status, test = test)
 			return student_registered
 		else:
 			print 'object EXIST'
