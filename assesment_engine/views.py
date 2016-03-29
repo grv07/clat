@@ -218,7 +218,7 @@ def assessment_inline(request, course_uuid, test_key):
 						test = test, defaults = {'remaning_attempts' : json_output['test']['remaining_attempts']-1,'schedule_key':test_key, 
 						'student_email':request.user.email})
 
-					test_url =  json_output['test']['url']
+					test_url =  json_output['test']['testURL']
 					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
 					return HttpResponseRedirect(test_url)
 				
@@ -231,7 +231,9 @@ def assessment_inline(request, course_uuid, test_key):
 					return redirect('/course/details/'+course_uuid)
 
 				elif test_status == 'INCOMPLETE':
-					pass
+					print 'under incomplete ........'
+					test_url =  json_output['test']['testURL']
+					return HttpResponseRedirect(test_url)
 
 			except Exception as e:
 				print e.args
