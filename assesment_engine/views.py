@@ -175,7 +175,7 @@ def grade_asm_notification(request):
 				test_finish_mail(to_email = asm_response['email'], module_name = asm_response['quiz_name'], \
 								full_name = asm_response['name'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
 								status = status, marks=(max_marks, max_marks_scored, round(percentage*100,2),), msg = msg)
-	return HttpResponse(json.dumps(True), content_type = "application/json")
+		return HttpResponse(json.dumps(True), content_type = "application/json")
 	except Exception as e:
 		logger.info('assesment_engine.grade_asm_notification >> '+str(e.args))
 		# print e.args
