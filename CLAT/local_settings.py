@@ -2,10 +2,12 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 STATIC_ROOT = ""
 RESTRICT_MODULE_TIME = 1
+
 import os, sys
 file_path = os.path.abspath(__file__)
 DIR_NAME = os.path.dirname(os.path.dirname(file_path))
 SITE_ID = 6
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

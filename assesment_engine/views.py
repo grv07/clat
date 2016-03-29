@@ -189,46 +189,60 @@ def get_all_assesments(request):
 @student_required
 def assessment_inline(request, course_uuid, test_key):
 	course = CourseDetail.objects.get(course_uuid = course_uuid)
-
-	json_output = json.loads(register_student(request.user.username, request.user.email, test_key))
-	if json_output['status'] == 'success':
-		return redirect('http://localhost:9000/#/open/test/'+test_key)
-	# logger.info('assesment_engine.assessment_inline >> User Take test for >>>'+str(course))
-	# if can_take_test(request.user, course):
-
-	# 	logger.info('assesment_engine.assessment_inline >> Under True << can_take_test(request.user, course) >>>'+str(course)+' UID:'+str(request.user.id))
-	# 	json_output = register_student(request.user.username,request.user.email,schedule_key)
-	# 	reg_status = json_output['status']
-	# 	if reg_status == 'SUCCESS':
-	# 		logger.info('assesment_engine.assessment_inline >> Under  True << reg_status == SUCCESS UID:'+str(request.user.id))
-	# 		try:
-	# 			test_status = (json_output['registrationStatus'][0])['status']
-	# 			test = Tests.objects.get(schedule_key = schedule_key)
+	'''
+	{"status":"SUCCESS","username":"gaurav",
+		"testUser":5,"is_new":false,
+		"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+		eyJ1c2VybmFtZSI6ImdhdXJhdiIsInVzZXJfaWQiOjEsImVtYWlsIjoiZ3J2dHlhZ2kyMkBnbWFpbC5jb20iLCJleHAiOjE3NTkyMzM2NDl9.lH_Q3qu8lKVs5j4k6paYkA3MB8zECy4XmqB4vzEKxXk",
+		"test":
+			{"test_key":"c3vsg3jcp7","sectionNoWhereLeft":null,
+				"existingAnswers":{"answers":{}},
+				"status":"ToBeTaken","sectionsRemaining":[],"isTestNotCompleted":false
+			}
+		}
+	'''
+	logger.info('assesment_engine.assessment_inline >> User Take test for >>>'+str(course))
+	if can_take_test(request.user, course):
+		logger.info('assesment_engine.assessment_inline >> Under True << can_take_test(request.user, course) >>>'+str(course)+' UID:'+str(request.user.id))
+		json_output = json.loads(register_student(request.user.username,request.user.email,test_key))
+		print json_output
+		reg_status = json_output['status']
+		if reg_status == 'SUCCESS':
+			logger.info('assesment_engine.assessment_inline >> Under  True << reg_status == SUCCESS UID:'+str(request.user.id))
+			try:
+				test_status = json_output['test']['status']
+				test = Tests.objects.get(schedule_key = test_key)
 				
-	# 			logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
+				logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
 				
-	# 			if test_status == 'ToBeTaken':
-	# 				assessment_reg_user = AssesmentRegisterdUser.objects.initiate(student = request.user, course=course, 
-	# 					schedule_key = schedule_key, student_email = request.user.email,
-	# 				registrationStatus_status = test_status, test = test)
+				if test_status == 'ToBeTaken':
+					assessment_reg_user = AssesmentRegisterdUser.objects.initiate(student = request.user, course=course, 
+						schedule_key = schedule_key, student_email = request.user.email,
+					registrationStatus_status = test_status, test = test, remaning_attempts)
 
-	# 				test_url =  (json_output['registrationStatus'][0])['url']
-	# 				logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
-	# 				return HttpResponseRedirect(test_url)
-	# 			elif test_status == 'Success':
-	# 					assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, schedule_key = schedule_key, test = test)
-	# 					assment_reg_user.registrationStatus_status = test_status
-	# 					assment_reg_user.save()
+					test_url =  json_output['test']['url']
+					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
+					return HttpResponseRedirect(test_url)
+				elif test_status == 'NOT_REMAINING':
+					pass
+				elif test_status == 'INCOMPLETE':
+					pass
+						# When status = SUCCESS
+						# assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, schedule_key = schedule_key, test = test)
+						# assment_reg_user.registrationStatus_status = test_status
+						# assment_reg_user.save()
 
-	# 					logger.info('assesment_engine.assessment_inline >> markes as Success UID'+str(request.user.id))
+						# logger.info('assesment_engine.assessment_inline >> markes as Success UID'+str(request.user.id))
 						
-	# 					messages.info(request,'This test mark as completed.')
-	# 					return redirect('/course/details/'+course_uuid)
-	# 		except Exception as e:
-	# 			logger.error('assesment_engine.assessment_inline >> '+str(e.args)+' UID:'+str(request.user.id))
-	# 			return redirect('/course/details/'+course_uuid)
-	# logger.error('assesment_engine.assessment_inline >> You cant take this test UID:'+str(request.user.id))
-	# messages.info(request,"You can't take this test.")
+						# messages.info(request,'This test mark as completed.')
+						# return redirect('/course/details/'+course_uuid)
+			except Exception as e:
+				print e.args
+				logger.error('assesment_engine.assessment_inline >> '+str(e.args)+' UID:'+str(request.user.id))
+				return redirect('/course/details/'+course_uuid)
+	print e.args			
+	logger.error('assesment_engine.assessment_inline >> You cant take this test UID:'+str(request.user.id))
+	messages.info(request,"You can't take this test.")
 	return redirect('/home/')
 
 

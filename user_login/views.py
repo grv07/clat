@@ -24,7 +24,7 @@ from .form import ContactForm, QueryForm
 
 import logging
 logger = logging.getLogger(__name__)
-
+from qna_api.user_manager import register_user
 
 def update(request):
 	update_pre_enroll_users_db.update_for_enroll_users()
@@ -41,6 +41,8 @@ def paginate_action(request):
 
 '''Landing Page'''
 def home(request):
+	json_put = register_user('gaurav','grvtyagi22+09@gmail.com')
+	print json_put
 	course_list= []
 	# send_mail.delay('jo choka udte hue', 'grvtyagi22@gmail.com', subject = 'eQUEST contact message')
 	if not request.user.is_authenticated:

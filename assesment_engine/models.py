@@ -41,7 +41,8 @@ class AssesmentRegisterdUser(models.Model):
 	assessment_name = models.CharField(max_length = 100, default = 'NA')
 	result_status = models.CharField(max_length=10, default = 'WAITING')
 	candidate_instance_id = models.IntegerField(default='111111')
-	
+	remaning_attempts = models.IntegerField(default='0')
+
 	finish_mail = models.BooleanField(default = False)
 	
 	added_date = models.DateTimeField(auto_now_add = True)
