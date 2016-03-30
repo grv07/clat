@@ -478,7 +478,7 @@ def test_progress(request, course_uuid):
 			data['course'] = course
 			tests = Tests.objects.filter(course = course)
 			if tests:
-				bar_width = tests.filter(test_type = constants.TEST_TYPES[2]).count() + tests.filter(test_type = constants.TEST_TYPES[1]).count() + tests.filter(test_type = 'C').count() + tests.filter(test_type = constants.TEST_TYPES[0]).count()//3
+				bar_width = tests.filter(test_type = constants.TEST_TYPES[2]).count() + tests.filter(test_type = constants.TEST_TYPES[1]).count() + tests.filter(test_type = constants.TEST_TYPES[0]).count()
 				data['bar_width'] = float(100/bar_width)
 				if data['bar_width'] >= 15:
 					data['bar_width'] = 10
@@ -489,6 +489,7 @@ def test_progress(request, course_uuid):
 			
 		messages.error(request,'You are not an enrolled user.')
 	except Exception as e:
+		print e.args
 		logger.error('under student.view.test_progress '+str(e.args)+' UID-'+str(request.user.id))
 	return redirect('/home/')
 

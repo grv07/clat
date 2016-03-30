@@ -60,8 +60,9 @@ class AssesmentRegisterdUser(models.Model):
 
 '''Save total percentage marks of AssesmentRegisterdUser - used in displaying test progress'''
 class UserResult(models.Model):
-	assesmentRegisterdUser = models.OneToOneField(AssesmentRegisterdUser)
-	percentile = models.FloatField()
+	assesmentRegisterdUser = models.ForeignKey(AssesmentRegisterdUser)
+	percentile = models.FloatField(default=0)
+	attempt_no = models.IntegerField(default=0)
 	max_marks = models.FloatField()
 	marks_scored = models.FloatField()
 	finish_mode = models.CharField(max_length=100)

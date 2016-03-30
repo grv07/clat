@@ -48,17 +48,18 @@ def start_asm_notification(request):
 	asm_response = json.loads(request.body)
 
 	print asm_response
+	try:
+		if asm_response['EVENT_TYPE'] == 'startTest':
+			
+			logger.info('assesment_engine.start_asm_notification >> asm_response[EVENT_TYPE] == startAssessment '+str(asm_response['email']))
 
-	if asm_response['EVENT_TYPE'] == 'startTest':
-		
-		logger.info('assesment_engine.start_asm_notification >> asm_response[EVENT_TYPE] == startAssessment '+str(asm_response['email']))
+			asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
+			assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
+			asm_reg_user.test_status = TEST_STATUS[0]
 
-		asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
-		assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
-		asm_reg_user.test_status = TEST_STATUS[0]
-
-		asm_reg_user.save()
-
+			asm_reg_user.save()
+	except Exception as e:
+		print e.args		
 	return HttpResponse(json.dumps(True), content_type = "application/json")
 
 @csrf_exempt
@@ -81,13 +82,16 @@ def finish_asm_notification(request):
 	)
 	asm_response = json.loads(request.body)
 	print asm_response
-	asm_response = str(request.body)
-	if asm_response['EVENT_TYPE'] == 'finishTest':
-		logger.info('assesment_engine.finish_asm_notification >> asm_response[EVENT_TYPE] == finishTest '+str(asm_response['email']))
-		asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
-		assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
-		asm_reg_user.test_status = TEST_STATUS[1]
-		asm_reg_user.save()
+	# asm_response = str(request.body)
+	try:
+		if asm_response['EVENT_TYPE'] == 'finishTest':
+			logger.info('assesment_engine.finish_asm_notification >> asm_response[EVENT_TYPE] == finishTest '+str(asm_response['email']))
+			asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
+			assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
+			asm_reg_user.test_status = TEST_STATUS[1]
+			asm_reg_user.save()
+	except Exception as e:
+		print e.args		
 
 	return HttpResponse(json.dumps(True), content_type = "application/json")
 	
@@ -108,7 +112,8 @@ def grade_asm_notification(request):
 		"start_time_IST": "2016-03-29 11:26:48.294887+00:00", 
 		"total_marks": 47, 
 		"email": "ansh.vengaboyz@gmail.com", 
-		"attempt_no": 1, "sitting_id": 148, 
+		"attempt_no": 1, 
+		"sitting_id": 148, 
 		"timestamp_IST": "2016-03-29 11:27:56.049465+00:00", 
 		"test_user_id": "103", 
 		"incorrect_questions_score": 8.0, 
@@ -134,16 +139,17 @@ def grade_asm_notification(request):
 			
 
 			asm_reg_user.test_status = TEST_CHECK_FOR[1]
-			asm_reg_user.candidate_instance_id = int(asm_response['candidate_instance_id'])
+			asm_reg_user.candidate_instance_id = int(asm_response['test_user_id'])
 			
 			max_marks = float(asm_response['total_marks'])
 			max_marks_scored = float(asm_response['marks_scored'])
 			
 			percentage = max_marks_scored/max_marks
 			user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
-				percentile = asm_response['percentile'], max_marks = max_marks,
+				percentile = float(0), max_marks = max_marks, attempt_no = asm_response['attempt_no'],
 				marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'])
 			user_result.save()
+
 			logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
 
 			if percentage < 0.75:
@@ -172,18 +178,20 @@ def grade_asm_notification(request):
 				if status == 'failed':
 					msg = msg + 'If there is no re-attempt chance left then you must re-register to take the course.'
 				test_finish_mail(to_email = asm_response['email'], module_name = asm_response['quiz_name'], \
-								full_name = asm_response['name'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
+								full_name = asm_response['username'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
 								status = status, marks=(max_marks, max_marks_scored, round(percentage*100,2),), msg = msg)
+	        
 	        return HttpResponse(json.dumps(True), content_type = "application/json")
 	except Exception as e:
 		logger.info('assesment_engine.grade_asm_notification >> '+str(e.args))
-		# print e.args
+		print e.args
 		return HttpResponse(json.dumps(False), content_type = "application/json")		
 
 
 def can_take_test(user, course):
 	return EnrolledCourses.objects.is_student_enrolled(user, course)
 
+# Currently not in use ..
 def register_student(username, email, schedule_key):
 	return register_user(username, email, schedule_key)
 
@@ -228,7 +236,7 @@ def assessment_inline(request, course_uuid, test_key):
 				
 				if test_status == 'ToBeTaken':
 					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
-						test = test, defaults = {'remaning_attempts' : json_output['test']['remaining_attempts']-1,'schedule_key':test_key, 
+						test = test, schedule_key = test_key, defaults = {'remaning_attempts' : json_output['test']['remaining_attempts']-1, 
 						'student_email':request.user.email})
 
 					test_url =  json_output['test']['testURL']
