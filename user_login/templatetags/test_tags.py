@@ -103,10 +103,10 @@ def module_list(enroll_course):
 def module_inline_list(enroll_course):
 	try:
 		result = []
-		course_module = module_list(enroll_course)   
+		course_module = module_list(enroll_course)  
 		for course_week in course_module:
 			if Tests.objects.filter(course = enroll_course, module_name = course_week.week_module_name, test_type = 'I'):
-				 result.append(course_week)
+				result.append(course_week)
 		return result
 	except Exception as e:
 		return None

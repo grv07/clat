@@ -281,7 +281,6 @@ def post_time_spent(request):
 				request.session['_timespent'] += time_spent
 			# When collect-time more then 60
 			if request.session['_timespent'] >= 60:	
-				print request.session['_timespent']
 				tracking_engine.start_tracking(request.user, current_url, request.session['_timespent'])
 				del request.session['_timespent']
 			return HttpResponse(json.dumps(True), content_type = 'application/json')

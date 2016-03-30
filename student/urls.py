@@ -20,7 +20,7 @@ urlpatterns = patterns('',
 			# url(r'^unenroll/student/(?P<course_uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$',views.unenroll_student,name='unenroll-student'),
 			url(r'^fetchmore/enrolledcourses/$',views.fetch_enrolled_courses,name='fetch-enroll-courses'),
 			url(r'^(?P<course_uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/progress/$',views.test_progress,name='test-progress'),
-			url(r'^download/report/(?P<test_type>[a-z]+)/(?P<schedule_key>[A-Za-f0-9]{4,10})/$',views.download_test_report,name='download-test-report'),
+			url(r'^download/report/(?P<test_type>[a-z]+)/(?P<schedule_key>[A-Za-z0-9]{4,10})/$',views.download_test_report,name='download-test-report'),
 			url(r'^download/certificate/(?P<course_uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$',views.download_certificate,name='download-certificate'),
 				url(r'^certificates/$',views.certificates,name='certificates'),
 
