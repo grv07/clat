@@ -214,7 +214,7 @@ def assessment_inline(request, course_uuid, test_key):
 	logger.info('assesment_engine.assessment_inline >> User Take test for >>>'+str(course))
 	if can_take_test(request.user, course):
 		logger.info('assesment_engine.assessment_inline >> Under True << can_take_test(request.user, course) >>>'+str(course)+' UID:'+str(request.user.id))
-		json_output = json.loads(register_student(request.user.username,request.user.email,test_key))
+		json_output = json.loads(register_user(request.user.username,request.user.email,test_key))
 		reg_status = json_output['status']
 		if reg_status == 'SUCCESS':
 			logger.info('assesment_engine.assessment_inline >> Under  True << reg_status == SUCCESS UID:'+str(request.user.id))
