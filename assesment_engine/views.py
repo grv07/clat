@@ -118,9 +118,10 @@ def grade_asm_notification(request):
 		"test_user_id": "103", 
 		"incorrect_questions_score": 8.0, 
 		"end_time_IST": "2016-03-29 11:27:55.081703+00:00", 
-		"quiz_id": 13, 
+		"quiz_id": 13,
+		"htmlReport":'example.com' 
 		"correct_questions_score": 48, 
-		"passing_percentage": 0, 
+		"passing_percentage": 0,
 		"marks_scored": 24
 		}
 		''')
@@ -136,7 +137,7 @@ def grade_asm_notification(request):
 
 			asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
 			assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
-			
+			asm_reg_user.assessment_name = asm_response['quiz_name']
 
 			asm_reg_user.test_status = TEST_CHECK_FOR[1]
 			asm_reg_user.candidate_instance_id = int(asm_response['test_user_id'])
@@ -147,7 +148,7 @@ def grade_asm_notification(request):
 			percentage = max_marks_scored/max_marks
 			user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
 				percentile = float(0), max_marks = max_marks, attempt_no = asm_response['attempt_no'],
-				marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'])
+				marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'], report_link = asm_response['htmlReport'])
 			user_result.save()
 
 			logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
@@ -170,7 +171,7 @@ def grade_asm_notification(request):
 					enrollcourse.save()
 					if percentage >= 0.75:
 						html = PROFESSIONAL_CERTIFICATE_HTML.format(course = test[0].course)
-						send_mail.delay(html, asm_response['email'], subject = 'Please register for taking the Professional Certificate')
+						send_mail(html, asm_response['email'], subject = 'Please register for taking the Professional Certificate')
 					html = CERTIFICATE_MAIL_HTML.format(link = str(SITE_NAME)+'/download/certificate/'+test[0].course.course_uuid+'/', course = test[0].course.course_name)
 					send_mail(html, asm_response['email'], subject = 'Congratulations on completing the course')
 				elif test[0].test_type == 'I':
