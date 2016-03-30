@@ -499,15 +499,8 @@ def test_progress(request, course_uuid):
 @student_required
 def download_test_report(request, test_type, schedule_key):
 	try:
-		public  = constants.METTL_CONFIG[0]
-		private = constants.METTL_CONFIG[1]
-		is_prod = constants.METTL_CONFIG[2]
-		result = Results(public , private , is_prod)
-		result_params = {}
-		json_output = result.getResultForCandidateInSchedule(schedule_key, request.user.email, result_params)
-		testStatus = json_output['testStatus']
-		if testStatus['status'] == 'Completed':
-			return redirect(testStatus['htmlReport'])
+		asm_obj = AssesmentRegisterdUser.objects.get(student = request.user, schedule_key = schedule_key)
+		return redirect(UserResult.objects.get(assesmentRegisterdUser = asm_obj).report_link)
 	except Exception as e:
 		logger.error('under student.view.download_test_report '+str(e.args)+' UID-'+str(request.user.id))
 		#messages.error(request,'Sorry, we cannot generate your '+test_type+' test report.')

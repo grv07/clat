@@ -66,6 +66,7 @@ class UserResult(models.Model):
 	max_marks = models.FloatField()
 	marks_scored = models.FloatField()
 	finish_mode = models.CharField(max_length=100)
+	report_link = models.CharField(max_length=200)
 	
 	added_date = models.DateTimeField(auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now=True)
