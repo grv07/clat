@@ -1,4 +1,5 @@
 */local_settings.py
+*/server_settings.py
 mysql.cnf
 */prod_settings.py
 *.pyc

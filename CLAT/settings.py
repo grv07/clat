@@ -259,13 +259,12 @@ SITE_NAME = ''
 try:
     from local_settings import *
     '''USE WHEN GENRATE TEST LINK TO REDIRECT AFTER TAKE TEST'''
-    SITE_NAME = 'http://clat.co'
 except ImportError as e:
     pass
 
 try:
     from prod_settings import *
     '''USE TO GENERATE TEST LINK TO REDIRECT AFTER TAKE TEST'''
-    SITE_NAME = 'http://clat.co.in'
+   
 except ImportError as e:
     pass
