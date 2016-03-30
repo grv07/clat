@@ -31,20 +31,20 @@ def test_finish_mail(to_email, full_name, module_name, pdf_link, status, marks, 
 @csrf_exempt
 def start_asm_notification(request):
 	logger.info('assesment_engine.start_asm_notification >> Test Start')
-	asm_response = json.loads(
-		'''
-		{
-			"EVENT_TYPE": "startTest",
-			"test_key": "fn8jmwq6df", 
-			"username": "anshul02", 
-			"notification_url": "http://localhost:8001/start/asm_notification/", 
-			"sitting_id": 145, 
-			"timestamp_IST": "2016-03-29 10:42:35.829936+00:00", 
-			"test_user_id": 100, 
-			"email": "ansh.vengaboyz@gmail.com"
-		}
-		'''  
-	)
+	# asm_response = json.loads(
+	# 	'''
+	# 	{
+	# 		"EVENT_TYPE": "startTest",
+	# 		"test_key": "fn8jmwq6df", 
+	# 		"username": "anshul02", 
+	# 		"notification_url": "http://localhost:8001/start/asm_notification/", 
+	# 		"sitting_id": 145, 
+	# 		"timestamp_IST": "2016-03-29 10:42:35.829936+00:00", 
+	# 		"test_user_id": 100, 
+	# 		"email": "ansh.vengaboyz@gmail.com"
+	# 	}
+	# 	'''  
+	# )
 	asm_response = json.loads(request.body)
 
 	print asm_response
@@ -65,21 +65,21 @@ def start_asm_notification(request):
 @csrf_exempt
 def finish_asm_notification(request):
 	logger.info('assesment_engine.finish_asm_notification >> Finish Start')
-	asm_response = json.loads(
-	   '''
-		{
-			"EVENT_TYPE": "finishTest",
-			"test_key": "fn8jmwq6df", 
-			"username": "anshul02", 
-			"notification_url": "http://localhost:8001/start/asm_notification/", 
-			"sitting_id": 145, 
-			"timestamp_IST": "2016-03-29 10:42:35.829936+00:00", 
-			"test_user_id": 100, 
-			"email": "ansh.vengaboyz@gmail.com",
-			"finish_mode": "NormalSubmission"
-		}
-		'''
-	)
+	# asm_response = json.loads(
+	#    '''
+	# 	{
+	# 		"EVENT_TYPE": "finishTest",
+	# 		"test_key": "fn8jmwq6df", 
+	# 		"username": "anshul02", 
+	# 		"notification_url": "http://localhost:8001/start/asm_notification/", 
+	# 		"sitting_id": 145, 
+	# 		"timestamp_IST": "2016-03-29 10:42:35.829936+00:00", 
+	# 		"test_user_id": 100, 
+	# 		"email": "ansh.vengaboyz@gmail.com",
+	# 		"finish_mode": "NormalSubmission"
+	# 	}
+	# 	'''
+	# )
 	asm_response = json.loads(request.body)
 	print asm_response
 	# asm_response = str(request.body)
@@ -98,95 +98,96 @@ def finish_asm_notification(request):
 
 @csrf_exempt
 def grade_asm_notification(request):
-	asm_response = json.loads(
-		'''
-		{
-		"test_key": "fn8jmwq6df", 
-		"username": "anshul02", 
-		"quiz_name": "Maths", 
-		"notification_url": "http://localhost:8001/grade/asm_notification/", 
-		"EVENT_TYPE": "gradeTest", 
-		"total_questions": 47, 
-		"result_status": "Pass", 
-		"finish_mode": "NormalSubmission", 
-		"start_time_IST": "2016-03-29 11:26:48.294887+00:00", 
-		"total_marks": 47, 
-		"email": "ansh.vengaboyz@gmail.com", 
-		"attempt_no": 1, 
-		"sitting_id": 148, 
-		"timestamp_IST": "2016-03-29 11:27:56.049465+00:00", 
-		"test_user_id": "103", 
-		"incorrect_questions_score": 8.0, 
-		"end_time_IST": "2016-03-29 11:27:55.081703+00:00", 
-		"quiz_id": 13,
-		"htmlReport":'example.com' 
-		"correct_questions_score": 48, 
-		"passing_percentage": 0,
-		"marks_scored": 24
-		}
-		''')
-	asm_response = json.loads(request.body)
-	print asm_response
-	status = 'failed'
-	logger.info('assesment_engine.grade_asm_notification >> ........Start')
 	try:
-		asm_response = json.loads(request.body)
-		if asm_response['EVENT_TYPE'] == 'gradeTest':
-			
-			logger.info('assesment_engine.grade_asm_notification >> asm_response[EVENT_TYPE] == gradeTest '+str(asm_response['email']))
+		# asm_response = json.loads(
+		# 	'''
+		# 	{
+		# 	"test_key": "fn8jmwq6df", 
+		# 	"username": "anshul02", 
+		# 	"quiz_name": "Maths", 
+		# 	"notification_url": "http://localhost:8001/grade/asm_notification/", 
+		# 	"EVENT_TYPE": "gradeTest", 
+		# 	"total_questions": 47, 
+		# 	"result_status": "Pass", 
+		# 	"finish_mode": "NormalSubmission", 
+		# 	"start_time_IST": "2016-03-29 11:26:48.294887+00:00", 
+		# 	"total_marks": 47, 
+		# 	"email": "ansh.vengaboyz@gmail.com", 
+		# 	"attempt_no": 1, 
+		# 	"sitting_id": 148, 
+		# 	"timestamp_IST": "2016-03-29 11:27:56.049465+00:00", 
+		# 	"test_user_id": "103", 
+		# 	"incorrect_questions_score": 8.0, 
+		# 	"end_time_IST": "2016-03-29 11:27:55.081703+00:00", 
+		# 	"quiz_id": 13,
+		# 	"htmlReport":'example.com' 
+		# 	"correct_questions_score": 48, 
+		# 	"passing_percentage": 0,
+		# 	"marks_scored": 24
+		# 	}
+		# 	''')
+		status = 'failed'
+		logger.info('assesment_engine.grade_asm_notification >> ........Start')
+		try:
+			asm_response = json.loads(request.body)
+			if asm_response['EVENT_TYPE'] == 'gradeTest':
+				
+				logger.info('assesment_engine.grade_asm_notification >> asm_response[EVENT_TYPE] == gradeTest '+str(asm_response['email']))
 
-			asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
-			assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
-			asm_reg_user.assessment_name = asm_response['quiz_name']
+				asm_reg_user = AssesmentRegisterdUser.objects.get(student_email = asm_response['email'], schedule_key = asm_response['test_key'])
+				assert asm_reg_user,'AssertError: AssesmentRegisterdUser not avail with {0} {1}'.format(asm_response['email'], asm_response['test_key'])
+				asm_reg_user.assessment_name = asm_response['quiz_name']
 
-			asm_reg_user.test_status = TEST_CHECK_FOR[1]
-			asm_reg_user.candidate_instance_id = int(asm_response['test_user_id'])
-			
-			max_marks = float(asm_response['total_marks'])
-			max_marks_scored = float(asm_response['marks_scored'])
-			
-			percentage = max_marks_scored/max_marks
-			user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
-				percentile = float(0), max_marks = max_marks, attempt_no = asm_response['attempt_no'],
-				marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'], report_link = asm_response['htmlReport'])
-			user_result.save()
+				asm_reg_user.test_status = TEST_CHECK_FOR[1]
+				asm_reg_user.candidate_instance_id = int(asm_response['test_user_id'])
+				
+				max_marks = float(asm_response['total_marks'])
+				max_marks_scored = float(asm_response['marks_scored'])
+				
+				percentage = max_marks_scored/max_marks
+				user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
+					percentile = float(0), max_marks = max_marks, attempt_no = asm_response['attempt_no'],
+					marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'], report_link = asm_response['htmlReport'])
+				user_result.save()
 
-			logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
+				logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
 
-			if percentage < 0.75:
-				logger.info('assesment_engine.grade_asm_notification >> percentage < 0.75  User >>> FAIL'+str(asm_response['email']))
-				asm_reg_user.result_status = TEST_CHECK_FOR[2]
-				asm_reg_user.save()
-			else:
-				status = 'passed'
-				logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_response['email']))
-				asm_reg_user.result_status = TEST_CHECK_FOR[0]
-				asm_reg_user.save()
-			test = Tests.objects.filter(schedule_key = asm_response['test_key'])
-			msg = 'There is no re-attempt chance.'
-			if test:
-				if test[0].test_type == 'E':
-					enrollcourse = EnrolledCourses.objects.get(course = test[0].course, user = User.objects.get(email = asm_response['email']))
-					enrollcourse.is_complete = True
-					enrollcourse.save()
-					if percentage >= 0.75:
-						html = PROFESSIONAL_CERTIFICATE_HTML.format(course = test[0].course)
-						send_mail(html, asm_response['email'], subject = 'Please register for taking the Professional Certificate')
-					html = CERTIFICATE_MAIL_HTML.format(link = str(SITE_NAME)+'/download/certificate/'+test[0].course.course_uuid+'/', course = test[0].course.course_name)
-					send_mail(html, asm_response['email'], subject = 'Congratulations on completing the course')
-				elif test[0].test_type == 'I':
-					msg = 'If you have failed then you must retake the test on the same module.'
-				if status == 'failed':
-					msg = msg + 'If there is no re-attempt chance left then you must re-register to take the course.'
-				test_finish_mail(to_email = asm_response['email'], module_name = asm_response['quiz_name'], \
-								full_name = asm_response['username'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
-								status = status, marks=(max_marks, max_marks_scored, round(percentage*100,2),), msg = msg)
-	        
-	        return HttpResponse(json.dumps(True), content_type = "application/json")
+				if percentage < 0.75:
+					logger.info('assesment_engine.grade_asm_notification >> percentage < 0.75  User >>> FAIL'+str(asm_response['email']))
+					asm_reg_user.result_status = TEST_CHECK_FOR[2]
+					asm_reg_user.save()
+				else:
+					status = 'passed'
+					logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_response['email']))
+					asm_reg_user.result_status = TEST_CHECK_FOR[0]
+					asm_reg_user.save()
+				test = Tests.objects.filter(schedule_key = asm_response['test_key'])
+				msg = 'There is no re-attempt chance.'
+				if test:
+					if test[0].test_type == 'E':
+						enrollcourse = EnrolledCourses.objects.get(course = test[0].course, user = User.objects.get(email = asm_response['email']))
+						enrollcourse.is_complete = True
+						enrollcourse.save()
+						if percentage >= 0.75:
+							html = PROFESSIONAL_CERTIFICATE_HTML.format(course = test[0].course)
+							send_mail(html, asm_response['email'], subject = 'Please register for taking the Professional Certificate')
+						html = CERTIFICATE_MAIL_HTML.format(link = str(SITE_NAME)+'/download/certificate/'+test[0].course.course_uuid+'/', course = test[0].course.course_name)
+						send_mail(html, asm_response['email'], subject = 'Congratulations on completing the course')
+					elif test[0].test_type == 'I':
+						msg = 'If you have failed then you must retake the test on the same module.'
+					if status == 'failed':
+						msg = msg + 'If there is no re-attempt chance left then you must re-register to take the course.'
+					test_finish_mail(to_email = asm_response['email'], module_name = asm_response['quiz_name'], \
+									full_name = asm_response['username'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
+									status = status, marks=(max_marks, max_marks_scored, round(percentage*100,2),), msg = msg)
+		        
+		        return HttpResponse(json.dumps(True), content_type = "application/json")
+		except Exception as e:
+			logger.info('assesment_engine.grade_asm_notification >> '+str(e.args))
+			print e.args
 	except Exception as e:
-		logger.info('assesment_engine.grade_asm_notification >> '+str(e.args))
-		print e.args
-		return HttpResponse(json.dumps(False), content_type = "application/json")		
+			print e.args
+	return HttpResponse(json.dumps(False), content_type = "application/json")		
 
 
 def can_take_test(user, course):
