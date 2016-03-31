@@ -21,7 +21,7 @@ $("#d_o_b").datepicker({
 <section id="re">
   <div id="login-show">
     <div class="boss">
-      <li class="lo1" style=" text-align:center !important; width:100% !important ">Create an eQuest account</li>
+      <li class="lo1" style=" text-align:center !important; width:100% !important ">Create an Clat account</li>
     </div>
     <form  method="post" action="/register/student/" autocomplete="off" id="reg_form" autocomplete="off">
             {% csrf_token %}
@@ -172,7 +172,7 @@ $("#d_o_b").datepicker({
         {% if form.i_agree.value %}
         <input type="checkbox" name="i_agree" id="i_agree" checked>
          {% else %}
-        <input type="checkbox" name="i_agree" id="i_agree">{% endif %}I agree to the eQuest <a href="/termsandservices/" target="_blank">Terms of Service</a>  <span style='color:red'>*</span>
+        <input type="checkbox" name="i_agree" id="i_agree">{% endif %}I agree to the Clat<!--  <a href="/termsandservices/" target="_blank">Terms of Service</a> -->  <span style='color:red'>*</span>
         </div>
       </div>
         <span style="color:red;">{{form.i_agree.errors}}</span>

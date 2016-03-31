@@ -56,7 +56,7 @@ PASSWORD_VERIFY_OPTIONS = ('emailoption', 'mobileoption',)
 TRANSACTION_ERROR_BANK = '<h3>Your transaction has been declined from the respective bank side. Try again or contact your bank customer care.</h3>'
 
 TRANSACTION_ERROR_SERVER = '<h3>A server error has occured. If you have paid for the course, kindly mail us your transaction ID\
-(received on your registered mobile number) & the course name at <a href="mailto:talktous@equest.co.in?Subject=Transaction Server Error" target="_top" style="font-weight:bold;">talktous@equest.co.in</a>. We will fix up the issue.</h3>'
+(received on your registered mobile number) & the course name at <a href="mailto:talktous@Clat.co.in?Subject=Transaction Server Error" target="_top" style="font-weight:bold;">talktous@Clat.co.in</a>. We will fix up the issue.</h3>'
 
 TRANSACTION_FAILURE = '<h3>Your transaction has failed. Try again.</h3>'
  

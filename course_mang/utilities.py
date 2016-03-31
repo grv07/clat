@@ -19,16 +19,16 @@ logger = logging.getLogger(__name__)
 
 
 
-EQUEST_LOGO_HTML = '<a href="http://equest.co/" target="_blank"><img src="http://equest.co/static/images/logo.png" alt="Equest logo image not available"></a><br><br>'
+EQUEST_LOGO_HTML = '<a href="http://Clat.co/" target="_blank"><img src="http://Clat.co/static/images/logo.png" alt="Clat logo image not available"></a><br><br>'
 
-EQUEST_HELP_HTML = '<p>In case you have any issues please mail us at talktous@equest.co.in.</p><p>Warm Regards<br>Team eQuest</p>'
+EQUEST_HELP_HTML = '<p>In case you have any issues please mail us at talktous@Clat.co.in.</p><p>Warm Regards<br>Team Clat</p>'
 
 ADDED_VIDEO_MAIL_HTML = EQUEST_LOGO_HTML + '<h3>A new video has been added under module name {module_name} of course <span style="color:blue;font-size:20px;">{course_name}</span>.</h3>\
 					  <h3><a href="{complete_link}">Click here</a> to view it.</h3><br><hr>\
 					  <h3>Module details :</h3>\
 					  <h4>{week_detail}</h4><br>'
 					  
-TEST_FINISH_MAIL_HTML = EQUEST_LOGO_HTML + '<h2>Dear <span style = "color: blue;">{full_name}</span> ,</h2><p></p><h3>Welcome to eQUEST ( India\'s first Intelligent e-Quality Learning Management System ).</h3>\
+TEST_FINISH_MAIL_HTML = EQUEST_LOGO_HTML + '<h2>Dear <span style = "color: blue;">{full_name}</span> ,</h2><p></p><h3>Welcome to Clat ( India\'s first Intelligent e-Quality Learning Management System ).</h3>\
 				<p><hr></p><h3>You just finished your test name <span style = "color: blue;">{module_name}</span>. You have {status} the test.</h3>\
 				<h3>You scored {scored} out of {total} ( percentage = {percentage}% ).  {msg}</h3>\
 				<h3>Please visit this url for view/download your test result.\
@@ -39,7 +39,7 @@ TEST_FINISH_MAIL_HTML = EQUEST_LOGO_HTML + '<h2>Dear <span style = "color: blue;
 CERTIFICATE_MAIL_HTML = EQUEST_LOGO_HTML + '<p>Hi<br><p>Reference your Registration with us for the {course} Course .<br> As per our records we find that you have<br>\
 completed the course and have taken all the required assessments and exam for becoming eligible for the "Participation Certificate".</p>\
 <p>Please go the following lick to receive your certificate {link}> .<br>A certificate carries a Certificate ID which can be used by you or your employer to verify the authenticity of the certificate achieved.<br>Further in case you have scored overall more than 75% marks then you are eligible to go for the "Professional Certificate" for which you will have a take an Onsite Proctored test at any of the \
-certified QCI centres.<br>Some courses may require you to attend an onsite Workshop as well.</p><p>All the details for the Professional Certificate will be published on the eQuest Portal.<br>Please keep in touch .</p>'+ EQUEST_HELP_HTML +'</p>'
+certified QCI centres.<br>Some courses may require you to attend an onsite Workshop as well.</p><p>All the details for the Professional Certificate will be published on the Clat Portal.<br>Please keep in touch .</p>'+ EQUEST_HELP_HTML +'</p>'
 
 LOGIN_REMINDER = EQUEST_LOGO_HTML + '<p>Hi<br><p>Reference your Registration with us for the {courses} Course(s) .<br>We find from our records that you have not logged into your account for the last {days} days , hence we are sending this Gentle Reminder  for \
 				completing the course(s).</p>'+ EQUEST_HELP_HTML +'</p>'
@@ -51,21 +51,21 @@ CONTACT_US = EQUEST_LOGO_HTML + '<p style="color:black">FULL NAME: <span style="
 ASK_QUERY = EQUEST_LOGO_HTML + '<p style="color:black">FULL NAME: <span style="color:blue;">{username}</span><br><p style="color:black">COURSE NAME: <span style="color:blue;">{course_name}</span></p><p style="color:black">PROFESSION: <span style="color:blue;">{iama}</span></p>\
 								<p style="color:black">MODULE NAME: <span style="color:blue;">{module_name}</span></p><p style="color:black">FROM: <span style="color:blue;">{user_email}</span>,<br><br>MESSAGE: <br><span style="color:blue">{message}</span><br><br>Thank you.<p>'
 
-DEACTIVATE_REMINDER = EQUEST_LOGO_HTML + '<p style="color:black">Dear <span style="color:blue;">%s</span>,<br><br>Thanks for using eQUEST ( India\'s first Intelligent e-Quality Learning Management System ).<br>We have observed that you have not logged-in for past 3 weeks.\
+DEACTIVATE_REMINDER = EQUEST_LOGO_HTML + '<p style="color:black">Dear <span style="color:blue;">%s</span>,<br><br>Thanks for using Clat ( India\'s first Intelligent e-Quality Learning Management System ).<br>We have observed that you have not logged-in for past 3 weeks.\
 				Your account will be deactivated and you will be unable to view your enrolled courses.Please login frequently to view new courses and enrolled ones.<br>Thank you.<p>'
 
 
-NO_ACTION_AFTER_REGISTRATION_REMINDER = EQUEST_LOGO_HTML + '<p style="color:black">Dear <span style="color:blue;">{fullname}</span>,<br><br>Thanks for registering on eQUEST ( India\'s first Intelligent e-Quality Learning Management System ).<br>We have observed that you have not logged-in after completing registration.\
+NO_ACTION_AFTER_REGISTRATION_REMINDER = EQUEST_LOGO_HTML + '<p style="color:black">Dear <span style="color:blue;">{fullname}</span>,<br><br>Thanks for registering on Clat ( India\'s first Intelligent e-Quality Learning Management System ).<br>We have observed that you have not logged-in after completing registration.\
 				<br>Please login frequently to keep up with the resources.<br> In case you have not verified yourself , <a href="{link}">click on this link</a> to verify yourself and get started.<br>Thank you.<p>'
 
 COURSE_TIME_ABOUT_TO_OVER_MAIL_HTML = EQUEST_LOGO_HTML + '<p>Hi<br><p>Reference your Registration with us for the {course} Course .<br>We find from our records that you have not logged into your account for the last {login_days} days. You have now less than 50% of the time remaining to\
 			complete the course mentioned, hence we are sending this Gentle Reminder for completing the course.</p>'+ EQUEST_HELP_HTML +'</p>'
 
 COURSE_TIME_OVER_MAIL_HTML = EQUEST_LOGO_HTML + '<p>Hi<br><p>Reference your Registration with us for the {course} Course .<br>Reference your Registration with us for the <XXXXX> Course .<br> We find from our records that you have not completed the course within the specified time hence we are sending this Gentle Reminder for\
-			completing the course.<br> As per eQuest policy you will now have to register again to take the course.</p>'+ EQUEST_HELP_HTML +'</p>'
+			completing the course.<br> As per Clat policy you will now have to register again to take the course.</p>'+ EQUEST_HELP_HTML +'</p>'
 
 PASSWORD_RESET = EQUEST_LOGO_HTML + '<p>Hi<br><p>Someone requested that the password be reset for the following account of\
-				eQuest :</p><p>Username: {username}</p><p>If this was a mistake, just ignore this email and nothing will happen.<br>To\
+				Clat :</p><p>Username: {username}</p><p>If this was a mistake, just ignore this email and nothing will happen.<br>To\
 				reset your password, visit the following address:</p><p>{link}</p>'+ EQUEST_HELP_HTML +'<p>'
 
 PROFESSIONAL_CERTIFICATE_HTML = EQUEST_LOGO_HTML + '<p>Hi<br><p>Reference your Registration with us for the {course} Course.</p>' +  EQUEST_HELP_HTML + '</p>'
@@ -273,8 +273,8 @@ def verification_mail(user, domain, msg = None, **kwargs):
             #   <p>Your account phone number is:  <span style="color:red">'+kwargs['phone_number']+'</span>\
             #   <b>In case if our button link not work please copy and paste in browser tab :<br>'+complete_link+'</b>\
             #   </p>'
-            msg = '<img src="http://equest.co/static/images/logo.png" alt="Equest logo image not available"><br><br>\
-                    <h2>Dear '+ str(kwargs['full_name']).capitalize() +',</h2><p></p><h3>Welcome to eQUEST ( India\'s first Intelligent e-Quality Learning Management System ).</h3>\
+            msg = '<img src="http://Clat.co/static/images/logo.png" alt="Clat logo image not available"><br><br>\
+                    <h2>Dear '+ str(kwargs['full_name']).capitalize() +',</h2><p></p><h3>Welcome to Clat ( India\'s first Intelligent e-Quality Learning Management System ).</h3>\
                     <p><hr></p><h3>Your account details are as follows</h3>\
                     <div style="text-align:left;"><h4>Username    :    <span style="color:blue;">'+kwargs['student_uname'] +'</span></h4>\
                     <h4>Password    :    <span style="color:blue;">'+ kwargs['student_pass'] +'</span></h4>\
@@ -381,7 +381,7 @@ def edit_schedule_info(schedule_key):
 				"allowCopyPaste": True,
 				"exitRedirectionUrl": ""+str(SITE_NAME),
 				"showResultsOnTestCompletion": False,
-				"sourceApp": "eQuest",
+				"sourceApp": "Clat",
 				"testStartNotificationUrl": str(SITE_NAME)+"/start/asm_notification/",
 				"testFinishNotificationUrl": str(SITE_NAME)+"/finish/asm_notification/",
 				"testGradedNotificationUrl": str(SITE_NAME)+"/grade/asm_notification/",

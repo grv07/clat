@@ -31,7 +31,7 @@ class StudentRegistrationForm(AddressForm):
     password = forms.CharField(max_length=20, label='password', validators=[validate_password, MinLengthValidator(4)])
     higher_education = forms.CharField(max_length = 100, label='higher education')
     gender = forms.CharField(max_length = 6, label='gender')
-    i_agree = forms.BooleanField(label="check on eQuest terms and services")
+    i_agree = forms.BooleanField(label="check on Clat terms and services")
     d_o_b = forms.DateField(widget=forms.TextInput(), label='date of birth')
 
     def clean_username(self):

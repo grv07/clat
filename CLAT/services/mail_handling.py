@@ -58,8 +58,8 @@
 # #             #   <p>Your account phone number is:  <span style="color:red">'+kwargs['phone_number']+'</span>\
 # #             #   <b>In case if our button link not work please copy and paste in browser tab :<br>'+complete_link+'</b>\
 # #             #   </p>'
-# #             msg = '<img src="http://equest.co/static/images/logo.png" alt="Equest logo image not available"><br><br>\
-# #                     <h2>Dear '+ str(kwargs['full_name']).capitalize() +',</h2><p></p><h3>Welcome to eQUEST ( India\'s first Intelligent e-Quality Learning Management System ).</h3>\
+# #             msg = '<img src="http://Clat.co/static/images/logo.png" alt="Clat logo image not available"><br><br>\
+# #                     <h2>Dear '+ str(kwargs['full_name']).capitalize() +',</h2><p></p><h3>Welcome to Clat ( India\'s first Intelligent e-Quality Learning Management System ).</h3>\
 # #                     <p><hr></p><h3>Your account details are as follows</h3>\
 # #                     <div style="text-align:left;"><h4>Username    :    <span style="color:blue;">'+kwargs['student_uname'] +'</span></h4>\
 # #                     <h4>Password    :    <span style="color:blue;">'+ kwargs['student_pass'] +'</span></h4>\
@@ -74,7 +74,7 @@
 
 
 
-# # def send_mail(html_part, to, subject = 'eQuest Account Registration E-Mail'):
+# # def send_mail(html_part, to, subject = 'Clat Account Registration E-Mail'):
 # #     if html_part and to:
 # #         try:
 # #             import smtplib

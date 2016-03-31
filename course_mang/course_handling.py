@@ -100,7 +100,7 @@ def create_course(request):
 
 
                 for email in list_of_students_emails:
-                    send_bulk_mail(html, email,'eQUEST new course created.')
+                    send_bulk_mail(html, email,'Clat new course created.')
 
                 if CourseImage.objects.create(course=course_detail_obj, picture=constants.DEFAULT_COURSE_IMAGE):
                     messages.success(request, 'Course created successfully.')
@@ -247,7 +247,7 @@ def upload_course_video_file(request, course_uuid):
                     CourseWeek.objects.get(week_module_name=module_name).week_detail)
 
                 for email in list_of_students_emails:
-                    send_bulk_mail(html, email, subject='eQUEST new video added')
+                    send_bulk_mail(html, email, subject='Clat new video added')
 
                 return render(request, 'course_mang/upload_courses.html', data)
             else:

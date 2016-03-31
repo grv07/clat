@@ -626,7 +626,7 @@ def saveCertificateDetails(request, course, status, module_inline_list, module_m
 			if certificate:
 				messages.info(request,'Certificate information for '+ course.course_name +' is generated .')
 				from course_mang.utilities import CERTIFICATE_MAIL_HTML
-				send_mail.delay(html_part = CERTIFICATE_MAIL_HTML.format(course = course.course_name, link = 'http://equest.co/lms/media/certificate/'+certificate.uuid_key+'/cert.png'), to = request.user.email, subject = 'eQUEST certificate link')
+				send_mail.delay(html_part = CERTIFICATE_MAIL_HTML.format(course = course.course_name, link = 'http://Clat.co/lms/media/certificate/'+certificate.uuid_key+'/cert.png'), to = request.user.email, subject = 'Clat certificate link')
 
 		else:
 			certificate = certificate_filter[0]

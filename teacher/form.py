@@ -16,7 +16,7 @@ class TeacherRegistrationForm(AddressForm):
     higher_education = forms.CharField(max_length = 100, label='higher education')
     gender = forms.CharField(max_length = 6, label='gender')
     d_o_b = forms.DateField(widget=forms.TextInput(), label='date of birth')
-    i_agree = forms.BooleanField(label="check on eQuest terms and services")
+    i_agree = forms.BooleanField(label="check on Clat terms and services")
 
 
     def clean_username(self):

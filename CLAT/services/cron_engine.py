@@ -36,10 +36,10 @@ def login_reminder():
 					if last_login_days >= 7:
 						enrolled_courses = ', '.join([str(enroll_course.course.course_name.capitalize()) for enroll_course in enrolled_courses_list])
 						html = LOGIN_REMINDER.format(courses = enrolled_courses, days = last_login_days)
-						send_bulk_mail.delay(html, stud.student.email, 'Gentle Reminder for Completing your eQuest Course')
+						send_bulk_mail.delay(html, stud.student.email, 'Gentle Reminder for Completing your Clat Course')
 			else:
 				if stud.registration_reminder_count < 6:
-					html = NO_ACTION_AFTER_REGISTRATION_REMINDER.format(fullname = stud.full_name.capitalize(), link = "http://equest.co.in/account/verification/" + stud.uuid_key )
+					html = NO_ACTION_AFTER_REGISTRATION_REMINDER.format(fullname = stud.full_name.capitalize(), link = "http://Clat.co.in/account/verification/" + stud.uuid_key )
 					stud.registration_reminder_count  = stud.registration_reminder_count + 1
 					stud.save()
 					send_bulk_mail.delay(html, stud.student.email, 'e-Quest Account no login after registration alert.')
@@ -58,7 +58,7 @@ def half_course_over_reminder():
 					remaining_days =  week_time_over(duration, enroll_course.added_date,(duration*7)//2)
 					if remaining_days:
 						html = COURSE_TIME_ABOUT_TO_OVER_MAIL_HTML.format(login_days = last_login_days , course = enroll_course.course.course_name)
-						send_bulk_mail.delay(html, stud.student.email, 'Gentle Reminder for Completing your eQuest Course')
+						send_bulk_mail.delay(html, stud.student.email, 'Gentle Reminder for Completing your Clat Course')
 	except Exception as e:
 		print e.args
 
@@ -103,7 +103,7 @@ def all_time_over(days = 1/4):
 				_diff_days = week_time_over(duration, enr.added_date, duration)
 				if _diff_days:
 					html = COURSE_TIME_OVER_MAIL_HTML.format(course = enr.course.course_name.capitalize())
-					send_bulk_mail.delay(html, enr.user.email, 'Please register for taking the eQuest course')
+					send_bulk_mail.delay(html, enr.user.email, 'Please register for taking the Clat course')
 	except Exception as e:
 		#f.write(str(e.args)+'\n')
 		print e.args

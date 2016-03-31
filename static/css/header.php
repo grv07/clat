@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>eQuest Courses</title>
+<title>Clat Courses</title>
 
 <link href="css/default.css" rel="stylesheet" type="text/css">
 <link href="css/strap.css" rel="stylesheet" type="text/css">

@@ -7,7 +7,7 @@
 # # logger = logging.getLogger(__name__)
 
 # @shared_task
-# def send_mail(html_part, to, subject = 'eQUEST account registration email'):
+# def send_mail(html_part, to, subject = 'Clat account registration email'):
 # 	if html_part and to:
 # 		try:
 # 			import smtplib
@@ -40,7 +40,7 @@
 
 
 # @shared_task
-# def send_bulk_mail(html_part, to, subject = 'eQUEST account registration email'):
+# def send_bulk_mail(html_part, to, subject = 'Clat account registration email'):
 # 	import mandrill
 # 	if html_part and to:
 # 		try:
@@ -53,21 +53,21 @@
 # 				'auto_text': None,
 # 				# 'bcc_address': 'message.bcc_address@example.com',
 # 				'from_email': 'grvtyagi22@gmail.com',
-# 				'from_name': 'eQUEST',
+# 				'from_name': 'Clat',
 # 				'headers': {'Reply-To': 'equest_support@email.com'},
 # 				'html': str(html_part),
 # 				'important': False,
 # 				'inline_css': None,
 # 				'merge': True,
 # 				'merge_language': 'mailchimp',
-# 				'merge_vars': [{'rcpt': 'talktous@equest.co.in',
+# 				'merge_vars': [{'rcpt': 'talktous@Clat.co.in',
 # 								'vars': [{'content': 'merge2 content', 'name': 'merge2'}]}],
-# 				'metadata': {'website': 'www.equest.co'},
+# 				'metadata': {'website': 'www.Clat.co'},
 # 				'preserve_recipients': None,
 # 				'return_path_domain': None,
 # 				'signing_domain': None,
 # 				'subject': str(subject),
-# 				'tags': ['eQUEST message'],
+# 				'tags': ['Clat message'],
 # 				'text': 'Example text content',
 # 				'to': [{'email': str(to),
 # 						'name': 'Recipient Name',

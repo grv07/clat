@@ -42,7 +42,7 @@ def paginate_action(request):
 '''Landing Page'''
 def home(request):
 	course_list= []
-	# send_mail.delay('jo choka udte hue', 'grvtyagi22@gmail.com', subject = 'eQUEST contact message')
+	# send_mail.delay('jo choka udte hue', 'grvtyagi22@gmail.com', subject = 'Clat contact message')
 	if not request.user.is_authenticated:
 		course_list = CourseDetail.objects.filter(can_enroll=True)
 	else:
@@ -152,7 +152,7 @@ def contact(request):
 				contact.save()
 
 				msg = CONTACT_US.format(str(request.POST.get('fullname', None)).capitalize(), request.POST.get('inquirytype', None), request.POST.get('iama', None), request.POST.get('phone', None), request.POST.get('email', None), request.POST.get('message', None))
-				send_mail(msg, 'grvtyagi22@gmail.com', subject = 'eQUEST contact message')
+				send_mail(msg, 'grvtyagi22@gmail.com', subject = 'Clat contact message')
 				messages.info(request, 'We have received your inquiry message. We will get back to you shortly.')
 			else:
 				logger.info('Under user_login.view.contact '+str(contact_form.errors))
@@ -179,7 +179,7 @@ def have_question(request, course_uuid):
 			html = ASK_QUERY.format(username = query.username, course_name = request.POST.get('course_name', None), iama = query.iama,
 				module_name = query.module_name, user_email = query.user_email, message = query.message)
 			
-			send_mail(html, 'gaurav@madmachines.io', subject = 'eQUEST query')
+			send_mail(html, 'gaurav@madmachines.io', subject = 'Clat query')
 			messages.success(request, 'Your query send successfully.')
 			return render(request, 'have_question.html', {'course':course})
 		else:
