@@ -117,6 +117,7 @@ LOGGING = {
             'backupCount': 5,
             'formatter':'standard',
         },
+
     },
     'loggers': {
         '': {
@@ -245,11 +246,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATIC_ROOT = '/var/www/server_static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/"),
-   # '/var/www/static/',
 )
 
 MEDIA_ROOT = '/lms/media/'
@@ -259,13 +260,12 @@ SITE_NAME = ''
 try:
     from local_settings import *
     '''USE WHEN GENRATE TEST LINK TO REDIRECT AFTER TAKE TEST'''
-    SITE_NAME = 'http://clat.co'
 except ImportError as e:
     pass
 
 try:
     from prod_settings import *
     '''USE TO GENERATE TEST LINK TO REDIRECT AFTER TAKE TEST'''
-    SITE_NAME = 'http://clat.co.in'
+   
 except ImportError as e:
     pass

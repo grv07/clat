@@ -8,6 +8,10 @@ https://docs.djangoproject.com/en/1.9/howto/deployment/wsgi/
 """
 
 import os
+import sys
+
+sys.path.append('/home/ubuntu/project/CLAT/')
+sys.path.append('/home/ubuntu/project/env/lib/python2.7/site-packages/')
 
 from django.core.wsgi import get_wsgi_application
 
