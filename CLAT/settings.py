@@ -117,6 +117,7 @@ LOGGING = {
             'backupCount': 5,
             'formatter':'standard',
         },
+
     },
     'loggers': {
         '': {
