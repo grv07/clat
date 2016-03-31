@@ -22,7 +22,7 @@ def get_img(user):
     return '/lms/media/'+str(p_pic.picture)
   except Exception as e:
     print e.args
-    return '/lms/media/profile_images/EQUEST_default_DP.png'
+    return '/lms/media/profile_images/CLAT_default_DP.png'
 
 @register.filter(name = 'get_course_img')
 def get_course_img(course):

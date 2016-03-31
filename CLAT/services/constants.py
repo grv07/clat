@@ -28,7 +28,7 @@ ACCESS_STATUSES = ('OPEN', 'CLOSE',)
 
 RATING_INFO = {'1':'Bad','2':'Fair','3':'Good','4':'Very Good','5':'Excellent'}
 
-DEFAULT_PROFILE_IMAGE = 'profile_images/EQUEST_default_DP.png'
+DEFAULT_PROFILE_IMAGE = 'profile_images/CLAT_default_DP.png'
 
 #(Public, Private, isProd,)
 METTL_CONFIG = ('4a9bbe63-b533-49de-b1bb-9f6adcc38dc5','66ba7de5-4bff-4ba9-88a4-12b7d8d568f9',True,)
