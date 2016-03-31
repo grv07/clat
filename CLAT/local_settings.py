@@ -1,6 +1,6 @@
 DEBUG = True
 ALLOWED_HOSTS = ['*']
-STATIC_ROOT = ""
+
 RESTRICT_MODULE_TIME = 1
 SITE_NAME = 'http://localhost:8000'
 import os, sys
