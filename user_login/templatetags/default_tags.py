@@ -18,7 +18,6 @@ def get_img(user):
   from student.models import ProfilePicture
   try:
     p_pic = ProfilePicture.objects.get(user = user)
-    assert p_pic,'AssertError: Not have profile picture'
     return '/lms/media/'+str(p_pic.picture)
   except Exception as e:
     print e.args
