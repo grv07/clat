@@ -189,45 +189,52 @@ def is_user_take_test(test, email):
 		
 		if asm_reg_user.count() == 0:
 			print 'Still not even register'
-			return ['NOT_REG', True]
-		
-		elif asm_reg_user.filter(result_status = 'PASS'):
-			return ['PASS', True]
-		
-		elif asm_reg_user.filter(result_status = 'WAITING'):
-			return ['WAITING', True]
-		
+			return ['NOT_REG', True, 3]
 		else:
-			# asm_reg_user.filter(result_status = 'FAILED')
-			print 'Fail in this test' 
-			return ['FAIL', False]
+			# [Status, Can_Take_Test, Remaining_Attempts]
+			for asm_user in asm_reg_user:
+				return_data = []
+				return_data += [asm_user.result_status] if asm_user.result_status in ['PASS', 'WAITING'] else ['FAIL']
+				
+				if asm_user.remaning_attempts > 0:
+					return_data += [True]
+				else:
+					print 'Fail in this test'
+					return return_data+[False, asm_user.remaning_attempts]
+			
+			return return_data+[asm_user.remaning_attempts]
 		
 	except Exception as e:
 		print e.args
 		return False
 
 
-@register.filter(name = 'take_test_key')
-def take_test_key(module_name, user):
+@register.filter(name = 'get_inline_test_key')
+def get_inline_test_key(module_name, user):
     test_result = 'FAIL'
-    tests = Tests.objects.filter(module_name = module_name, test_type = 'I')
-    for idx,test in enumerate(tests):
+    test = Tests.objects.get(module_name = module_name, test_type = 'I')
+    can_attempt = is_user_take_test(test, user.email)
+    if can_attempt[1]:
+    	return [test.schedule_key, can_attempt[0], can_attempt[2]]
+    else:
+    	return [None, can_attempt[0], 0]	
+    # for idx,test in enumerate(tests):
                     # print user.email
-                    can_attempt = is_user_take_test(test, user.email)
-                    #print '................'+str(can_attempt)
-                    #print idx
-                    if can_attempt[1]:
-                            if can_attempt[0] == 'PASS':
-                                    test_result = 'PASS'
-                                    if idx < 2:
-                                         continue
-                                    else:
-                                         return [None, test_result, idx]
-                            else:
-                                  return [test.schedule_key, test_result, idx+1]
-                    elif idx == 2:
-                            #print 'End condition'
-                            return [None, test_result, idx]
+                    # can_attempt = is_user_take_test(test, user.email)
+                    # #print '................'+str(can_attempt)
+                    # #print idx
+                    # if can_attempt[1]:
+                    #         if can_attempt[0] == 'PASS':
+                    #                 test_result = 'PASS'
+                    #                 if idx < 2:
+                    #                      continue
+                    #                 else:
+                    #                      return [None, test_result, idx]
+                    #         else:
+                    #               return [test.schedule_key, test_result, idx+1]
+                    # elif idx == 2:
+                    #         #print 'End condition'
+                    #         return [None, test_result, idx]
 					
 			
 
@@ -235,7 +242,7 @@ def take_test_key(module_name, user):
 def get_all_inline_test(course_module_name, course):
 	'''Get all inline for a module and course ...... '''
 	try:
-			tests = Tests.objects.filter(course = course, module_name = course_module_name, test_type = 'I')
+			tests = Tests.objects.get(course = course, module_name = course_module_name, test_type = 'I')
 			return tests
 	except Exception as e:
 			print e.args

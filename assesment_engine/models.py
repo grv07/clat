@@ -33,6 +33,7 @@ class AssesmentRegisterdUser(models.Model):
 	student = models.ForeignKey(User)
 	course = models.ForeignKey(CourseDetail)
 	test = models.ForeignKey(Tests, null=True)
+	
 	test_status = models.CharField(max_length = 10, default = 'NA')
 
 	student_email = models.EmailField(unique = False)
