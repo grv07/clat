@@ -141,12 +141,14 @@ def module_endterm_list(enroll_course):
 @register.filter(name = 'test_progress')
 def test_progress(schedule_key, user):
 	'''Get tests progress in percentile '''
-	try:	
+	try:
 		assert schedule_key,'Schedule key is not given'
-		asm_reg_user = AssesmentRegisterdUser.objects.get(schedule_key = schedule_key, student_email = user.email)
-		userresult =  UserResult.objects.get(assesmentRegisterdUser = asm_reg_user)
-		data = float(userresult.marks_scored)/float(userresult.max_marks)*100
-		return round(data, 2)
+		asm_reg_user = AssesmentRegisterdUser.objects.filter(schedule_key = schedule_key, student_email = user.email)
+		data = []
+		for asm_user in asm_reg_user:
+			userresult =  UserResult.objects.get(assesmentRegisterdUser = asm_user)
+			data += [round(float(userresult.marks_scored)/float(userresult.max_marks)*100, 2)]
+		return data
 	except Exception as e:
 		print e.args
 		return -1
@@ -238,12 +240,11 @@ def get_inline_test_key(module_name, user):
 					
 			
 
-@register.filter(name='get_all_inline_test')
-def get_all_inline_test(course_module_name, course):
+@register.filter(name='inline_test_key')
+def inline_test_key(course_module_name, course):
 	'''Get all inline for a module and course ...... '''
 	try:
-			tests = Tests.objects.get(course = course, module_name = course_module_name, test_type = 'I')
-			return tests
+			return Tests.objects.get(course = course, module_name = course_module_name, test_type = 'I').schedule_key
 	except Exception as e:
 			print e.args
 			return None

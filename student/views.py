@@ -21,7 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 from allauth.socialaccount.models import SocialAccount
 from course_test_handling.models import Tests
 from assesment_engine.models import AssesmentRegisterdUser, UserResult
-from user_login.templatetags.test_tags import check_for_max_marks, module_inline_list, get_all_inline_test, module_midterm_list
+from user_login.templatetags.test_tags import check_for_max_marks, module_inline_list, inline_test_key, module_midterm_list
 from django.core.cache import cache
 # from payu.utils import generate_hash, verify_hash
 import logging
@@ -476,12 +476,12 @@ def test_progress(request, course_uuid):
 		course = CourseDetail.objects.get(course_uuid = course_uuid, can_enroll=True)
 		if EnrolledCourses.objects.is_student_enrolled(request.user, course):
 			data['course'] = course
-			tests = Tests.objects.filter(course = course)
+			tests = Tests.objects.get(course = course)
 			if tests:
-				bar_width = tests.filter(test_type = constants.TEST_TYPES[2]).count() + tests.filter(test_type = constants.TEST_TYPES[1]).count() + tests.filter(test_type = constants.TEST_TYPES[0]).count()
-				data['bar_width'] = float(100/bar_width)
-				if data['bar_width'] >= 15:
-					data['bar_width'] = 10
+				# bar_width = tests.filter(test_type = constants.TEST_TYPES[2]).count() + tests.filter(test_type = constants.TEST_TYPES[1]).count() + tests.filter(test_type = constants.TEST_TYPES[0]).count()
+				# data['bar_width'] = float(100/bar_width)
+				# if data['bar_width'] >= 15:
+				data['bar_width'] = 10
 				return render(request,'student/test_progress.html', data)
 			else:
 				messages.info(request,'No course tests are present.')
@@ -602,8 +602,8 @@ def saveCertificateDetails(request, course, status, module_inline_list, module_m
 			assreguser_lists = []
 
 			for module_name_inline_test in module_inline_list:
-				inline_tests = get_all_inline_test(module_name_inline_test.week_module_name, course)
-				assreguser = AssesmentRegisterdUser.objects.filter(test_status = constants.TEST_CHECK_FOR[1], schedule_key = check_for_max_marks(inline_tests, user),student = request.user)		
+				inline_test = inline_test_key(module_name_inline_test.week_module_name, course)
+				assreguser = AssesmentRegisterdUser.objects.filter(test_status = constants.TEST_CHECK_FOR[1], schedule_key = check_for_max_marks(inline_test, user),student = request.user)		
 				if assreguser:
 					assreguser_lists.append(assreguser[0])
 			
