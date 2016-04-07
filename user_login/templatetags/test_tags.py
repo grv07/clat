@@ -105,7 +105,7 @@ def module_inline_list(enroll_course):
 		result = []
 		course_module = module_list(enroll_course)  
 		for course_week in course_module:
-			if Tests.objects.filter(course = enroll_course, module_name = course_week.week_module_name, test_type = 'I'):
+			if Tests.objects.get(course = enroll_course, module_name = course_week.week_module_name, test_type = 'I'):
 				result.append(course_week)
 		return result
 	except Exception as e:
@@ -143,11 +143,12 @@ def test_progress(schedule_key, user):
 	'''Get tests progress in percentile '''
 	try:
 		assert schedule_key,'Schedule key is not given'
-		asm_reg_user = AssesmentRegisterdUser.objects.filter(schedule_key = schedule_key, student_email = user.email)
+		asm_user = AssesmentRegisterdUser.objects.get(schedule_key = schedule_key, student_email = user.email)
 		data = []
-		for asm_user in asm_reg_user:
-			userresult =  UserResult.objects.get(assesmentRegisterdUser = asm_user)
-			data += [round(float(userresult.marks_scored)/float(userresult.max_marks)*100, 2)]
+		# for asm_user in asm_reg_user:
+		user_results =  UserResult.objects.filter(assesmentRegisterdUser = asm_user)
+		for user_result in user_results:
+			data += [round(float(user_result.marks_scored)/float(user_result.max_marks)*100, 2)]
 		return data
 	except Exception as e:
 		print e.args
@@ -187,24 +188,23 @@ def is_user_pass(user, schedule_key):
 @register.filter(name='is_user_take_test')
 def is_user_take_test(test, email):
 	try:
-		asm_reg_user = AssesmentRegisterdUser.objects.filter(test = test, student_email = email)
+		asm_user = AssesmentRegisterdUser.objects.get(test = test, student_email = email)
 		
-		if asm_reg_user.count() == 0:
+		if not asm_user:
 			print 'Still not even register'
-			return ['NOT_REG', True, 3]
-		else:
-			# [Status, Can_Take_Test, Remaining_Attempts]
-			for asm_user in asm_reg_user:
-				return_data = []
-				return_data += [asm_user.result_status] if asm_user.result_status in ['PASS', 'WAITING'] else ['FAIL']
-				
-				if asm_user.remaning_attempts > 0:
-					return_data += [True]
-				else:
-					print 'Fail in this test'
-					return return_data+[False, asm_user.remaning_attempts]
+			return ['NOT_REG', True, 0]
+		else:			
+			# for asm_user in asm_reg_user:
+			return_data = []
+			return_data += [asm_user.result_status] if asm_user.result_status in ['PASS', 'WAITING'] else ['FAIL']
 			
-			return return_data+[asm_user.remaning_attempts]
+			if asm_user.remaning_attempts > 0:
+				return_data += [True]
+			else:
+				print 'Fail in this test'
+				return return_data+[False, asm_user.remaning_attempts]
+		
+		return return_data+[asm_user.remaning_attempts]
 		
 	except Exception as e:
 		print e.args
@@ -251,34 +251,12 @@ def inline_test_key(course_module_name, course):
 
 
 @register.filter(name='check_for_max_marks')
-def check_for_max_marks(inline_tests_list, user):
+def check_for_max_marks(schedule_key, user):
 	'''Check for maximum marks of user in INLINE test'''
 	try:
-		taken_test_list = []
-		# print [i.schedule_key for i in inline_tests_list]
-		assregusers = []
-		asm_reg_user = None
-		for test in inline_tests_list:
-			asm_reg_user = AssesmentRegisterdUser.objects.filter(test = test, schedule_key= test.schedule_key, student = user).exclude(result_status = 'WAITING')
-			# print test.id,asm_reg_user
-			if asm_reg_user:
-				taken_test_list.append(test) 
-				assregusers.append(asm_reg_user[0])
-		assert len(assregusers) > 0,'Assert Error: Not have a len(assregusers) > 0 with this Test'
-		#print asm_reg_user[0].id
-		userresults = [ UserResult.objects.get(assesmentRegisterdUser = asreguser) for asreguser in assregusers ]
-		# print userresults
-		max_marks_schedule_key = -1
-		max_marks_userresult = None
-		for userresult in userresults:
-			marks = float(userresult.marks_scored)/float(userresult.max_marks)
-			if marks > max_marks_schedule_key:
-				max_marks_schedule_key = marks
-				max_marks_userresult = userresult
-				
-		# print max_marks_userresult
-		# print [i.schedule_key for i in taken_test_list]
-		return max_marks_userresult.assesmentRegisterdUser.schedule_key
+		asm_reg_user = AssesmentRegisterdUser.objects.get(schedule_key= schedule_key, student = user)
+		user_result = UserResult.objects.filter(assesmentRegisterdUser = asm_reg_user).order_by('-marks_scored')[0]
+		return round(float(user_result.marks_scored)/float(user_result.max_marks)*100, 2)
 	except Exception as e:
 		print e.args
 		return None
