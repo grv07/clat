@@ -167,11 +167,11 @@ $(document).ready(function() {
               {% endif %}
               {% if schedule_key %}
               <div style="position: relative;bottom: -99%;" title="View test report">                  
-              <a href="/download/report/inline/{{ schedule_key }}/" target="_blank"><span style="font-size:12px;">Report</span>
-                                  <i class="fa fa-eye"></i>
-
-                                </a>
-                              </div>
+                <a href="/download/report/inline/{{ schedule_key }}/" target="_blank">
+                  <span style="font-size:12px;">Report</span>
+                  <i class="fa fa-eye"></i>
+                </a>
+              </div>
               {% endif %}
             </li>
 {% else %}
