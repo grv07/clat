@@ -39,10 +39,12 @@ def get_inline_test(schedule_key, module_name = None):
 def get_user_result(test, user):
 		try:
 			asm_reg_user = AssesmentRegisterdUser.objects.get(student = user, test = test)
-			user_result = UserResult.objects.get(assesmentRegisterdUser = asm_reg_user)
-			if float(user_result.marks_scored)/float(user_result.max_marks) < 0.75:
-				return [True,'FAIL']
-			return [True,'PASS']
+			assesment_user_result = UserResult.objects.filter(assesmentRegisterdUser = asm_reg_user)
+			result_data = None
+			for user_result in assesment_user_result:
+				if float(user_result.marks_scored)/float(user_result.max_marks) < 0.75:
+					result_data = [True,'FAIL']
+				return [True,'PASS']
 		except Exception as e:
 				print 'get_user_result >> ',e.args
 				return [True,'']

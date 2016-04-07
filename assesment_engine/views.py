@@ -139,6 +139,7 @@ def grade_asm_notification(request):
 				asm_reg_user.assessment_name = asm_response['quiz_name']
 
 				asm_reg_user.test_status = TEST_CHECK_FOR[1]
+				asm_reg_user.remaning_attempts -= 1
 				asm_reg_user.candidate_instance_id = int(asm_response['test_user_id'])
 				
 				max_marks = float(asm_response['total_marks'])
@@ -167,7 +168,7 @@ def grade_asm_notification(request):
 					user_result.result_status = TEST_CHECK_FOR[0]
 
 				user_result.save()
-				
+
 				test = Tests.objects.filter(schedule_key = asm_response['test_key'])
 				msg = 'There is no re-attempt chance.'
 				if test:
@@ -243,8 +244,7 @@ def assessment_inline(request, course_uuid, test_key):
 				
 				if test_status == 'ToBeTaken':
 					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
-						test = test, schedule_key = test_key, defaults = {'remaning_attempts' : json_output['test']['remaining_attempts']-1, 
-						'student_email':request.user.email})
+						test = test, schedule_key = test_key)
 					test_url =  json_output['test']['testURL']
 					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
 					return HttpResponseRedirect(test_url)
