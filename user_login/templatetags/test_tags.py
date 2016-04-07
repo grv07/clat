@@ -192,11 +192,10 @@ def is_user_pass(user, schedule_key):
 def is_user_take_test(test, email):
 	try:
 		asm_user = AssesmentRegisterdUser.objects.get(test = test, student_email = email)
-		
 		if not asm_user:
 			print 'Still not even register'
 			return ['NOT_REG', True, 0]
-		else:			
+		else:
 			# for asm_user in asm_reg_user:
 			return_data = []
 			return_data += [asm_user.result_status] if asm_user.result_status in ['PASS', 'WAITING'] else ['FAIL']

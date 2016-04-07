@@ -242,9 +242,9 @@ def assessment_inline(request, course_uuid, test_key):
 				logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
 				
 				if test_status == 'ToBeTaken':
-					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
+					assment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
 						test = test, schedule_key = test_key)
-					assessment_reg_user.remaning_attempts = json_output['test']['remaining_attempts']
+					assment_reg_user.remaning_attempts = json_output['test']['remaining_attempts']
 					assment_reg_user.save()
 
 					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
