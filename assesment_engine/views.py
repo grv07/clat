@@ -163,6 +163,7 @@ def grade_asm_notification(request):
 					logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_response['email']))
 					asm_reg_user.result_status = TEST_CHECK_FOR[0]
 					user_result.result_status = TEST_CHECK_FOR[0]
+				
 				asm_reg_user.save()	
 				user_result.save()
 
