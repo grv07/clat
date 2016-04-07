@@ -123,7 +123,9 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
                               {%if schedule_data.0 %}
                                 <a href="/inline/test/{{course.course_uuid}}/{{schedule_data.0}}/" onclick="refresh_it()" target="_blank">
                                    <li class="submitss" id="filter">Inline Quiz<br>
-                                       <span style="color:green;">{{schedule_data.2}} attempt(s) remaining.</span>
+                                        {%if schedule_data.2%}
+                                          <span style="color:green;">{{schedule_data.2}} attempt(s) remaining.</span>
+                                        {%endif%}  
                                    </li>
                                 </a>
                                 {% if schedule_data.2 > 1 %}
