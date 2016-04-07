@@ -246,7 +246,7 @@ def assessment_inline(request, course_uuid, test_key):
 						test = test, schedule_key = test_key)
 					assment_reg_user.remaning_attempts = json_output['test']['remaining_attempts']
 					assment_reg_user.save()
-
+					test_url =  json_output['test']['testURL']
 					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
 					return HttpResponseRedirect(test_url)
 				
