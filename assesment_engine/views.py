@@ -148,19 +148,26 @@ def grade_asm_notification(request):
 				user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
 					percentile = float(0), max_marks = max_marks, attempt_no = asm_response['attempt_no'],
 					marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'], report_link = asm_response['htmlReport'])
-				user_result.save()
+				
 
 				logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
 
 				if percentage < 0.75:
 					logger.info('assesment_engine.grade_asm_notification >> percentage < 0.75  User >>> FAIL'+str(asm_response['email']))
-					asm_reg_user.result_status = TEST_CHECK_FOR[2]
-					asm_reg_user.save()
-				else:
+					if not asm_reg_user.result_status == TEST_CHECK_FOR[0]:
+						asm_reg_user.result_status = TEST_CHECK_FOR[2]
+						asm_reg_user.save()
+					user_result.result_status = TEST_CHECK_FOR[2]	
+						
+				elif percentage >= 0.75:
 					status = 'passed'
 					logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_response['email']))
 					asm_reg_user.result_status = TEST_CHECK_FOR[0]
 					asm_reg_user.save()
+					user_result.result_status = TEST_CHECK_FOR[0]
+
+				user_result.save()
+				
 				test = Tests.objects.filter(schedule_key = asm_response['test_key'])
 				msg = 'There is no re-attempt chance.'
 				if test:
