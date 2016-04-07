@@ -184,6 +184,67 @@ $(document).ready(function() {
 
       {% endwith %}
     {% endfor %}
+
+    {% for module in course|module_midterm_list %}
+        {% with schedule_key=module.week_module_name|get_midterm_url:course %}
+          {% with height=schedule_key|test_progress:user %}
+{% if height >= 0 %}
+              <li class="bar salmon" style="height: {{ height }}%;width: {{ bar_width }}%" title="You scored: {{ height }}%">
+              {% if height <= 17 %}
+                  <div class="percent" style="bottom: 110%;">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>
+                  <div class="skill" style="position: relative;bottom: -100%;">MTT-{{ forloop.counter }}</div>
+              {% else %}
+                  <div class="percent">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>
+                  <div class="skill">MTT-{{ forloop.counter }}</div>
+                  {% endif %}  
+
+
+<div style="position: relative;bottom: -99%;" title="View test report">
+                  <a href="/download/report/mid/{{ schedule_key }}/" target="_blank"><span style="font-size:12px;">Report</span>
+                    <i class="fa fa-eye"></i>
+                  </a>
+                </div>
+</li>
+{% else %}
+         <li class="bar salmon" style="height:0;width: {{ bar_width }}%">
+        <div class="skill" style="position: relative;bottom: -10%;">MTT</div>
+
+  </li>
+{% endif %}
+
+      {% endwith %}
+        {% endwith %}
+    {% endfor %}
+
+      {% with schedule_key=course|get_endterm_url%}
+      {% with height=schedule_key|test_progress:user  %}
+{% if height >= 0 %}
+         <li class="bar lime" style="height: {{ height }}%;width: {{ bar_width }}%" title="You scored: {{ height }}%">
+
+              {% if height <= 17 %}
+              <div class="percent" style="bottom: 110%;">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>
+                <div class="skill" style="position: relative;bottom: -100%;">Final Test</div>
+              {% else %}
+              <div class="percent">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>
+                <div class="skill">Final Test</div>
+              {% endif %}
+
+              <div style="position: relative;bottom: -99%;" title="View test report">
+                  <a href="/download/report/final/{{ schedule_key }}/" target="_blank"><span style="font-size:12px;">Report</span>
+                    <i class="fa fa-eye"></i>
+                  </a>
+                </div>
+</li>
+{% else %}
+         <li class="bar lime" style="height:0;width: {{ bar_width }}%">
+        <div class="skill" style="position: relative;bottom: -10%;">Final Test</div>
+  </li>
+{% endif %}
+
+
+    {% endwith %}
+      {% endwith %}
+  
 </ul>
 {% endblock %}
 
