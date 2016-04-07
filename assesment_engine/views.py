@@ -219,7 +219,8 @@ def assessment_inline(request, course_uuid, test_key):
 	{"status":"SUCCESS","username":"gaurav",
 		"testUser":5,"is_new":false,
 		"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-		eyJ1c2VybmFtZSI6ImdhdXJhdiIsInVzZXJfaWQiOjEsImVtYWlsIjoiZ3J2dHlhZ2kyMkBnbWFpbC5jb20iLCJleHAiOjE3NTkyMzM2NDl9.lH_Q3qu8lKVs5j4k6paYkA3MB8zECy4XmqB4vzEKxXk",
+		eyJ1c2VybmFtZSI6ImdhdXJhdiIsInVzZXJfaWQiOjEsImVtYWlsIjoiZ3J2dHlhZ2kyMkBnbWFpbC5
+		jb20iLCJleHAiOjE3NTkyMzM2NDl9.lH_Q3qu8lKVs5j4k6paYkA3MB8zECy4XmqB4vzEKxXk",
 		"test":
 			{"test_key":"c3vsg3jcp7","sectionNoWhereLeft":null,
 				"existingAnswers":{"answers":{}},
@@ -242,11 +243,11 @@ def assessment_inline(request, course_uuid, test_key):
 				logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
 				
 				if test_status == 'ToBeTaken':
-					assment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
-						test = test, schedule_key = test_key)
-					assment_reg_user.remaning_attempts = json_output['test']['remaining_attempts']
-					assment_reg_user.save()
+					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
+						test = test, schedule_key = test_key, defaults = {'student_email':request.user.email})
+					assessment_reg_user.remaning_attempts = json_output['test']['remaining_attempts']
 					test_url =  json_output['test']['testURL']
+					assessment_reg_user.save()
 					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
 					return HttpResponseRedirect(test_url)
 				
