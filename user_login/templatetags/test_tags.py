@@ -33,7 +33,7 @@ def get_inline_test(schedule_key, module_name = None):
 		assert test,'AssertError: Test is None'
 		return test
 	except Exception as e:
-		print e.args
+		print 'get_inline_test',e.args
 		return None
 
 def get_user_result(test, user):
@@ -44,7 +44,7 @@ def get_user_result(test, user):
 				return [True,'FAIL']
 			return [True,'PASS']
 		except Exception as e:
-				print e.args
+				print 'get_user_result >> ',e.args
 				return [True,'']
 
 
@@ -87,7 +87,7 @@ def time_progress(course_module, user):
 			# print progress
 			return check_progress_time(progress.time_progress)
 		except Exception as e:
-			print e.args
+			print 'time_progress',e.args
 			return 0
 
 @register.filter(name = 'module_list')
@@ -122,7 +122,7 @@ def module_midterm_list(enroll_course):
 				result.append(course_week)
 		return result
 	except Exception as e:
-		print e.args
+		print 'module_midterm_list',e.args
 		return None
 
 
@@ -135,6 +135,7 @@ def module_endterm_list(enroll_course):
 		else:
 			return None
 	except Exception as e:
+		print 'module_endterm_list',e.args
 		return None
 
 
@@ -151,7 +152,7 @@ def test_progress(schedule_key, user):
 			data += [round(float(user_result.marks_scored)/float(user_result.max_marks)*100, 2)]
 		return data
 	except Exception as e:
-		print e.args
+		print 'test_progress',e.args
 		return -1
 
 @register.filter(name = 'module_width')
@@ -181,7 +182,7 @@ def is_user_pass(user, schedule_key):
 			# return False
 		return True
 	except Exception as e:
-		print e.args
+		print 'is_user_pass', e.args
 		return False
 
 
@@ -207,7 +208,7 @@ def is_user_take_test(test, email):
 		return return_data+[asm_user.remaning_attempts]
 		
 	except Exception as e:
-		print e.args
+		print 'is_user_take_test',e.args
 		return False
 
 
@@ -258,7 +259,7 @@ def check_for_max_marks(schedule_key, user):
 		user_result = UserResult.objects.filter(assesmentRegisterdUser = asm_reg_user).order_by('-marks_scored')[0]
 		return round(float(user_result.marks_scored)/float(user_result.max_marks)*100, 2)
 	except Exception as e:
-		print e.args
+		print 'check_for_max_marks >>>>',e.args
 		return None
 
 
