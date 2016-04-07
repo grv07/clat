@@ -105,7 +105,7 @@ def module_inline_list(enroll_course):
 		result = []
 		course_module = module_list(enroll_course)  
 		for course_week in course_module:
-			if Tests.objects.filter(course = enroll_course, module_name = course_week.week_module_name, test_type = 'I'):
+			if Tests.objects.get(course = enroll_course, module_name = course_week.week_module_name, test_type = 'I'):
 				result.append(course_week)
 		return result
 	except Exception as e:
@@ -246,7 +246,7 @@ def inline_test_key(course_module_name, course):
 	try:
 			return Tests.objects.get(course = course, module_name = course_module_name, test_type = 'I').schedule_key
 	except Exception as e:
-			print e.args
+			print 'inline_test_key >>',e.args
 			return None
 
 
@@ -272,5 +272,5 @@ def isEndTestGraded(course, user):
 			return True
 		return False
 	except Exception as e:
-		print e.args
+		print 'isEndTestGraded',e.args
 		return False
