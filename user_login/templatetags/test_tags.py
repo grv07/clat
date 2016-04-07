@@ -209,7 +209,7 @@ def is_user_take_test(test, email):
 		
 	except Exception as e:
 		print 'is_user_take_test',e.args
-		return ['NOT_REG', True, 0]
+		return ['NOT_REG', True, None]
 
 
 @register.filter(name = 'get_inline_test_key')
