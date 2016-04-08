@@ -497,10 +497,10 @@ def test_progress(request, course_uuid):
 
 @login_required
 @student_required
-def download_test_report(request, test_type, schedule_key):
+def download_test_report(request, test_type, schedule_key, attempt_no):
 	try:
 		asm_obj = AssesmentRegisterdUser.objects.get(student = request.user, schedule_key = schedule_key)
-		return redirect(UserResult.objects.get(assesmentRegisterdUser = asm_obj).report_link)
+		return redirect(UserResult.objects.get(assesmentRegisterdUser = asm_obj, attempt_no = attempt_no).report_link)
 	except Exception as e:
 		logger.error('under student.view.download_test_report '+str(e.args)+' UID-'+str(request.user.id))
 		#messages.error(request,'Sorry, we cannot generate your '+test_type+' test report.')
