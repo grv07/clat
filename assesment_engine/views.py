@@ -5,7 +5,7 @@ import json
 from django.shortcuts import HttpResponseRedirect, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from assesment_engine.models import AssesmentRegisterdUser,UserResult, TestMarks, TestStatus, Result, SectionMarks
+from assesment_engine.models import AssesmentRegisterdUser,UserResult
 from assesment_engine import assesment_db_handling
 from course_mang.utilities import student_required, edit_schedule_info, TEST_FINISH_MAIL_HTML, CERTIFICATE_MAIL_HTML, PROFESSIONAL_CERTIFICATE_HTML
 from course_mang.models import CourseDetail, CourseWeek
@@ -185,7 +185,7 @@ def grade_asm_notification(request):
 					if status == 'failed':
 						msg = msg + 'If there is no re-attempt chance left then you must re-register to take the course.'
 					test_finish_mail(to_email = asm_response['email'], module_name = asm_response['quiz_name'], \
-									full_name = asm_response['username'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
+									full_name = asm_response['username'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/' + asm_response['attempt_no'] + '/',\
 									status = status, marks=(max_marks, max_marks_scored, round(percentage*100,2),), msg = msg)
 		        
 		        return HttpResponse(json.dumps(True), content_type = "application/json")
