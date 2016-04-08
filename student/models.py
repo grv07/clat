@@ -66,17 +66,18 @@ class EnrolledCoursesManager(models.Manager):
         return qs
 
     def is_student_enrolled(self, user, course):
-        enr_course = EnrolledCourses.objects.filter(user = user, course = course)
-        if enr_course.count() == 1:
-            return enr_course[0]
-        return []
+        try:
+            enr_course = EnrolledCourses.objects.get(user = user, course = course)
+            return enr_course
+        except Exception as e:
+            return []
 
     def all_enrolled_by_student(self, user):
         enr_courses = EnrolledCourses.objects.filter(user = user)
         if enr_courses:
             return enr_courses
         else:
-            return []    
+            return []
 
     def enroll_student(self, user, course, want_notifications = False):
         student_enrolled = EnrolledCourses.objects.create(user = user, course = course, want_notifications = want_notifications)
@@ -106,6 +107,7 @@ class EnrolledCourses(models.Model):
     class Meta:
         verbose_name = _('EnrolledCourses Section')
         ordering = ['-updated_date']
+        unique_together = ("course", "user",)
 
     def __unicode__(self):
         return unicode("Course: %s" % (self.course.course_name))
@@ -117,7 +119,7 @@ class EnrolledCourses(models.Model):
 
 class Certificate(models.Model):
     """ Model to represent Certificate Database """
-    uuid_key = models.CharField(max_length = 100)
+    uuid_key = models.CharField(max_length = 20)
     enr_course = models.OneToOneField(EnrolledCourses, related_name = 'certified_course_enrolled_detail')
     status = models.CharField(max_length = 40, choices = utilities.CERTIFICATE_CHOICES, default = 'PARTICIPATE')
     max_marks = models.IntegerField(default = 0)

@@ -155,7 +155,7 @@ def test_progress(schedule_key, user):
 		return data
 	except Exception as e:
 		print 'test_progress',e.args
-		return -1
+		return [0]
 
 @register.filter(name = 'module_width')
 def module_width(enroll_course):
@@ -268,8 +268,9 @@ def check_for_max_marks(schedule_key, user):
 @register.filter(name = 'isEndTestGraded')
 def isEndTestGraded(course, user):
 	try:
-		end_test = Tests.objects.get(course = course,module_name='end',test_type='E')
-		assreguser = AssesmentRegisterdUser.objects.get(course=course, student=user, test=end_test,schedule_key = end_test.schedule_key)
+		enr_course = EnrolledCourses.objects.get(course = course, user = user)
+		end_test = Tests.objects.get(course = course, module_name = 'end', test_type = 'E')
+		assreguser = AssesmentRegisterdUser.objects.get(enr_course = enr_course, student = user, test = end_test, schedule_key = end_test.schedule_key)
 		if assreguser and assreguser.test_status == 'GRADED':
 			return True
 		return False
