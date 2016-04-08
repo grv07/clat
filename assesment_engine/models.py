@@ -76,7 +76,7 @@ class UserResult(models.Model):
 	updated_date = models.DateTimeField(auto_now=True)
 
 
-'''Save total percentage marks of AssesmentRegisterdUser'''
+'''
 class TestMarks(models.Model):
 	assesmentRegisterdUser = models.ForeignKey(AssesmentRegisterdUser)
 	quiz_marks = models.FloatField()
@@ -85,9 +85,7 @@ class TestMarks(models.Model):
 		max_length=40, choices=utilities.ASSESMENT_TEST_CHOICE, default='NOT Avail')
 
 
-'''
-AssesmentRegisterdUser model & manager
-'''
+
 class TestStatusManger(models.Manager):
 
 	def create_test_status_obj(self, dict_obj, assesmentRegisterdUser):
@@ -127,10 +125,6 @@ class TestStatus(models.Model):
 
 	def __unicode__(self):
 		return "attemptTest " + unicode(self.id)
-
-'''
-AssesmentRegisterdUser model & manager
-'''
 
 
 class AssesmentResultManger(models.Manager):
@@ -198,6 +192,6 @@ class SectionMarks(models.Model):
 
 	def __unicode__(self):
 		return "SectionMarks " + unicode(self.skillName)
-
+'''
 
 # Create your models here.
