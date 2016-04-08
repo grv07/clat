@@ -5,8 +5,7 @@ import json
 from django.shortcuts import HttpResponseRedirect, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from assesment_engine.models import AssesmentRegisterdUser,UserResult, TestMarks, TestStatus, Result, SectionMarks
-from assesment_engine import assesment_db_handling
+from assesment_engine.models import AssesmentRegisterdUser,UserResult
 from course_mang.utilities import student_required, edit_schedule_info, TEST_FINISH_MAIL_HTML, CERTIFICATE_MAIL_HTML, PROFESSIONAL_CERTIFICATE_HTML
 from course_mang.models import CourseDetail, CourseWeek
 from django.views.decorators.csrf import csrf_exempt
