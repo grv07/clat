@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from course_mang import utilities
-from course_mang.models import CourseDetail
+from student.models import EnrolledCourses
 from course_test_handling.models import Tests
 
 
@@ -11,16 +11,16 @@ AssesmentRegisterdUser model & manager
 '''
 class AssesmentRegisterManger(models.Manager):
 
-	def initiate(self, student, course, schedule_key, student_email, registrationStatus_status, test, remaning_attempts):
+	def initiate(self, student, enr_course, schedule_key, student_email, registrationStatus_status, test, remaning_attempts):
 		try:
 			assment_reg_user = AssesmentRegisterdUser.objects.get(
-				student = student, course = course, schedule_key = schedule_key, test = test)
+				student = student, enr_course = enr_course, schedule_key = schedule_key, test = test)
 		except Exception as e:
 			print e.args
 			assment_reg_user = None
 		if not assment_reg_user:
 			student_registered = AssesmentRegisterdUser.objects.create(
-				student = student, course = course, schedule_key = schedule_key, remaning_attempts = remaning_attempts, student_email = student_email, registrationStatus_status = registrationStatus_status, test = test)
+				student = student, enr_course = enr_course, schedule_key = schedule_key, remaning_attempts = remaning_attempts, student_email = student_email, registrationStatus_status = registrationStatus_status, test = test)
 			return student_registered
 		else:
 			print 'object EXIST'
@@ -31,7 +31,7 @@ Table for storing test related details
 '''
 class AssesmentRegisterdUser(models.Model):
 	student = models.ForeignKey(User)
-	course = models.ForeignKey(CourseDetail)
+	enr_course = models.ForeignKey(EnrolledCourses)
 	test = models.ForeignKey(Tests, null=True)
 
 	test_status = models.CharField(max_length = 10, default = 'NA')
@@ -41,7 +41,7 @@ class AssesmentRegisterdUser(models.Model):
 	schedule_key = models.CharField(max_length = 100)
 	assessment_name = models.CharField(max_length = 100, default = 'NA')
 	result_status = models.CharField(max_length=10, default = 'WAITING')
-	candidate_instance_id = models.IntegerField(default='111111')
+
 	remaning_attempts = models.IntegerField(default='0')
 
 	finish_mail = models.BooleanField(default = False)
@@ -65,6 +65,7 @@ class UserResult(models.Model):
 	percentile = models.FloatField(default=0)
 	attempt_no = models.IntegerField(default=0)
 	result_status = models.CharField(max_length=10, default = 'WAITING')
+	candidate_instance_id = models.IntegerField(default='111111')
 
 	max_marks = models.FloatField()
 	marks_scored = models.FloatField()
@@ -74,6 +75,6 @@ class UserResult(models.Model):
 	
 	added_date = models.DateTimeField(auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now=True)
-	def __unicode__(self):
-		return "UserResult  " + unicode(self.assesmentRegisterdUser.student.username)
 
+
+# Create your models here.
