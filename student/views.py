@@ -503,17 +503,9 @@ def download_test_report(request, test_type, schedule_key, attempt_no):
 		return redirect(UserResult.objects.get(assesmentRegisterdUser = asm_obj, attempt_no = attempt_no).report_link)
 	except Exception as e:
 		logger.error('under student.view.download_test_report '+str(e.args)+' UID-'+str(request.user.id))
-		#messages.error(request,'Sorry, we cannot generate your '+test_type+' test report.')
 		messages.error(request,'Error : Invalid link for '+test_type+' test report.')
 		return redirect('/dashboard/')
 
-'''
-def is_inlines_attempt(course):
-	tests = Tests.objects.filter(course = course)
-	total_inline_tests = tests.filter(test_type = 'I')
-	for test in total_inline_tests:
-		all_grades_list += [ checkFor for asreguser in AssesmentRegisterdUser.objects.filter(test = test, course = course, student = user) if asreguser.result_status == checkFor]
-'''
 
 '''
 A helper function checking whether student has passed all tests in the enrolled course.
@@ -653,7 +645,7 @@ def download_certificate(request, course_uuid):
 	if request.method == 'POST':
 		return redirect('/dashboard/')
 	else:
-		certificate = None	
+		certificate = None
 		if isAllTestsGradedOrPassed(request, course, request.user, constants.TEST_CHECK_FOR[1], module_inlines):
 			try:
 				if isAllTestsGradedOrPassed(request, course, request.user, constants.TEST_CHECK_FOR[0]):

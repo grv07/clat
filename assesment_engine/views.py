@@ -6,7 +6,10 @@ from django.shortcuts import HttpResponseRedirect, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from assesment_engine.models import AssesmentRegisterdUser,UserResult
+<<<<<<< HEAD
 from assesment_engine import assesment_db_handling
+=======
+>>>>>>> 134793cf8257a76da0c061fc3a843ac7eed6aac8
 from course_mang.utilities import student_required, edit_schedule_info, TEST_FINISH_MAIL_HTML, CERTIFICATE_MAIL_HTML, PROFESSIONAL_CERTIFICATE_HTML
 from course_mang.models import CourseDetail, CourseWeek
 from django.views.decorators.csrf import csrf_exempt
@@ -148,7 +151,6 @@ def grade_asm_notification(request):
 				user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
 					percentile = float(0), max_marks = max_marks, attempt_no = asm_response['attempt_no'],
 					marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'], report_link = asm_response['htmlReport'])
-				
 
 				logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
 				asm_reg_user.remaning_attempts = asm_reg_user.remaning_attempts - 1
@@ -158,14 +160,14 @@ def grade_asm_notification(request):
 					if not asm_reg_user.result_status == TEST_CHECK_FOR[0]:
 						asm_reg_user.result_status = TEST_CHECK_FOR[2]
 					user_result.result_status = TEST_CHECK_FOR[2]
-						
+				
 				elif percentage >= 0.75:
 					status = 'passed'
 					logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_response['email']))
 					asm_reg_user.result_status = TEST_CHECK_FOR[0]
 					user_result.result_status = TEST_CHECK_FOR[0]
 				
-				asm_reg_user.save()	
+				asm_reg_user.save()
 				user_result.save()
 
 				test = Tests.objects.filter(schedule_key = asm_response['test_key'])
@@ -229,7 +231,8 @@ def assessment_inline(request, course_uuid, test_key):
 		}
 	'''
 	logger.info('assesment_engine.assessment_inline >> User Take test for >>>'+str(course))
-	if can_take_test(request.user, course):
+	enr_course = can_take_test(request.user, course)
+	if enr_course:
 		logger.info('assesment_engine.assessment_inline >> Under True << can_take_test(request.user, course) >>>'+str(course)+' UID:'+str(request.user.id))
 		json_output = json.loads(register_user(request.user.username,request.user.email,test_key))
 		print json_output
@@ -243,7 +246,7 @@ def assessment_inline(request, course_uuid, test_key):
 				logger.info('assesment_engine.assessment_inline >> test_status>> '+str(test_status)+' UID:'+str(request.user.id))
 				
 				if test_status == 'ToBeTaken':
-					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
+					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, enr_course=enr_course, 
 						test = test, schedule_key = test_key, defaults = {'student_email':request.user.email})
 					assessment_reg_user.remaning_attempts = json_output['test']['remaining_attempts']
 					test_url =  json_output['test']['testURL']
@@ -252,7 +255,7 @@ def assessment_inline(request, course_uuid, test_key):
 					return HttpResponseRedirect(test_url)
 				
 				elif test_status == 'NOT_REMAINING':
-					assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, test = test)
+					assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, enr_course=enr_course, test = test)
 					assment_reg_user.remaning_attempts = 0
 					assment_reg_user.save()
 
@@ -268,7 +271,7 @@ def assessment_inline(request, course_uuid, test_key):
 				print e.args
 				logger.error('assesment_engine.assessment_inline >> '+str(e.args)+' UID:'+str(request.user.id))
 				return redirect('/course/details/'+course_uuid)
-	# print e.args			
+	# print e.args
 	logger.error('assesment_engine.assessment_inline >> You cant take this test UID:'+str(request.user.id))
 	messages.info(request,"You can't take this test.")
 	return redirect('/home/')
@@ -280,11 +283,11 @@ def assessment_inline(request, course_uuid, test_key):
 def assesment_end_test(request, course_uuid, schedule_key):
 	course = CourseDetail.objects.get(course_uuid = course_uuid)
 	course_weeks = CourseWeek.objects.filter(course = course)
-	enrollcourse = can_take_test(request.user, course)
+	enr_course = can_take_test(request.user, course)
 
 	logger.info('assesment_engine.assesment_end_test >> Under .......UID: '+str(request.user.id)+str(course))
-	if enrollcourse:
-		if all([ UserCourseProgress.objects.get(course_week = course_week, enrolled_courses = enrollcourse).progress_status == PROGRESS_STATUSES[2] for course_week in course_weeks]):
+	if enr_course:
+		if all([ UserCourseProgress.objects.get(course_week = course_week, enrolled_courses = enr_course).progress_status == PROGRESS_STATUSES[2] for course_week in course_weeks]):
 			json_output = register_student(request.user.username,request.user.email,schedule_key)
 			reg_status = json_output['status']
 			test_taken_status =  json_output['registrationStatus'][0]['status']
@@ -294,15 +297,14 @@ def assesment_end_test(request, course_uuid, schedule_key):
 				try:
 					test_status = (json_output['registrationStatus'][0])['status']
 					test = Tests.objects.get(schedule_key = schedule_key)
-					course = CourseDetail.objects.get(course_uuid=course_uuid)
 					if test_status == 'ToBeTaken':
 						logger.info('assesment_engine.assesment_end_test >>Under  test_status == ToBeTaken UID:'+str(request.user.id)+str(course))
-						assessment_reg_user = AssesmentRegisterdUser.objects.initiate(student = request.user, course=course,schedule_key=schedule_key,student_email = request.user.email,
+						assessment_reg_user = AssesmentRegisterdUser.objects.initiate(student = request.user, enr_course = enr_course,schedule_key=schedule_key,student_email = request.user.email,
 						registrationStatus_status = test_status, test = test)
 						test_url =  (json_output['registrationStatus'][0])['url']
 						return HttpResponseRedirect(test_url)
 					elif test_status == 'Completed':
-						assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, course = course, schedule_key = schedule_key,test = test)
+						assment_reg_user = AssesmentRegisterdUser.objects.get(student = request.user, enr_course = enr_course, schedule_key = schedule_key, test = test)
 						assment_reg_user.registrationStatus_status = test_status
 						logger.info('assesment_engine.assesment_end_test >>Under  test_status == Completed UID:'+str(request.user.id)+str(course))
 						assment_reg_user.save()
