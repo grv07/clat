@@ -178,7 +178,7 @@ def grade_asm_notification(request):
 					if status == 'failed':
 						msg = msg + 'If there is no re-attempt chance left then you must re-register to take the course.'
 					test_finish_mail(to_email = asm_response['email'], module_name = asm_response['quiz_name'], \
-									full_name = asm_response['username'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/',\
+									full_name = asm_response['username'], pdf_link = str(SITE_NAME)+'/download/report/test/' + asm_response['test_key'] + '/' + asm_response['attempt_no'] + '/',\
 									status = status, marks=(max_marks, max_marks_scored, round(percentage*100,2),), msg = msg)
 		        
 		        return HttpResponse(json.dumps(True), content_type = "application/json")
