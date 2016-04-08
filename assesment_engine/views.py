@@ -148,19 +148,26 @@ def grade_asm_notification(request):
 				user_result = UserResult.objects.create(assesmentRegisterdUser = asm_reg_user,
 					percentile = float(0), max_marks = max_marks, attempt_no = asm_response['attempt_no'],
 					marks_scored = max_marks_scored, finish_mode = asm_response['finish_mode'], report_link = asm_response['htmlReport'])
-				user_result.save()
+				
 
 				logger.info('assesment_engine.grade_asm_notification >> user_result save SUCCESS'+str(asm_response['email']))
-
+				asm_reg_user.remaning_attempts = asm_reg_user.remaning_attempts - 1
+				
 				if percentage < 0.75:
 					logger.info('assesment_engine.grade_asm_notification >> percentage < 0.75  User >>> FAIL'+str(asm_response['email']))
-					asm_reg_user.result_status = TEST_CHECK_FOR[2]
-					asm_reg_user.save()
-				else:
+					if not asm_reg_user.result_status == TEST_CHECK_FOR[0]:
+						asm_reg_user.result_status = TEST_CHECK_FOR[2]
+					user_result.result_status = TEST_CHECK_FOR[2]
+						
+				elif percentage >= 0.75:
 					status = 'passed'
 					logger.info('assesment_engine.grade_asm_notification >> percentage > 0.75  User >>> PASS'+str(asm_response['email']))
 					asm_reg_user.result_status = TEST_CHECK_FOR[0]
-					asm_reg_user.save()
+					user_result.result_status = TEST_CHECK_FOR[0]
+				
+				asm_reg_user.save()	
+				user_result.save()
+
 				test = Tests.objects.filter(schedule_key = asm_response['test_key'])
 				msg = 'There is no re-attempt chance.'
 				if test:
@@ -212,7 +219,8 @@ def assessment_inline(request, course_uuid, test_key):
 	{"status":"SUCCESS","username":"gaurav",
 		"testUser":5,"is_new":false,
 		"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-		eyJ1c2VybmFtZSI6ImdhdXJhdiIsInVzZXJfaWQiOjEsImVtYWlsIjoiZ3J2dHlhZ2kyMkBnbWFpbC5jb20iLCJleHAiOjE3NTkyMzM2NDl9.lH_Q3qu8lKVs5j4k6paYkA3MB8zECy4XmqB4vzEKxXk",
+		eyJ1c2VybmFtZSI6ImdhdXJhdiIsInVzZXJfaWQiOjEsImVtYWlsIjoiZ3J2dHlhZ2kyMkBnbWFpbC5
+		jb20iLCJleHAiOjE3NTkyMzM2NDl9.lH_Q3qu8lKVs5j4k6paYkA3MB8zECy4XmqB4vzEKxXk",
 		"test":
 			{"test_key":"c3vsg3jcp7","sectionNoWhereLeft":null,
 				"existingAnswers":{"answers":{}},
@@ -236,10 +244,10 @@ def assessment_inline(request, course_uuid, test_key):
 				
 				if test_status == 'ToBeTaken':
 					assessment_reg_user,created = AssesmentRegisterdUser.objects.get_or_create(student = request.user, course=course, 
-						test = test, schedule_key = test_key, defaults = {'remaning_attempts' : json_output['test']['remaining_attempts']-1, 
-						'student_email':request.user.email})
-
+						test = test, schedule_key = test_key, defaults = {'student_email':request.user.email})
+					assessment_reg_user.remaning_attempts = json_output['test']['remaining_attempts']
 					test_url =  json_output['test']['testURL']
+					assessment_reg_user.save()
 					logger.info('assesment_engine.assessment_inline >> markes as ToBeTaken UID:'+str(request.user.id))
 					return HttpResponseRedirect(test_url)
 				

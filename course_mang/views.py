@@ -65,6 +65,7 @@ def inline_progress(request, course_uuid, module_name):
 			data['week_module_name'] = module_name
 			return render(request, 'student/inline_progress.html', data)
 		except Exception as e:
+			print e.args
 			logger.error('course_mang.view.inline_progress '+str(e.args)+' UID-'+str(request.user.id))
 	return redirect('/dashboard/')
 

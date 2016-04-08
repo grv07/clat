@@ -33,6 +33,7 @@ class AssesmentRegisterdUser(models.Model):
 	student = models.ForeignKey(User)
 	course = models.ForeignKey(CourseDetail)
 	test = models.ForeignKey(Tests, null=True)
+
 	test_status = models.CharField(max_length = 10, default = 'NA')
 
 	student_email = models.EmailField(unique = False)
@@ -63,8 +64,11 @@ class UserResult(models.Model):
 	assesmentRegisterdUser = models.ForeignKey(AssesmentRegisterdUser)
 	percentile = models.FloatField(default=0)
 	attempt_no = models.IntegerField(default=0)
+	result_status = models.CharField(max_length=10, default = 'WAITING')
+
 	max_marks = models.FloatField()
 	marks_scored = models.FloatField()
+	
 	finish_mode = models.CharField(max_length=100)
 	report_link = models.CharField(max_length=200)
 	

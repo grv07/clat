@@ -299,7 +299,7 @@ $("#state").change(function(event) {
               if(json_from_view){
                 $('#picture_alert').css('color','blue');
                 $('#picture_alert').html('Profile picture removed.');
-                first_pic_src_url = '/CLAT_videos/media/profile_images/EQUEST_default_DP.png';
+                first_pic_src_url = '/CLAT_videos/media/profile_images/CLAT_default_DP.png';
                 $('#profile_picture').attr('src',first_pic_src_url);
               }
 
