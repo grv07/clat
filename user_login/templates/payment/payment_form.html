@@ -10,7 +10,7 @@ function redirect_for_payment_at_payu() {
 </head>
 <body onload="redirect_for_payment_at_payu();">
 Redirecting to payment gateway... Do not close or navigate anywhere.
-<form method="post" action="{{ action }}" name="payu_form" style='display:none'>
+<form method="post" action="{{ action }}" name="payu_form">
 {% csrf_token %}
 {{ form.as_p }}
 </form>

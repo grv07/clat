@@ -129,30 +129,38 @@ $(document).ready(function() {
     <div class="label">20%</div>
     <div class="label">0%</div>
   </li>
-  {% for height in week_module_name|inline_test_key:course|test_progress:user%}
-      {% if height >= 0 %}
-          <li class="bar teal" style="height: {{ height }}%;width: 10%" title="{{ height }}%">
-          {% if height <= 17 %}
-            <div class="percent" style="bottom: 110%;">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>              
-              <div class="skill" style="position: relative;bottom: -100%;">IT-{{ forloop.counter }}</div>
-          {% else %}
-            <div class="percent">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>
-            <div class="skill">IT-{{ forloop.counter }}</div>
-          {% endif %}
-      {% if inline.schedule_key %}
-          <div style="position: relative;bottom: -90%;" title="View test report">
-            <a href="/download/report/inline/{{ inline.schedule_key }}/" target="_blank"><span style="font-size:12px;">Report</span>
-              <i class="fa fa-eye"></i>
-            </a>
-          </div>
-      {% endif %}
-          </li>
-      {% else %}
-         <li class="bar teal" style="height:0;width: 20%">
-           <div class="skill" style="position: relative;bottom: -10%;">IT - {{ forloop.counter }}</div>
-        </li>
-      {% endif %}
-  {% endfor %}
+
+
+        {% for inline in week_module_name|get_all_inline_test:course%}
+
+          {% with height=inline.schedule_key|test_progress:user%}
+{% if height >= 0 %}
+              <li class="bar teal" style="height: {{ height }}%;width: {{ bar_width }}%" title="{{ height }}%">
+              {% if height <= 17 %}
+                <div class="percent" style="bottom: 110%;">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>              
+                  <div class="skill" style="position: relative;bottom: -100%;">IT-{{ forloop.counter }}</div>
+              {% else %}
+                <div class="percent">{% ifnotequal height 0 %} {{ height }}% {% else %}{% endifnotequal %}</div>
+                  <div class="skill">IT-{{ forloop.counter }}</div>
+                {% endif %}
+{% if inline.schedule_key %}
+    <div style="position: relative;bottom: -90%;" title="View test report">
+                  <a href="/download/report/inline/{{ inline.schedule_key }}/" target="_blank"><span style="font-size:12px;">Report</span>
+                    <i class="fa fa-eye"></i>
+                  </a>
+                </div>
+{% endif %}
+</li>
+{% else %}
+         <li class="bar teal" style="height:0;width: {{ bar_width }}%">
+        <div class="skill" style="position: relative;bottom: -10%;">IT - {{ forloop.counter }}</div>
+
+  </li>
+{% endif %}
+
+
+        {% endwith %}
+       {% endfor %}
 
 </ul>
 {% endblock %}

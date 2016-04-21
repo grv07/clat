@@ -1,0 +1,220 @@
+{% extends 'teacher/teacher_home.html' %}
+{% load static %}
+
+{% block body %}
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/>
+<div id="register" class="row">
+      <div class="input-field col s12">
+      </div>
+    <form  method="post" action="/teacher/register/" id="reg_form" class="offset-m2 col s12 m10">
+      <div class="input-field col s12 m10">
+        <div class="text-name">User Name <span style='color:red'>*</span></div>
+        <input type="text" class="validate" placeholder="Enter your username" value="{{form.username.value|default:''}}"  name="username" id="username"/>
+        <span id="luname" class="center-align" style="color:#F00; display:none; font-size:14px; font-family: Calibri;margin-left:20px;margin-top:5px"></span>
+              <span style="color:red;">{{form.username.errors}}</span>
+ 
+      </div>
+        {% csrf_token %}
+    
+      <div class="input-field col s12 m10">
+        <div class="text-name">Full Name <span style='color:red'>*</span></div>
+        <input type="text" class="validate" placeholder="Enter full_name"  name="full_name" id="fullname" 
+        value="{{form.full_name.value|default:''}}" />
+        <span id="luname" class="center-align" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> 
+        <span style="color:red;">{{form.full_name.errors}}</span>
+     </div>
+
+      <div class="input-field col s12 m10">
+        <div class="text-name">Email <span style='color:red'>*</span></div>
+        <input type="email" class="validate" placeholder="username@domainname"  name="email" id="email" value="{{form.email.value|default:''}}"/>
+        <span id="luname" class="center-align" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> 
+        <span style="color:red;">{{form.email.errors}}</span>
+
+     </div>
+      <div class="input-field col s12 m10">
+        <div class="text-name">Password <span style='color:red'>*</span></div>
+        <input type="password" class="text-sbox" name="password" id="password" placeholder = 'Enter your password' />
+        <span style="color:#F00;font-size:14px;font-family: Calibri;  margin-left:20px;margin-top:5px" id="lpwd"></span> <span class="text-name" id="error" style="color:#F00; margin-top:5px "></span> 
+        <span style="color:red;">{{form.password.errors}}</span>
+
+    </div>
+      <div class="input-field col s12 m10">
+        <div class="text-name">Phone Number <span style='color:red'>*</span></div>
+        <input type="text" class="text-sbox" name="phone_number" value="{{form.phone_number.value|default:''}}" id="phone_number" placeholder = 'Enter your phone number' maxlength="10" />
+        <span style="color:#F00;font-size:14px;font-family: Calibri;  margin-left:20px;margin-top:5px" id="lpwd"></span> <span class="text-name" id="error" style="color:#F00; margin-top:5px "></span> 
+        <span style="color:red;">{{form.phone_number.errors}}</span>
+
+      </div>
+    
+      <div class="input-field col s12 m10">
+        <div class="text-name" id="country">Country</div>
+        <select class="select1" name="country" id='country'>
+        <option value="India">India</option>
+        </select> 
+       <span style="color:red;">{{form.country.errors}}</span>
+     </div>
+
+        
+      <div class="input-field col s12 m10">
+        <div class="text-name {%if form.city.errors%}has-error{%endif%}">State <span style='color:red'>*</span></div>
+                    <select name="state" id="state">
+                        <option value="">-- Select one --</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Pondicherry">Pondicherry</option>
+                        <option value="Haryana">Haryana</option>                      
+                        <option value="Punjab">Punjab</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Daman and Diu">Daman and Diu</option>
+                        <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>                
+                    </select>
+                <span style="color:red;">{{form.state.errors}}</span>   
+
+                </div>
+
+            <div class="input-field col s12 m10">
+                  <div class="text-name {%if form.city.errors%}has-error{%endif%}">City <span style='color:red'>*</span></div>
+                        <select name="city" id="city">
+                            <option value="">-- Select one --</option>
+                        </select>
+                        <span style="color:red;">{{form.city.errors}}</span>
+            <div class="text-name" id="results"></div>
+
+                </div>
+
+
+      <div class="input-field col s12 m10">
+        <div class="text-name">Gender</div>
+        <select name="gender">
+        <option value="">Select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        </select> 
+        <span style="color:red;">{{form.gender.errors}}</span>
+      </div>
+
+
+
+      <div class="input-field col s12 m10">
+      <div class="text-name">Date Of Birth</div>
+       <input type="text" name="d_o_b" class="text-sbox" style="width:90%;" value="" id="d_o_b" placeholder="Please select Birth Date">
+        <span style="color:red;">{{form.d_o_b.errors}}</span>
+         </div>
+         
+    
+      <div class="input-field col s12 m10">
+            <div class="text-name">Highest level of education completed</div>
+            <select name="higher_education">
+              {% include '_education.html' %}
+            </select> 
+          <span style="color:red;">{{form.higher_education.errors}}</span>
+
+        </div>
+
+      <div class="input-field col s12 m10">
+        <div class="text-name">Street 1 <span style='color:red'>*</span></div>
+        <input type="text" class="text-sbox" style="width:90%;" id="street1" name="street1" placeholder="Enter your Street" value="{{form.street1.value|default:''}}">
+        <span style="color:red;">{{form.street1.errors}}</span>
+       </div>
+
+     <div class="input-field col s12 m10">
+        <div class="text-name">Street 2</div>
+        <input type="text" class="text-sbox" style="width:90%;" id="street2" name="street2" placeholder="Enter your Street (optional)" value="{{form.street2.value|default:''}}">
+        <span style="color:red;">{{form.street2.errors}}</span>
+    </div>
+      
+     <div class="input-field col s12 m10">
+        <div class="text-name">Pincode <span style='color:red'>*</span></div>
+        <input type="text" class="text-sbox" style="width:90%;" id="pincode" name="pincode" placeholder="Enter your Pincode" maxlength="6" value="{{form.pincode.value|default:''}}" maxlength="6">
+        <span style="color:red;">{{form.pincode.errors}}</span>
+    </div>
+
+
+      <div class="input-field col s12 m10">
+        <input type="checkbox" name="i_agree" id="i_agree"class="filled-in" checked>
+        <label for="i_agree">
+        I agree to the Clat Terms of Service
+        </label>
+      </div>
+
+      <div class="input-field col s12 m10">
+      <br>
+      <button class="btn waves-effect waves-light" type="submit" name="reg_form_button" id="reg_form_button">Create your Account</button>
+      </div>
+
+
+      <div class="input-field col s12 m10">
+        <h6 class="right-align"> <span style='color:red'>*</span> Required Fields</h6>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+{%block footer_script %}
+<script src="{% static '/static/custom/js/login_register.js'%}"></script>  
+
+<script>
+  $(function() {
+    $("#d_o_b").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+0",
+            maxDate: "-15Y"
+    });
+
+    });
+
+
+  //AJAX GET request for loading cities when a state in selected or changed
+  $("#state").change(function(event) {
+            $.ajax({
+                    url : "/load_cities/",
+                    data : { 'state' : $(this).val()},
+                    type : "GET",
+
+                    success : function(json_from_view) {
+                      $('#city').empty().html('');
+                       $('#results').empty().html('');
+                for(var i=0;i<json_from_view.length;i++){
+                $('#city').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+                }
+                $('#city').material_select();
+                          $('.caret').remove();
+
+                   },
+                    error : function(xhr,errmsg,err) {
+                        $('#results').html("Cities are not loading!!!"); 
+                }
+                });
+            });
+
+</script>
+{% endblock %}
+
+

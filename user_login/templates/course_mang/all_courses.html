@@ -1,64 +1,91 @@
 {% extends 'new_home.html' %}
 {% load static %}
 {% load course_tags %}
-{% block slider %}
-{% endblock %}
 
 {% block body %}
-<style>
-.loader {
-position: fixed;
-left: 0px;
-top: 0px;
-width: 100%;
-height: 100%;
-z-index: 9999;
-background: url(../../../static/images/loader.gif) center no-repeat #fff;
-}    
-</style>
-
-<section id="privacy" style="margin-top:60px;">
-<div class="loader">
+<div class="row" style='margin:3px;'>
+    <input id="factor" value="{{ total_courses }}" type="hidden">
+    <input id="factor_course_type" value="{{ total_count_course_type }}" type="hidden">
+    <div class="loader">
+    </div>
+    <p style='font-size:20px;'>Cost Search:<br> 
+        <span style='font-size:10px;'>Low set: </span><span style='font-size:10px;' id="lower_value">1000.00</span>,
+        <span style='font-size:10px;'>Upper set: </span><span style='font-size:10px;' id="upper_value">9000.00</span>
+    </p>
+    <div id ='slider'>
+    </div>
+    <br>
+    <br>
+    <br>
 </div>
-<div class="con2"  id="pro">
-
-<div class="col-sm-3" style="margin-top: -40px;">
-<div class="filter-con" id="filt">
-<br>
-<h2>Refine your search</h2>
-
-<div class="filter1" id="avial">
-<h3>Subjects</h3>
-<ul id="course_category_filter" data-filter-type="course_type">
-{% for filtered_category,count_courses in filtered_courses_by_numbers.items %}
-<li data-course-type="{{ filtered_category }}">{{ filtered_category }}<span style=" float:right;">{{ count_courses }}
-</li>
-{% endfor %}
-</ul>
+<div class="col-sm-12">
+<div class="col-sm-3 hidden-xs">
+        <h3 class="center"></h3>
+        <div class="row" id="course-filter-list">
+            <h3>Subjects</h3>
+                <ul id="course_category_filter_xs" class="list-group filter-hover" data-filter-type="course_type">
+                    {% for filtered_category,count_courses in filtered_courses_by_numbers.items %}
+                        <li data-course-type="{{ filtered_category }}" class="list-group-item course_category_filter">
+                        {{ filtered_category }}<span style=" float:right;">{{ count_courses }}
+                        </li>
+                    {% endfor %}
+                </ul>
+        </div>
 </div>
-</div></div>
-<div class="col-lg-1" >
-<h3>
-<span style='color:blue;' id="total_courses_count">{% if searched_course_name %}{{ course_list|length }}{% else %}{{total_courses}}{% endif %} Result(s) {% if searched_course_name %} for  {{ searched_course_name }}{% endif %}</span>
-</h3>
-<div class="col-lg-4" id="course">
 
-{% include 'course_mang/course_list.html' %}
+<!-- Mobile subjects flter start -->
+<div class="hidden-md hidden-lg hidden-sm">
+    <div class="center">
+        <a href="javascript:void(0);" class="btn btn-default sharp theme-button ctgry_filter">Filter via. Category</a>
+    </div>
+
+    <!-- Filter Modal Start -->
+    <div id="category_filterModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header login-register-header center">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                  <label class="modal-title welcome-msg">Select Category</label>
+              </div>
+              <div class="modal-body">
+                <div class="row" id="course-filter-list">
+                <h3>Subjects</h3>
+                    <ul class="list-group filter-hover" data-filter-type="course_type" id='course_category_filter_md'>
+                        {% for filtered_category,count_courses in filtered_courses_by_numbers.items %}
+                            <li data-course-type="{{ filtered_category }}" class="list-group-item course_category_filter" >{{ filtered_category }}<span style=" float:right;">{{ count_courses }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </div>
+              </div>
+          </div>
+        </div>
+    </div>
+    <!-- Filter Modal End .... -->
 </div>
+
+<!-- Mobile subjects flter ends -->
+<div class="col-sm-9 col-lg-9">
+    <div class="row"><br></div>
+    <h3 class="center">
+        <span style='color:blue;' id="total_courses_count">{% if searched_course_name %}{{ course_list|length }}{% else %}{{total_courses}}{% endif %} Result(s) {% if searched_course_name %} for  {{ searched_course_name }}{% endif %}
+        </span>
+    </h3>
+    <div class="row col-sm-12 col-lg-12" id="course">
+        {% include 'course_mang/course_list.html' %}
+    </div>
 </div>
+
 {% if total_courses > 6 %}
-<a href="javascript:void(0)" id="fetch_courses" style="float:right;text-decoration: none;">
-More &#43;
+<a href="javascript:void(0);" id="fetch_courses" style="float:right;">
+See More &#43;
 </a>
 {% endif %}
-<a href="javascript:void(0)" id="fetch_courses_basedon_type" style="float:right;text-decoration: none;display: none;">
-More &#43;
+<a href="javascript:void(0);" id="fetch_courses_basedon_type" style="float:right;display: none;">
+See More &#43;
 </a>
 </div>
 </div>
-</div>
-</section>
-
 {%block courses_list %}
 {%endblock%}
 
@@ -66,54 +93,70 @@ More &#43;
 
 {% block footer_css_js %}
 <script>
+  // Start moda on click ...
+  $('.ctgry_filter').click(function(event) {
+    $('#category_filterModal').modal({ keyboard: false, backdrop: 'static' });
+  });
+
     $(window).load(function() {
         // Animate loader off screen
-        $(".loader").fadeOut("slow");
+        // $(".loader").fadeOut("slow");
       });
     var course_type_value = '';
     var total_count_course_type = 0;
-    $('#course_category_filter').click(function(event) {
-        $(".loader").fadeIn();
-        $('#fetch_courses').attr('disabled',true);
-        course_type_value  = $(event.target).data('course-type');
-        $.ajax({
-            type:'GET',
-            url: 'http://{{ request.META.HTTP_HOST }}/filter/courses/',
-            data: { 'based_on': $(this).data('filter-type'), 'value': $(event.target).data('course-type') },
-            success:function(json_from_view){
-                if(json_from_view){
-                    $('#course').html(json_from_view['html']);
-                    $('#total_courses_count').html(json_from_view['course_count']+' Results for <b>'+json_from_view['category_name']+'</b>');
+  function fetch_courses(event){
+    $.ajax({
+                type:'GET',
+                url: 'http://{{ request.META.HTTP_HOST }}/filter/courses/',
+                data: { 'based_on': $(event.target).data('filter-type'), 'value': $(event.target).data('course-type'), 'min_on': $('#lower_value').text(), 'max_on': $('#upper_value').text()},
+                success:function(json_from_view){
+                    if(json_from_view){
+                        $('#course').html(json_from_view['html']);
+                        
+                        ans_text = json_from_view['course_count']+' Results '
+                        
+                        if(json_from_view['category_name']){
+                           ans_text += 'for <b>'+json_from_view['category_name']+'</b>'      
+                        }
+                        
+                        $('#total_courses_count').html(ans_text);
+                        }else{
+                        $('#course').html('<h1>Error in filtering courses. Try again!!!</h1>');
+                    } 
+                    total_count_course_type = json_from_view['course_count'];
+                    if(total_count_course_type>3){
+                        $('#fetch_courses_basedon_type').css('display','inline-block');
+                        $('#fetch_courses').css('display','none');
 
-                    }else{
-                    $('#course').html('<h1>Error in filtering courses. Try again!!!</h1>');
-                } 
-                total_count_course_type = json_from_view['course_count'];
-                if(total_count_course_type>3){
-                    $('#fetch_courses_basedon_type').css('display','inline-block');
-                    $('#fetch_courses').css('display','none');
+                    }
+                    else{
+                        $('#fetch_courses_basedon_type').css('display','none');
+                        $('#fetch_courses').css('display','none');
 
-                }else{
-                    $('#fetch_courses_basedon_type').css('display','none');
-                    $('#fetch_courses').css('display','none');
-
+                    }
+                    // $(".loader").fadeOut("slow");
+                },
+                error: function(data){
+                    alert('Server error : Error in filtering courses :( .');
+                        // $(".loader").fadeOut("slow");
                 }
-                $(".loader").fadeOut("slow");
+            });
+  }
 
-            },
-            error: function(data){
-                alert('Server error : Error in filtering courses :( .');
-                    $(".loader").fadeOut("slow");
-            }
-        });
+    $('#course_category_filter_md, #course_category_filter_xs').click(function(event) {
+        // $(".loader").fadeIn();
+        $('#fetch_courses').attr('disabled',true);
+        // course_type_value  = $(event.target).data('course-type');
+        fetch_courses(event);    
+        $('#category_filterModal').modal('hide'); 
     });
 
 
 
     var starting_filter_score = 2;
-    var factor = Math.ceil('{{ total_courses }}'/6);
+    var factor = Math.ceil(parseInt($('#factor').val())/6);
     $('#fetch_courses').click(function(event) {
-        $(".loader").fadeIn();
+        // $(".loader").fadeIn();
         $.ajax({
             type:'GET',
             url: '/filtermore/courses/',
@@ -129,20 +172,20 @@ More &#43;
                 else{
                     $('#course').html('Error in filtering courses. Try again!!!');
                 } 
-                $(".loader").fadeOut("slow");
+                // $(".loader").fadeOut("slow");
             },
             error: function(data){
                 alert('Error : Error in filtering courses!!!');
-                $(".loader").fadeOut("slow");
+                // $(".loader").fadeOut("slow");
             }
         });
     });
 
 
     var start_course_type = 2;
-    var factor_course_type = Math.ceil('{{ total_count_course_type }}'/6);
+    var factor_course_type = Math.ceil(parseInt($('#factor_course_type').val())/6);
     $('#fetch_courses_basedon_type').click(function(event) {
-        $(".loader").fadeIn();
+        // $(".loader").fadeIn();
         $.ajax({
             type:'GET',
             url: '/filter/courses/',
@@ -153,7 +196,7 @@ More &#43;
                     start_course_type = json_from_view['start_course_type'] + 1;
                     if(start_course_type > factor_course_type){
                         $('#fetch_courses_basedon_type').css('display','none');
-                    }
+                      }
                     }
                 else{
                     $('#course').html('Error in filtering courses. Try again!!!');
@@ -162,10 +205,46 @@ More &#43;
             },
             error: function(data){
                 alert('Error : Error in filtering courses!!!');
-                $(".loader").fadeOut("slow");
+                // $(".loader").fadeOut("slow");
             }
         });
     });
+
+
+var slider = document.getElementById('slider');
+
+noUiSlider.create(slider, {
+    start: [1000, 4000],
+    connect: true,
+    step: 500, // Slider moves in increments of '10'
+    direction: 'rtl',
+    range: {
+        'min': 1000,
+        'max': 9000,
+    },
+    pips: { // Show a scale with the slider
+        mode: 'steps',
+        density: 2
+    }
+});
+function doSomething ( values, handle, unencoded, tap ) {
+    lower_v = document.getElementById('lower_value');
+    upper_v = document.getElementById('upper_value');
+
+    lower_v.innerHTML = values[0]
+    upper_v.innerHTML = values[1]
+    
+    $('#course_category_filter_md').click();
+    // values: Current slider values;
+    // handle: Handle that caused the event;
+    // unencoded: Slider values without formatting;
+    // tap: Event was caused by the user tapping the slider (bool);
+
+
+}
+
+slider.noUiSlider.on('change', doSomething);
+
 </script>
 
 {%endblock%}

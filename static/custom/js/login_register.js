@@ -127,7 +127,7 @@
                     country: 'Please enter valid country.',
                     city: 'Please enter valid city.',
                     state:'Please enter valid state.',
-                    i_agree:'Please agree with Clat Terms of Service first.',
+                    i_agree:'Please agree with eQuest Terms of Service first.',
                     street1:'Please enter street address.',
                     pincode: {
                         required: 'Please enter pincode.',

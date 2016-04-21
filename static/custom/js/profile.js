@@ -43,13 +43,12 @@ $(function () {
                     email: {
                         required: true,
                         email: true,
-                        remote: '/verify_email/',
+                        remote: '/verify_email/'
                     },  
                     
                     phone_number: {
                         required: true,
                         phoneUK:true,
-                        remote: '/verify_phone_number/',
                     },
                     d_o_b:{
                         required:true,
@@ -112,7 +111,7 @@ $(function () {
                     country: 'Please enter valid country.',
                     city: 'Please enter valid city.',
                     state:'Please enter valid state.',
-                    i_agree:'Please agree with Clat Terms of Service first.',
+                    i_agree:'Please agree with eQuest Terms of Service first.',
                     street1:'Please enter street address.',
                     pincode: {
                         required: 'Please enter pincode.',
@@ -299,7 +298,7 @@ $("#state").change(function(event) {
               if(json_from_view){
                 $('#picture_alert').css('color','blue');
                 $('#picture_alert').html('Profile picture removed.');
-                first_pic_src_url = '/CLAT_videos/media/profile_images/CLAT_default_DP.png';
+                first_pic_src_url = '/edx_lms_videos/media/profile_images/EQUEST_default_DP.png';
                 $('#profile_picture').attr('src',first_pic_src_url);
               }
 
@@ -338,12 +337,5 @@ $("#state").change(function(event) {
 
   
 $('#update_details_button').click(function(event) {
-    alertify.confirm("Do you really want to update the profile ?", function (e) {
-    if (e) {
-        $('#update_profile_details_form').submit();
-    } else {
-        alertify.error( 'Operation Cancelled' );
-        // user clicked "cancel"
-    }
-}).autoOk(5);
+    showConfirmModal("formSubmission", "Do you really want to update the profile ?", "#update_profile_details_form", "Profile updation cancelled.");
 });

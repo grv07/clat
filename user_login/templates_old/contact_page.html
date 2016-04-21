@@ -1,0 +1,130 @@
+{%extends 'new_home.html'%}
+{% load static %}
+
+{% block head_js_css %}
+<style>
+.errorlist li{
+  color: red;
+  font-size: 15px;
+}
+</style>
+{% endblock %}
+{%block body%}
+
+<section id="privacy" style="margin-top: 50px;">
+
+<div class="con">
+
+<div class="col-sm-4" >
+<h1  style="border:none; font-weight:300 !important">Contact Us </h1>
+<p style=" font-size:24px; font-weight:600;">Quality Council of India<br></p>
+<h5 style=" margin-left:20px; font-size:15px;">
+Institution of Engineers Building, <br>IIndFloor, 
+2 - Bahadur Shah Zafar Marg,<br> New Delhi - 110002, India. <br><br>
+<!--
+Tel: +91-11- 2337 9321,<br> 2337 8056, 2337 8217,<br> 2337 8057, 2337 9260,<br> 2337 0079, 2337 0567,<br> 2337 8837, 2337 8838,<br>2337 9621;<br><br>
+Fax: 91-11-2337 8678 .<br><br>
+-->
+Email: <a href="mailto:talktous@Clat.co.in" target="_top">talktous@Clat.co.in</a><br>
+</h5>
+</div>
+
+<div class="col-md-50" id="login-show" style='margin-bottom: 320px;'>
+<h1 style="border:none; margin-top:-40px; font-weight:300 !important">Contact Form</h1>
+<hr>
+
+<p style='font-size:20px;'>
+Hi, already an Clat student? Do you have questions, suggestions, or issues about a specific course?<br> 
+Please post it on your course’s discussion forum.<br>
+
+Not a student yet and have a general question about Clat?<br> 
+Please visit our FAQ’s.<br>
+Still need help or want to give us general feedback (which we want), contact us below.
+</p>
+<br>
+<form method="post" id="contact_form" action="/contact/" style='margin-bottom:20px;'>
+{% csrf_token %}
+      <div class="boss">
+        <div class="text-name">Email <span style="color:red;">*</span></div>
+        <input type="email" class="text-sbox" placeholder="username@domainname"  name="email" id="sname" style="width:90%;" required/>
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> <br><br>
+        <p>{{errors.email}}</p>
+
+      </div>  
+    
+     <div class="boss">
+        <div class="text-name">Full Name <span style="color:red;">*</span></div>
+        <input type="text" maxlength="30" class="text-sbox" placeholder="Enter username"  name="fullname" id="sname" required/>
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> <br><br>
+        <p>{{errors.fullname}}</p>
+
+    </div>
+
+    <div class="boss">
+        <div class="text-name">Phone Number </div>
+        <input type="text" pattern="[789]\d{9}" class="text-sbox" placeholder="9999504540"  name="phone" id="sname"/>
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> <br><br>
+         <p>{{errors.phone}}</p>
+
+    </div> 
+
+     <div class="boss">
+        <div class="text-name">I am a - </div>
+        <select class="select1" name="iama">
+            <option value = 'Student'>Student</option>
+            <option value = 'Professor'>Professor</option>
+            <option value = 'Journalist'>Journalist</option>
+            <option value = 'UniversityAdministrator'>University Administrator</option>
+        </select><br><br>
+         <p>{{errors.iama}}</p>
+
+      </div>  
+
+
+      <div class="boss">
+        <div class="text-name">Inquiry Type <span style="color:red;">*</span></div>
+        <select class="select1" name="inquirytype" required>
+            <option value="registration">Question about Registration and Activation</option>
+            <option value="technical">I am having a Technology Problem</option>
+            <option value="accessibility">Question about Accessibility for students with disabilities</option><option value="exams">Question about Certification and Exams</option>
+            <option value="account">My account details need changing</option>
+            <option value="university">Business development / Institutional inquiry</option>
+            <option value="harrassment">Report unethical or harassing conduct</option>
+            <option value="other">Other...</option>
+        </select> <br><br>
+        <p>{{errors.inquirytype}}</p>
+
+      </div>   
+ 
+
+<!--       <div class="boss">
+        <div class="text-name">Country</div>
+        <select class="select1" name="country" required>
+            <option>Select</option>
+            <option value = 'India'>India</option>
+            <option>America</option>
+        </select> 
+      </div>     
+        -->
+     
+     <div class="boss">
+        <div class="text-name">Message <span style="color:red;">*</span></div>
+        <textarea type="text" class="text-sbox" placeholder="Enter Message"  name="message" id="sname" style='width:90%;height:100px;' minlength="30" maxlength="500" required></textarea>
+        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span><br><br>
+        <p>{{errors.message}}</p>
+    </div>
+
+      <div class="boss">
+        <input type="submit" class="mit"  name="login" id="contact_submit_button" value="Contact Now"/>
+      </div>
+      <div class="boss">
+        <div class="text-name" style=" text-align:center !important; width:100% !important;"> <span style="color:red;">*</span> Required Fields</div>
+      </div>      
+    </form>
+</div>
+</div>
+</section>
+{%endblock%}
+
+{% block footer_css_js %}
+{%endblock%} 

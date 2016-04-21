@@ -2,299 +2,297 @@
 {% load static %}
 {% load is_owner_tags %}
 {% load default_tags %}
+{% load rating_tags %}
 
 {% block head_js_css %}
 {% endblock head_js_css %}
 
-{% block slider %}
-{% endblock %}
+
 
 {% block body %}
-<link rel="stylesheet" type="text/css" href="{% static '/static/css/normalize.css' %} " />
-<link rel="stylesheet" type="text/css" href="{% static '/static/css/component.css' %} " />
-<link rel="stylesheet" type="text/css" href="{% static '/static/css/demo.css' %} " />
+<div class="row" id="top-row-course-detail">
+  <div class="jumbotron jumbotron-course-detail sharp">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        {% include 'course_mang/show_demo_video.html' %}
+      </div>
+      <div class="col-lg-5 col-md-5 col-sm-5">
+        <h3 style="font-weight: bolder;color:black">{{course.course_name|title}}</h3>
+        <h5>The course is intended for healthcare professionals who are keen to conduct clinical audits but lack skills on how to go about. The course will be  a mix of interactive presentations and videos which will take the participant through the entire clinical audit cycle. The course is specifically designed to impart skills in conducting a clinical audit.</h5>
+        <span class="help-block">Average Ratings : {{avg_ratings}}/5&nbsp;
+        {% for _ in avg_ratings_list %} 
+        <i class="glyphicon glyphicon-star"></i>
+        {% endfor %}
+        </span>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <div class="row"><br><br></div>
+        {% if course.can_enroll %}
+          {% if is_student_enrolled %}
+            <a class="btn btn-block btn-default sharp theme-button" href="/course/videos/{{course.course_uuid}}/" style=" text-decoration:none"><div class="btn ">View Videos</div></a>
+            <br>
+          {% else %}
+              {% if user and user.student_profile.student %}
+               <form method="post" action="/order/checkout/" id="enroll_course_form">
+                {% csrf_token %}
+                   <input type="hidden" name="productinfo" value="{{ course.course_name }}">
+                   <input type="hidden" name="amount" value="{{ course.amount }}">
+                   <input type="hidden" name="txnid" value="{{ txnid }}">
+                   <input type="hidden" name="email" value="{{ user.email }}">
+                   <input type="hidden" name="phone" value="{{ user.student_profile.phone_number }}">
+                   <input type="hidden" name="fullname" value="{{ user.student_profile.full_name }}">
 
-
-<style type="text/css">
-#addreview{ display:none;}
-</style>
-<script type="text/javascript">
-
-$(document).ready(function() {  $("#abo").click(function(){ $("#abou").show(); $("#what").hide();$("#persu").hide(); $("#essential").hide();   });});
-$(document).ready(function() {  $("#wha").click(function(){ $("#abou").hide(); $("#what").show();$("#persu").hide(); $("#essential").hide();   });});
-$(document).ready(function() {  $("#per").click(function(){ $("#abou").hide(); $("#what").hide();$("#persu").show(); $("#essential").hide();   });});
-$(document).ready(function() {  $("#ess").click(function(){ $("#abou").hide(); $("#what").hide();$("#persu").hide(); $("#essential").show();   });});
-$(document).ready(function() {  $("#add_review").click(function(){ $("#addreview").slideToggle();});});
-
-</script>
-<script type="text/javascript">
-
-
-var make_button_active = function()
-{
-  //Get item siblings
-  var siblings =($(this).siblings());
-
-  //Remove active class on all buttons
-  siblings.each(function (index)
-    {
-      $(this).removeClass('active');
-    }
-  )
-
-
-  //Add the clicked button class
-  $(this).addClass('active');
-}
-
-//Attach events to menu
-$(document).ready(
-  function()
-  {
-    $(".menuss .submenu").click(make_button_active);
-  }
-)
-
-</script>
-
-
-  <script src="{% static '/static/js/modernizr.custom.js' %}"></script>
-  <script type="text/javascript" src="{% static '/static/js/classie.js' %}"></script>
-
-
-<section id="intro" style="margin-top: 50px;">
-<div class="con">
-
-<div class="col-sm-3" >
-      {% include 'course_mang/show_demo_video.html' %}
-</div>
-
-<div class="col-md-2"><h1>{{course.course_name}}</h1>
-<p>
-{% autoescape on %}
-{{ course.course_information.short_description }}
-{% endautoescape %}</p>
-</div>
-
-<div class="col-sm-3">
-
-{%if course.can_enroll%}
-  
-  {% if is_student_enrolled %}
-    <a href="/course/videos/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a>
-    <br>
-  {% else %}
-      {% if user and not user.teacher %}
-       <form method="post" action="/enroll/student/" id="enroll_course_form">
-        {% csrf_token %}
-           <!-- <input type="hidden" name="course_uid" value="{{ course.course_uuid }}"> -->
-           <input type="hidden" name="productinfo" value="{{course.course_uuid}}">
-           <!-- <input type="hidden" name="amount" value="{{ course.amount }}">
-           <input type="hidden" name="txnid" value="{{ txnid }}">
-           <input type="hidden" name="email" value="{{ user.email }}">
-           <input type="hidden" name="phone" value="{{ user.student_profile.phone_number }}">
-           <input type="hidden" name="firstname" value="{{ user.student_profile.full_name }}"> -->
-
-           <button type="submit" class="enroll-btn" style=" text-decoration:none">Enroll Now</button>
-      </form>
+                   <button type="submit" class="btn btn-lg btn-block btn-primary sharp">Pay Now</button>
+              </form>
+                {% endif %}
+                 {% if user.teacher and course.teacher_id == user.id %}
+                 <a class="btn btn-block btn-success sharp" href="/course/videos/teacher/{{course.course_uuid}}/">View Course</a><br>
+              {% endif %}
+              {% if user.is_superuser %}
+                 <a class="btn btn-block btn-success sharp" href="/course/admin/{{course.course_uuid}}/">View Course</a><br>
+              {% endif %}
+          {% endif %}
+        {%else%}
+            <button type="button" class="btn btn-block btn-info">Uploading...</button><br>
         {% endif %}
-  {% endif %}
-
-  {% if user.teacher and course.teacher_id == user.id %}
-    <a href="/course/videos/teacher/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a><br>
-  {% endif %}
-
-{%else%}
-    <div class="enroll-btn">Uploading...</div><br>
+      </div>
+    </div>
+    <div class="row">
       {% if user.teacher and course.teacher_id == user.id %}
-         <a href="/course/videos/teacher/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a><br>
+          <a class="btn btn-info left" href="/create/modules/{{course.course_uuid}}/">Add Modules</a>
+          <a class="btn btn-info right" href="/upload/videos/{{course.course_uuid}}/">Add Videos</a>
       {% endif %}
-      {% if user.is_superuser %}
-         <a href="/course/admin/{{course.course_uuid}}/" style=" text-decoration:none"><div class="enroll-btn">Start Course</div></a><br>
-      {% endif %}
-      
-{% endif %}
-
-</div>
-{% if user.teacher and course.teacher_id == user.id %}
-    <div class="col-sm-8">
-    <br><a class="ssubmit" href="/create/modules/{{course.course_uuid}}/" style="float: left;">Add Modules</a>
-    <a class="ssubmit" href="/upload/videos/{{course.course_uuid}}/" style="float: right;">Add Videos</a>
     </div>
-{% endif %}
-</div>
-</section>
+  </div>
+  <div class="row top-row-course-detail sharp">
+    <!-- <div class="col-lg-1 col-md-1 col-sm-1">
+    </div> -->
+    <div class="col-lg-8 col-md-8 col-sm-8">
+      <div class="panel panel-default">
+        <ul id="course-detail-tab" class="nav nav-tabs nav-pills sharp">
+        <li class="active"><a href="#about" data-toggle="tab">About the course</a></li>
+        <li><a href="#learn" data-toggle="tab">What you will learn</a></li>
+        <li><a href="#benefits" data-toggle="tab">Certification Benefits</a></li>
+        <li><a href="#elgibility" data-toggle="tab">Elgibility</a></li>
+        <li><a href="#reviews" data-toggle="tab">Reviews</a></li>        
+      </ul>
+      <div id="course-detail-tab" class="tab-content">
+         <div class="tab-pane fade in active" id="about">
+          <p class="course-detail-tab-text">
+            {% autoescape on %}
+            {{ course.course_information.course_description|to_newline|safe }}
+            {% endautoescape %}
+          </p>
+         </div>       
+         <div class="tab-pane fade" id="learn">
+          <p class="course-detail-tab-text">
+            {% autoescape on %}
+            {{ course.course_information.course_objective|to_newline|safe }}
+            {% endautoescape %}
+          </p>
+         </div>
+         <div class="tab-pane fade" id="benefits">
+            <h1 class="course-detail-tab-text">Pursue a Verified Certificate to highlight the knowledge and skills you gain.</h1>
+            <div class="row course-detail-tab-text">
+              <div class="col-md-7">
+              <p>
+              The certification will enable you to provide objective evidence of having acquired skills in clinical audit. More importantly it will help you in planning, conducting and analysing clinical audits in your organisation. You would be a select few personnel in the country who are trained in the nuances of clinical audit.
+              </p>
+              </div>
+              <div class="col-md-5">
+                <img src="{% static 'images/cert-verified-thumb.png' %}" height="100%" width="100%">
+              </div>
+            </div>
+         </div>
+         <div class="tab-pane fade" id="elgibility">
+          <h3 class="course-detail-tab-text">
+            {% autoescape off %}
+            {{ course.course_information.course_eligibility|to_newline }}
+            {% endautoescape %}
+          </h3>
+         </div>
+         <div class="tab-pane fade course-detail-tab-text" id="reviews">
+         {% if is_student_enrolled and not rating %}
+         <a href="javascript:void(0)" onclick="$('#createReviewModal').modal({ keyboard: false, backdrop: 'static' });" class="right">Write a review...<span class="glyphicon glyphicon-pencil"></span></a>
+         {% endif %}
 
-<section id="about">
-<div class="con">
+          <form action="/remove_rating/" method="post" id='remove_review_form' role="form">
+            {% csrf_token %}
+            <input type="hidden" name="c_id" value="{{ course.id }}">
+          </form>
 
-<div class="col-lg-1"> 
-<div class="menuss">
-
-<div id="abo" class="submenu active"><div class="ficons" ><img src="{% static '/static/images/icons/Document-100.png' %}" height="100%" width="100%"></div>About the course</div>
-<div id="wha" class="submenu"><div class="ficons" ><img src="{% static '/static/images/icons/Reading-100.png' %}" height="100%" width="100%"></div>What you will learn</div>
-<div id="per" class="submenu"><div class="ficons" ><img src="{% static '/static/images/icons/Class-50.png' %}" height="100%" width="100%"></div>Certification Benefits</div>
-<div id="ess" class="submenu"><div class="ficons" ><img src="{% static '/static/images/icons/Survey-100.png' %}" height="100%" width="100%"></div>Eligibility</div>
-
-</div>
-
-<div class="full">
-
-<div id="abou">
-<div class="col-lg-4">
-<h3>About this course</h3>
-<p>
-{% autoescape on %}
-{{ course.course_information.description|to_newline|safe }}
-{% endautoescape %}
-
-</p></div>
-</div>
-
-<div id="what">
-<div class="col-lg-4">
-<h3>What you'll learn</h3>
-<p> 
-{% autoescape on %}
-{{ course.course_information.objective|to_newline|safe }}
-{% endautoescape %}
-</p>
-</div></div>
-
-
-<div id="persu">
-<div class="col-lg-4">
-<h1 style="  margin-top:25px; padding:25px;">Pursue a Verified Certificate to highlight the knowledge and skills you gain </h1>
-
-<div class="col-lg-1">
-<div class="col-lg-4">
-<div class="circle-icon" data-icon="/"> </div>
-<div class="col-lg-2">
-<p>
-{% autoescape on %}
-{{ course.course_information.crt_benefits|to_newline|safe }}
-{% endautoescape %}
-</p>
-</div>
-</div>
-
-
-<div class="col-sm-3"  >
-<img src="{% static 'images/cert-verified-thumb.png' %}" style=" margin-top:120px;" height="100%" width="100%" />
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="essential">
-<h3>Essential</h3>
-<p>
-{% autoescape off %}
-   {{ course.course_information.eligibility|to_newline }}
-{% endautoescape %}
-</p>
-</div>
-</div></div>
-
-<div class="col-sm-3" style="margin-top:70px !important;" >
-<div class="full">
-<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Watch-50.png' %}" height="100%" width="100%"></div> <strong>Duration:</strong> </div> <div class="col-md-50"> {{ course_duration }} weeks</div> </li>
-<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Cosine-50.png' %}" height="100%" width="100%"></div><strong> Effort :</strong> </div> <div class="col-md-50">  {{course.effort}}</div> </li>
-<li><div class="col-md-50"><div class="ficons"> <img src="{% static '/static/images/icons/Banknotes-100.png' %}" height="100%" width="100%"></div> <strong>*Stage I Fee :</strong> </div> <div class="col-md-50"> Rs.{{course.amount}}/- (Inclusive of Tax)</div> </li>
-<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Ascending Sorting-100.png' %}" height="100%" width="100%"></div> <strong>Level: </strong> </div> <div class="col-md-50"> {{course.level}}</div> </li>
-<li><div class="col-md-50"><div class="ficons" ><img src="{% static '/static/images/icons/Reading-100.png' %}" height="100%" width="100%"></div> <strong>Languages :</strong> </div> <div class="col-md-50"> {{course.language}}</div> </li>
-<li style="border-bottom:none !important"><div class="col-md-50" ><div class="ficons"><img src="{% static '/static/images/icons/Visible-100.png' %}" height="100%" width="100%"></div> <strong>Interaction Mode:</strong> </div> <div class="col-md-50"> Animation Video , Lectures</div> </li>
-</div>
-<p>
-  <p>*Participation Certificate will Awarded by Clat</p>
-  <p>*Please read the certification policy for more details</p>
-</p>.
-<div class="col-lg-4">
-    <h3 style=" color:#04a5e5; width:90%; margin-left:5px; text-align:center; font-size:16px; margin-bottom:5px;">Share with a friend </h3>
-    <div class="sreview-img" style="margin-left:20px;">
-       <img src="{% static '/static/images/icons/Facebook-50.png' %}" height="100%" width="100%" style="  border-radius:50%">
-    </div>
-    <div class="sreview-img">
-       <img src="{% static '/static/images/icons/Google Plus-50.png' %}" height="100%" width="100%" style=" border-radius:50%">
-    </div>
-    <div class="sreview-img">
-       <img src="{% static '/static/images/icons/Twitter-50.png' %}" height="100%" width="100%" style=" border-radius:50%">
-    </div>
-    <div class="sreview-img">
-       <img src="{% static '/static/images/icons/LinkedIn-50.png' %}" height="100%" width="100%"style=" border-radius:50%">
-    </div>
-</div> 
-
-</div>
-</div>
-</section>
-
-{%include 'rating_managment/_user_rating.html'%}
-
-<section id="addreview">
-<div class="con">
-<div class="col-lg-4 search-box" >
-        <form id="theForm" class="simform" autocomplete="off" method="post">
-          <div class="simform-inner">
-            <ol class="questions">
-              <li>
-                <span><label for="review_rating">Rate the course (1-5)</label></span> 
-                 <input id="review_rating" name="review_rating" type="text" placeholder="Enter between 1-5 (both inclusive)"/>
-              </li>
-              <li>
-                <span><label for="review_text">Write a review</label></span>
-                <input type="text" id="review_text" name="review_text" placeholder="Between 10 to 150 characters" maxlength="150"/>
-              </li>
-            </ol><!-- /questions -->
-            <button class="submit" type="submit">Send answers</button>
-            <div class="controls">
-              <button class="next"></button>
-              <div class="progress"></div>
-              <span class="number">
-                <span class="number-current"></span>
-                <span class="number-total"></span>
+          {% for review in total_reviews %}
+          <div class="media course-detail-tab-text reviews-list">
+            <div class="media-left">
+              <img class="media-object img-circle review-img" src="{{ review.user|get_img }}" alt="Picture">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{ review.user.student_profile.full_name }}
+              {% if review.user == user %}
+                &nbsp;&nbsp;<small><label class="label label-info">Your review</label></small>&nbsp;                
+                <span class="glyphicon glyphicon-trash" title="Remove review" id="remove_review" onclick="remove_review(this)">
+                </span>
+              {% endif %}
+              <span class="right">
+              {% if review.ratings == 1 %}
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              {% elif review.ratings == 2 %}
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              {% elif review.ratings == 3 %}
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              {% elif review.ratings == 4 %}
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star-empty"></span>
+              {% elif review.ratings == 5 %}
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              {% endif %}
               </span>
-              <span class="error-message"></span>
-            </div><!-- / controls -->
-          </div><!-- /simform-inner -->
-          <span class="final-message"></span>
-        </form><!-- /simform -->
+              </h4>
+              <p>{{ review.review_text }}</p>
+            </div>
+          </div>
+          {% empty %}
+          <h3>No reviews present yet.</h3>
+          {% endfor %}
+          </div>   
+         </div>
+         
+      </div>
+      </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <div class="row other-details" style="margin-left: 2%;margin-right: 2%;">
+      <div class="panel panel-default">
+        <div class="panel-heading center sharp theme-bgc" style="color:white;">Other details</div>
+        <table class="table table-striped">      
+       <thead>
+       </thead>   
+       <tbody>
+          <tr>
+             <td><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;&nbsp;<b>Duration:</b></td>
+             <td class="text-right">{{ course_duration }} weeks</td>
+          </tr>
+          <tr>
+             <td><span class="glyphicon glyphicon-scale"></span>&nbsp;&nbsp;&nbsp;<b>Effort:</b></td>
+             <td class="text-right">{{course.effort}}</td>
+          </tr>
+          <tr>
+             <td><i class="fa fa-inr"></i>&nbsp;&nbsp;&nbsp;<b>*Stage I Fee:</b></td>
+             <td class="text-right">Rs.{{course.amount}}/- <span style="font-size: 12px;">(Inclusive of Tax)</span></td>
+          </tr>
+          <tr>
+             <td><span class="glyphicon glyphicon-stats"></span>&nbsp;&nbsp;&nbsp;<b>Level:</b></td>
+            <td class="text-right">{{course.level}}</td>
+          </tr>
+          <tr>
+             <td><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;&nbsp;<b>Languages:</b></td>
+             <td class="text-right">{{course.language}}</td>
+          </tr>
+          <tr>
+             <td><span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;&nbsp;<b>Interaction Mode:</b></td>
+             <td class="text-right">Animation Video , Lectures</td>
+          </tr>
+       </tbody>
+      </table><hr>
+       <p>
+        <h6 class="text-right">*&nbsp;Participation Certificate will Awarded by eQUEST&nbsp;</h6>
+        <h6 class="text-right">*&nbsp;Please read the certification policy for more details&nbsp;</h6>
+      </p>
+      </div>
+      </div>
+      <br>
+      <div class="row other-details" style="margin-left: 2%;margin-right: 2%;">
+        <div class="panel panel-default">
+          <div class="panel-heading center sharp theme-bgc" style="color:white;font-weight: bold;">Share this course with a friend</div>
+          <br>
+            <div class="row">
+              <div class="col-md-2 col-sm-2 col-xs-2"></div>
+              <div class="col-md-2 col-sm-2 col-xs-2">
+                <a href="#">
+                <i class="fa fa-facebook fa-2x"></i>
+                </a>
+              </div>
+              <div class="col-md-2 col-sm-2 col-xs-2">
+                <a href="#">
+                <i class="fa fa-google-plus fa-2x"></i>
+                </a>
+              </div>
+              <div class="col-md-2 col-sm-2 col-xs-2">
+                <a href="#">
+                <i class="fa fa-twitter fa-2x"></i>
+                </a>
+              </div>
+              <div class="col-md-2 col-sm-2 col-xs-2">
+                <a href="#">
+                <i class="fa fa-linkedin fa-2x"></i>
+                </a>
+              </div>
+              <div class="col-md-2 col-sm-2 col-xs-2"></div>
+            </div>
+            <br>
+      </div>
+      </div>   
+      </div>
+    </div>
+    
+  </div>
+<input type="hidden" value="{{csrf_token}}" id="ctkn">
+<div id="createReviewModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md">
+      <div class="modal-content">
+          <div class="modal-header login-register-header center">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close"><span class="glyphicon glyphicon-remove-circle"></span></button>
+              <label class="modal-title welcome-msg">Write a review...</label>
+          </div>
+          <div class="modal-body">
+            <form role="form" name="reviewForm" id="reviewForm">
+              <div class="form-group">
+                <label for="rating">Rate this course :&nbsp;&nbsp;&nbsp;</label>
+                <span id="rating_stars" name="rating_stars" style="font-size:22px;">
+                  <span class="glyphicon glyphicon-star-empty" data-rate="1"></span>
+                  <span class="glyphicon glyphicon-star-empty" data-rate="2"></span>
+                  <span class="glyphicon glyphicon-star-empty" data-rate="3"></span>
+                  <span class="glyphicon glyphicon-star-empty" data-rate="4"></span>
+                  <span class="glyphicon glyphicon-star-empty" data-rate="5"></span>
+                  &nbsp;&nbsp;<span id="ratedmsg" style="color:blue;"></span>
+                  <input type="hidden" name="rated" value="" id="rated">
+                </span>
+              </div>
+
+               <div class="form-group">
+                  <label for="review_text">Your review</label>
+                  <textarea class="form-control" id="review_text" name="review_text" rows="4" required></textarea>
+               </div>
+               <div class="form-group">
+                  <button type="button" id="post_review_button" data-course="{{ course.id }}" class="btn btn-md btn-primary" onclick="post_review(this,document.forms['reviewForm'])">Submit your review</button>
+               </div>      
+            </form>
+          </div>
 </div>
 </div>
-</section>
-<!-- Append code of disqus -->
-<div id="disqus_thread" style="margin-left: 5%;width: 90%;"></div>
-{%endblock%}
+</div>
+{% endblock %} 
 
 {% block footer_css_js %}
-
-<script type="text/javascript">
-    var disqus_shortname = 'equestco';
-    
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-<script src="{% static '/static/js/stepsForm.js' %}"></script>
-<script type='text/javascript' > 
-  var csrfmiddlewaretoken = '{{ csrf_token }}';
-  var c_id = '{{course.id}}';
-</script>
 <script src="{% static '/static/custom/js/user_rating.js'%}"></script>
-<script type="text/javascript">
-    var disqus_shortname = 'equestco';    
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
+{%endblock%}
 
-{%endblock%} 

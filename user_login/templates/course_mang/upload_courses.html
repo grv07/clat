@@ -18,20 +18,20 @@
     <p style="background-color: brown;height: 5px;"></p>
     </div>
 <br>
-<form id="upload_courses_form" action="/upload/videos/{{course_uuid}}/" method="POST" enctype="multipart/form-data">
+<form id="upload_courses_form" role="form" action="/upload/videos/{{course_uuid}}/" method="POST" enctype="multipart/form-data">
 {% csrf_token %}
         <fieldset>
-		<div class="boss" style="margin-top: 20px;">
+		<div class="row" style="margin-top: 20px;">
         <label style="font-size: 18px;">Name of Module : </label>
         {{course_videos_form.module_name}}
                 <label class="text-sbox" id="no_module_label" style="color:red;"></label>
         <p class="error">{{course_videos_form.errors.module_name}}</p>
 		</div>
-        <div class="boss" id="course_video_choices" style="margin-top: 10px;">
+        <div class="row" id="course_video_choices" style="margin-top: 10px;">
         <label style="font-size: 18px;">Type : </label><br>
           {{course_videos_form.video_type}}
         </div><br>
-        <div class="boss" style="margin-top: 20px;">
+        <div class="row" style="margin-top: 20px;">
             <label class="" id="help_label_1" for="articulate_file" style="font-size: 16px;">
             Select Your <span id="type_display">Video</span> File<span style="color:red">*</span>
             </label>
@@ -49,8 +49,8 @@
             {% endif %}
       </div>
 		<hr>
-         <div class="boss" style="margin-top: 20px;margin-bottom: 20px;">
-            <button type="submit" class="ssubmit">Submit</button>
+         <div class="row" style="margin-top: 20px;margin-bottom: 20px;">
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
         </div>
         </fieldset>
 </form>
@@ -59,10 +59,6 @@
 {% else %}
 <h1>Nothing to show!!!</h1>
 {% endif %}
-
-{%block courses_list %}
-{%endblock%}
-
 {%endblock%}
 
 {% block footer_css_js %}

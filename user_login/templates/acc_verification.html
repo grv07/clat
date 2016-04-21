@@ -10,41 +10,62 @@
 </style>
 {% endblock %}
 {% block body %}
-<section id="course" style='height:100%;margin-top: 30px;'>
-<div class="courses-list" id='uniqe'>
-    <p style="color:red;">May be message not send to your mobile if you have DND (Do not disturb) activated.
-    <br>
-    In this case please check your e-mail for account verification.
-    <br> 
-    <span style="color:red;">
-    {{form.user_phone.errors}}
-    {{form.otp_code.errors}}
-    </span>
-    </p>
-    <p style="color:green;">Verify your account by OTP</p>
-    {% if is_otp_send_success %}
-    <p style="color:green;">OTP send Successfully to your phone</p>
-    {%endif%}
-    {%if error_otp %}
-     <p style="color:red;">Please try again you type something wrong</p>
-    {%endif%}
-  <div class="col-sm-2">
-    <form action="/send/otp/" method="POST" role="form" id="acc_ver_phone">
-        {% csrf_token %}
-        <input type="text" id="user_phone" required='true' name="user_phone" value="{{request.session.phone_number}}" placeholder="User phone" 
-              class="text-sbox {%if form.user_phone.errors%}error{%endif%}">
- 
-        <button class="ssubmit" type="submit" style="width:100px;" >Send OTP!</button>
-    </form>
-    <form action="/verify/user_otp/" method="POST" role="form" id="acc_ver_phone">  
-        {% csrf_token %}
-        <input type="text" id="otp_code" value='{{form.otp_code.value|default:''}}' required='true' name="otp_code" placeholder="Enter Otp here" 
-              class="text-sbox {%if form.otp_code.errors%}error{%endif%}" style="margin-top: 20px;">
-        <button class="ssubmit" type="submit" style="width:100px;">Verify OTP!</button>
-    </form>
-  </div>  
+<div  class="container-fluid" style='margin-top: 50px;'>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center">
+        <div class="row error">
+        <h4>May be message not send to your mobile if you have DND (Do not disturb) activated.
+            </h4>
+        </div>
+        <div class="row error"><h4>In this case, please check your e-mail for account verification.</h4></div>
+        <div class="row error">
+            <h5>{{form.user_phone.errors}}</h5>
+            <h5>{{form.otp_code.errors}}</h5>
+        </div>
+        <br>
+        <div class="row">
+            <h4>Verify your account by OTP</h4>
+            {% if is_otp_send_success %}
+            <p style="color:green;">OTP send Successfully to your phone</p>
+            {%endif%}
+            {%if error_otp %}
+             <p class="error">Please try again you type something wrong</p>
+            {%endif%}
+        </div>
+          <div class="row">
+            <form action="/send/otp/" method="POST" role="form" id="acc_ver_phone">
+                {% csrf_token %}
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <div class="form-group">
+                <input type="text" id="user_phone"  name="user_phone" value="{{request.session.phone_number}}" placeholder="User phone" class="form-control sharp {%if form.user_phone.errors%}error{%endif%}" required></div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                <div class="form-group">
+                <button class="btn btn-block btn-info" type="submit">Send OTP!</button>
+                </div>
+                </div>
+            </form>
+            </div>
+
+            <div class="row">
+            <form action="/verify/user_otp/" method="POST" role="form" id="acc_ver_phone">  
+                {% csrf_token %}
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <div class="form-group">
+                <input type="text" id="otp_code" value='{{form.otp_code.value|default:''}}' name="otp_code" placeholder="Enter Otp here" class="form-control sharp {%if form.otp_code.errors%}error{%endif%}" requirted>
+                </div></div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+            <div class="form-group">
+            <button class="btn btn-block btn-info" type="submit">Verify OTP!</button>
+            </div>
+            </div>
+            </form>
+          </div> 
+    </div>
+    <div class="col-md-2"></div>   
+</div> 
 </div>
-</section>
 {% endblock %}
 
 {% block footer_css_js %}
@@ -52,9 +73,3 @@
 
 {% block footer %}
 {% endblock %} 
-
-
-
-
-
->>>>>>> c6e7aac3ac7c514ae75be6f17f3d94401dc9855a

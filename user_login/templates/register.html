@@ -1,4 +1,5 @@
 {% extends 'new_home.html' %}
+{% load static %}
 {% block head_js_css %}
     <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/>
@@ -8,7 +9,7 @@ $(function() {
 $("#d_o_b").datepicker({
         changeMonth: true,
         changeYear: true,
-        yearRange: "-115:+0",
+        yearRange: "-50:+0",
         // minDate: "+20Y",
         maxDate: "-15Y",
 });
@@ -18,61 +19,61 @@ $("#d_o_b").datepicker({
 {% endblock %}
 
 {% block body %}
-<section id="re">
-  <div id="login-show">
-    <div class="boss">
-      <li class="lo1" style=" text-align:center !important; width:100% !important ">Create a Clat account</li>
+<div class="container-fluid" style="margin-top:50px;">
+  <div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="row">
+      <h2 class="text-center hidden-xs">Create an eQuest account</h2>
+      <h4 class="text-center hidden-md hidden-lg">Create an eQuest account</h4>
     </div>
-    <form  method="post" action="/register/student/" autocomplete="off" id="reg_form" autocomplete="off">
+    <div class="row">
+    <form  method="post" action="/register/student/" role="form" id="reg_form" autocomplete="off">
             {% csrf_token %}
-      <div class="boss">
-        <div class="text-name">User Name <span style='color:red'>*</span></div>
-        <input type="text" class="text-sbox" placeholder="Enter your username" value="{{form.username.value|default:''}}"  name="username" id="username"/>
-        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> 
+      <div class="form-group">
+        <label for="username">Username <span class="error">*</span></label>
+        <input type="text" class="form-control sharp" placeholder="Enter your username" value="{{form.username.value|default:''}}"  name="username" id="username"> 
+      <p class="error">{{form.username.errors}}</p>
       </div>
-      <span style="color:red;">{{form.username.errors}}</span>
     
-     <div class="boss">
-        <div class="text-name">Full Name <span style='color:red'>*</span></div>
-        <input type="text" class="text-sbox" placeholder="Enter full_name"  name="full_name" id="fullname" 
-        value="{{form.full_name.value|default:''}}"/>
-        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> 
+     <div class="form-group">
+        <label for="fullname">Full Name <span class="error">*</span></label>
+        <input type="text" class="form-control sharp" placeholder="Enter full_name"  name="full_name" id="fullname" 
+        value="{{form.full_name.value|default:''}}">
+        <p class="error">{{form.full_name.errors}}</p>
      </div>
-     <span style="color:red;">{{form.full_name.errors}}</span>
 
-     <div class="boss">
-        <div class="text-name">Email <span style='color:red'>*</span></div>
-        <input type="text" class="text-sbox" placeholder="username@domainname"  name="email" id="email" value="{{form.email.value|default:''}}" autocomplete="off">
-        <span id="luname" style="color:#F00; display:none; font-size:14px; font-family: Calibri; margin-left:20px;margin-top:5px"></span> 
+     <div class="form-group">
+        <label for="email">Email <span class="error">*</span></label>
+        <input type="text" class="form-control sharp" placeholder="username@domainname.com"  name="email" id="email" value="{{form.email.value|default:''}}" autocomplete="off">
+        <p class="error">{{form.email.errors}}</p>
      </div>
-    <span style="color:red;">{{form.email.errors}}</span>
-    <div class="boss">
-        <div class="text-name">Password <span style='color:red'>*</span></div>
+
+    <div class="form-group">
+        <label for="password">Password <span class="error">*</span></label>
         <input type="text" autocomplete="off" style='display:none'/>
         <input type="password" autocomplete="off" style='display:none'/>
-        <input type="password" class="text-sbox" name="password" id="password" placeholder = 'Enter your password' value=''  autocomplete="off"/>
-        <span style="color:#F00;font-size:14px;font-family: Calibri;  margin-left:20px;margin-top:5px" id="lpwd"></span> <span class="text-name" id="error" style="color:#F00; margin-top:5px "></span> 
+        <input type="password" class="form-control sharp" name="password" id="password" placeholder = 'Enter your password' value='' autocomplete="off"/>
+      <p class="error">{{form.password.errors}}</p>
     </div>
-    <span style="color:red;">{{form.password.errors}}</span>
 
-    <div class="boss">
-        <div class="text-name">Phone Number <span style='color:red'>*</span></div>
-        <input type="text" class="text-sbox" name="phone_number" value="{{form.phone_number.value|default:''}}" id="phone_number" placeholder = 'Enter your phone number' maxlength="10" autocomplete="off"/>
-        <span style="color:#F00;font-size:14px;font-family: Calibri;  margin-left:20px;margin-top:5px" id="lpwd"></span> <span class="text-name" id="error" style="color:#F00; margin-top:5px "></span>
+    <div class="form-group">
+        <label for="phone_number">Phone Number <span class="error">*</span></label>
+        <input type="text" class="form-control sharp" name="phone_number" value="{{form.phone_number.value|default:''}}" id="phone_number" placeholder = 'Enter your phone number' maxlength="10" autocomplete="off"/>
+        <p class="error">{{form.phone_number.errors}}</p>
     </div>
-        <span style="color:red;">{{form.phone_number.errors}}</span>
     
-     <div class="boss">
-        <div class="text-name" id="country">Country <sup style="font-size: 10px;color: blue;">Presently, only India is available.</sup></div>
-        <select class="select1" name="country">
-        <option value="India">India</option>
-        </select> 
+     <div class="form-group">
+        <label for="country">Country <sup style="font-size: 10px;color: blue;">Presently, only India is available.</sup></label>
+        <select class="form-control" name="country" id="country">
+          <option value="India">India</option>
+        </select>
+        <p class="error">{{form.country.errors}}</p>
      </div>
-     <span style="color:red;">{{form.country.errors}}</span>
         
-     <div class="boss">
-        <div class="text-name">State<span style='color:red'>*</span></div>
-                    <select name="state" id="state" class="text-sbox" style="width:90%;" onchange="getCities();">
+     <div class="form-group">
+        <label for="state">State<span class="error">*</span></label>
+                    <select name="state" id="state" class="form-control sharp" onchange="getCities();">
                         <option value="">-- Select one --</option>
                         <option value="Delhi">Delhi</option>
                         <option value="Pondicherry">Pondicherry</option>
@@ -109,122 +110,139 @@ $("#d_o_b").datepicker({
                         <option value="Uttar Pradesh">Uttar Pradesh</option>
                         <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>                
                     </select>
-
+                <p class="error">{{form.state.errors}}</p>   
                 </div>
-                <span style="color:red;">{{form.state.errors}}</span>   
-                <div class="boss">
-                  <div class="text-name {%if form.city.errors%}has-error{%endif%}">City<span style='color:red'>*</span></div>
-                    <div class=" {%if form.city.errors%}has-error{%endif%}">
-                        <select class="text-sbox" style="width:90%;" name="city" id="city">
-                                                <option value="">-- Select one --</option>
 
-                        </select>
-                        <span style="color:red;">{{form.city.errors}}</span>
-                    </div>
+                <div class="form-group">
+                  <label for="city">City<span class="error">*</span></label>
+                  <select class="form-control sharp" name="city" id="city">
+                    <option value="">-- Select one --</option>
+                  </select>
+                  <p class="error">{{form.city.errors}}</p>
                 </div>
-                                    <span style="color:red;">{{form.city.errors}}</span>
-             <div class="boss">
-         
-        <div class="text-name">Gender<span style="color:red;">*</span></div>
-        <select id = 'gender' class="text-sbox" style="width:90%;" name="gender">
-        <option value="">Select</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-                </select> 
-        </div>
-        <span style="color:red;">{{form.gender.errors}}</span>
+             <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id='gender' class="form-control sharp" name="gender">
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+                <p class="error">{{form.gender.errors}}</p>
+              </div>
         
-             <div class="boss">
-        <div class="text-name">Date Of Birth<span style='color:red'>*</span></div>
-        <input type="text" name="d_o_b" class="text-sbox" style="width:90%;" id="d_o_b" onchange="$(this).focusin();$(this).focusout();" placeholder="Please select Birth Date" value="{{form.d_o_b.value|default:''}}">
-        </div>
-        <span style="color:red;">{{form.d_o_b.errors}}</span>
-         
+            <div class="form-group">
+              <label for="d_o_b">Date Of Birth<span class="error">*</span></label>
+              <input type="text" name="d_o_b" class="form-control sharp" id="d_o_b" onchange="$(this).focusin();$(this).focusout();" placeholder="Please select Birth Date" value="{{form.d_o_b.value|default:''}}">
+              <p class="error">{{form.d_o_b.errors}}</p>
+            </div>
     
-         <div class="boss {%if form.higher_education.errors%}has-error{%endif%}">
-            <div class="text-name">Highest level of education completed<span style='color:red'>*</span></div>
-            <select class="select1" name="higher_education" id="higher_education">
-              {% include '_education.html' %}
-            </select> 
+         <div class="form-group">
+          <label for="higher_education">Highest level of education completed<span class="error">*</span></label>
+          <select class="form-control" name="higher_education" id="higher_education">
+            {% include '_education.html' %}
+          </select> 
+          <p class="error">{{form.higher_education.errors}}</p>
         </div>
-        <span style="color:red;">{{form.higher_education.errors}}</span>
 
-     <div class="boss {%if form.street1.errors%}has-error{%endif%}">
-        <div class="text-name">Street 1 <span style='color:red'>*</span></div>
-        <input type="text" class="text-sbox" style="width:90%;" id="street1" name="street1" placeholder="Enter your Street" value="{{form.street1.value|default:''}}">
-    </div>
-        <span style="color:red;">{{form.street1.errors}}</span>
-
-     <div class="boss {%if form.street2.errors%}has-error{%endif%}">
-        <div class="text-name">Street 2</div>
-        <input type="text" class="text-sbox" style="width:90%;" id="street2" name="street2" placeholder="Enter your Street (optional)" value="{{form.street2.value|default:''}}">
-    </div>
-        <span style="color:red;">{{form.street2.errors}}</span>
+        <div class="form-group">
+          <label for="street1">Street 1 <span class="error">*</span></label>
+          <input type="text" class="form-control sharp" id="street1" name="street1" placeholder="Enter your Street" value="{{form.street1.value|default:''}}">
+        <p class="error">{{form.street1.errors}}</p>
+        </div>
+        <div class="form-group">
+          <label for="street2">Street 2 <span class="error">*</span></label>
+          <input type="text" class="form-control sharp" id="street2" name="street2" placeholder="Enter your Street" value="{{form.street2.value|default:''}}">
+        <p class="error">{{form.street2.errors}}</p>
+        </div>
       
-     <div class="boss {%if form.pincode.errors%}has-error{%endif%}">
-        <div class="text-name">Pincode <span style='color:red'>*</span></div>
-        <input type="text" class="text-sbox" style="width:90%;" id="pincode" name="pincode" placeholder="Enter your Pincode" maxlength="6" value="{{form.pincode.value|default:''}}">
-    </div>
-        <span style="color:red;">{{form.pincode.errors}}</span>
-
-      <div class="boss">
-        <div class="text-name" style=" text-align:center !important; width:100% !important;">
-        {% if form.i_agree.value %}
-        <input type="checkbox" name="i_agree" id="i_agree" checked>
+       <div class="form-group">
+          <label for="pincode">Pincode <span class="error">*</span></label>
+          <input type="text" class="form-control sharp" id="pincode" name="pincode" placeholder="Enter your Pincode" maxlength="6" value="{{form.pincode.value|default:''}}">
+          <p class="error">{{form.pincode.errors}}</p>
+      </div>
+      <div class="row hidden-xs">
+        <div class="col-lg-5 col-md-5 col-sm-5">
+          {% if form.i_agree.value %}
+        <input class="right" type="checkbox" name="i_agree" id="i_agree" checked>
          {% else %}
-        <input type="checkbox" name="i_agree" id="i_agree">{% endif %}I agree to the Clat<!--  <a href="/termsandservices/" target="_blank">Terms of Service</a> -->  <span style='color:red'>*</span>
+        <input class="right" type="checkbox" name="i_agree" id="i_agree">
+        {% endif %}
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-7">
+          <label for="i_agree">
+            I agree to the eQuest <a href="/termsandservices/" target="_blank">Terms of Service</a><span class="error">*</span>
+          </label>
         </div>
       </div>
-        <span style="color:red;">{{form.i_agree.errors}}</span>
-
-      <div class="boss">
-        <input type="submit" class="mit"  name="login" id="login_form" value="Create your Account"/>
+      <div class="row hidden-md hidden-lg text-center">
+        <div class="row">
+            {% if form.i_agree.value %}
+          <input type="checkbox" name="i_agree" id="i_agree" checked>
+           {% else %}
+          <input type="checkbox" name="i_agree" id="i_agree">
+          {% endif %}
+          </div>
+          <div class="row">
+            <label for="i_agree">
+              I agree to the eQuest <a href="/termsandservices/" target="_blank">Terms of Service</a><span class="error">*</span>
+            </label>
+          </div>
       </div>
-      <div class="boss">
-        <div class="text-name" style=" text-align:center !important; width:100% !important;"> <span style='color:red'>*</span> Required Fields</div>
+
+
+      <div class="form-group">
+        <input type="submit" class="btn btn-block btn-primary sharp" name="login" id="login_form" value="Create your Account">
+      </div>
+      <div class="form-group">
+        <p class="text-center"><span class="error">*</span> Required Fields</p>
       </div>
     </form>
+</div><hr>
+ <div class="row">
+  <p class="text-center"> Already have Account ?</p>
+  <a href='javascript:void(0);' class="btn btn-block btn-info sharp" onclick="$('#loginRegisterModal').modal({ keyboard: false, backdrop: 'static' });">Sign in</a>
+</div>
+</div>
+<div class="col-md-2"></div>
+<br><hr>
 
-
- <div class="boss">
-        <div class="text-name" style="width:100%; text-align:center;"> Already have Account ?</div>
-         <a href='/home/' class="mit" style="text-align:center;">Sign in</a>
-      </div>
   </div>
-</section>
-{%endblock%}
+</div>
+{% endblock %}
+
 {% block footer_css_js %}
+<script src="{% static '/static/custom/js/login_register.js' %}"></script>
 <script>
 $('#d_o_b').keydown(function() {
   //code to not allow any changes to be made to input field
   return false;
 });
 
-  function getCities(){
-           //AJAX GET request for loading cities when a state in selected or changed
-            $.ajax({
-                    url : "/load_cities/",
-                    data : { 'state' : $('#state').val()},
-                    type : "GET",
+function getCities(){
+   //AJAX GET request for loading cities when a state in selected or changed
+    $.ajax({
+            url : "/load_cities/",
+            data : { 'state' : $('#state').val()},
+            type : "GET",
 
-                    success : function(json_from_view) {
-                      $('#city').empty().html('');
-                       $('#results').empty().html('');
-                for(var i=0;i<json_from_view.length;i++){
-                $('#city').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
-                }
-                //For selecting the value of city
-                if('{{value_city}}')
-                  $('#city > option[value="{{value_city}}"]').prop('selected', true);
+            success : function(json_from_view) {
+              $('#city').empty().html('');
+               $('#results').empty().html('');
+        for(var i=0;i<json_from_view.length;i++){
+        $('#city').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+        }
+        //For selecting the value of city
+        if('{{value_city}}')
+          $('#city > option[value="{{value_city}}"]').prop('selected', true);
 
-                   },
-                    // handle a non-successful response
-                    error : function(xhr,errmsg,err) {
-                        $('#results').html("Cities are not loading!!!"); 
-                            //console.log(xhr.status + ": " + xhr.responseText);         }
-                }
-                });
-          }
+           },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("Cities are not loading!!!"); 
+                    //console.log(xhr.status + ": " + xhr.responseText);         }
+        }
+        });
+        }
 
 //For pre-selection of cities and state in case of errors
 $(document).ready(function(){
@@ -234,8 +252,6 @@ $(document).ready(function(){
   setEducation();
   //AJAX GET request for loading cities when a state is selected or changed
   document.getElementById('state').onchange = getCities;
-  $('.errorlist').css('list-style-type','none');
-
 });
 
 function setGender(){

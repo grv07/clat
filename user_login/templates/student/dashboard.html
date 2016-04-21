@@ -1,53 +1,46 @@
 {% extends 'new_home.html' %}
 {% load static %}
 {% load default_tags %}
-{% block slider %}
+
+{% block head_js_css %}
 {% endblock %}
+
 {% block body %}
-<style type="text/css">
-.col8{ height:12px; line-height:12px; width:8.3333%; position:relative; float:left; left:0px; top:0px; border-right: solid 1px #ccc;}
-</style>
-<script>
-$(function() {
- $(document).tooltip({
-     open: function(event, ui) {
-   $(ui.tooltip).fadeTo(6000,0);
-     }
- })
-});
-</script>
-
-<section id="dash" style="margin-top: 80px;">
-
-<div class="con"  >
-
-<div class="col-lg-4">
-<h1 style=" font-weight:400 !important; padding-top:0px ;">ENROLLED COURSES</h1>
-
-<div class="da">
+<br><br><br>
 {% if total_courses_enrolled|length == 0 %}
-<h4 style=" font-weight:400 !important; text-align:center;">Looks like you haven't enrolled in any courses yet.</h4>
-<a href="/allcourses/" style="text-decoration: none;">
-
-<div class="find-courses"> Find Courses Now</div>
-</a>
-<p style="text-align:center">Check out our recently launched courses and what's new in your favorite subjects<br />
-Find New Courses</p> 
-{% else %}
-
-<div id="enrolled_courses_div">
-{% include 'student/_student_dashboard.html' %}
+<div class="row" style=" font-weight:bold; text-align:center;">
+<h2>Looks like you haven't enrolled in any course yet.</h2>
+<a class="btn btn-info btn-large" href="/allcourses/">
+Find Courses Now
+</a><br><br><br><br><br><br><br><br><br><br>
 </div>
-{% if total_courses > 3 %}
-<a href="javascript:void(0)" id="fetch_enrolled_courses" style="float:right;text-decoration: none;">
+{% else %}
+<div class="row col-md-12" style='text-align:center;'>
+  <h2>MY COURSES</h2>
+    <!-- <div class="col-lg-2 col-md-2 col-sm-2" style='text-align:center;'>
+    <hr>
+    <p>Total courses: 336</p> 
+    <p>Complete courses: 336</p> 
+    <p>Runing courses: 336</p> 
+    </div> -->
+        <div class="col-lg-1 col-md-1 col-sm-1">
+        </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+      <div class="row">
+        <br>
+        {% include 'student/_student_dashboard.html' %}
+      </div>
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1">
+        </div>
+</div>
+
+{% if total_courses_enrolled|length > 3 %}
+  <a href="javascript:void(0)" id="fetch_enrolled_courses" style="float:right;">
 More &#43;
 </a>
-{%endif %}
-</div>
 {% endif %}
-</div>
-</div>
-</section>
+{% endif %}
 
 <script>
 	var start_at_enrolledcourse = 2;

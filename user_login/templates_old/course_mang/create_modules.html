@@ -1,0 +1,113 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% block slider %}
+{% endblock %}
+{% block body %}
+{% if user.teacher %}
+<div class="upload_videos_div" style="margin-bottom: 5%;margin-top:8%;margin-left: 20%;margin-right: 20%;">
+<h1 style="text-align: center">Add a module</h1>
+
+  <div style="background-color: antiquewhite">
+    <ol style="font-size:15px; color: brown;margin: 10px;"><span style="font-weight: bold;">Add a new module here for your course.</span>
+    <li>Select the week in which you want to add the module. A week contains atmost 4 modules.</li>
+    <li>Type the name of the module. Must be a unique one everytime you add a module.</li>
+    <li>Enter details describing what you want to teach inside the module.</li>
+    </ol>
+    <p style="background-color: brown;height: 5px;"></p>
+    </div>
+<br>
+
+<form id="create_module_form" action="/create/modules/{{ course_uuid }}/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+        <div class="boss" style="margin-top:20px;">
+        <label style="font-size: 18px;">Total duration of course is <span id="weeks">{{weeks}}</span> weeks.</label>
+		</div>
+        <div class="boss" style="margin-top:20px;">
+        <label style="font-size: 18px;">Please select the week on which the module is applicable</label>
+          <select name="num_of_weeks" id="num_of_weeks" style="margin-left: 2%;font-size: 20px;">
+          </select>
+        </div><br>
+		<div class="boss" style="margin-top:20px;">
+        <label style="font-size: 18px;">Name of Module : </label>
+        {{course_week_form.week_module_name}}
+        <p>
+        {{course_week_form.errors.week_module_name}}
+        </p>
+		</div><br>
+        <div class="boss row" style="margin-top:20px;">
+        <label style="font-size: 18px;">Details : </label>
+        {{course_week_form.week_detail}}
+        <p>
+        {{course_week_form.errors.week_detail}}
+        </p>
+        </div>
+		<hr>
+        <div class="boss" style="margin-top:20px;">
+            <div class="controls">
+               <button type="submit" class="ssubmit" id="add_module_button">Add weekly modules</button>
+            </div>
+        </div>
+        {% if already_present %}
+        <div class="form-group" style="float:right;">
+            <div class="controls">
+               <a type="button" class="btn btn-info block" href="/upload/videos/{{ course_uuid }}/">Next : Add videos</a>
+            </div>
+        </div>
+        {% endif %}
+        </fieldset>
+</form>
+</div>
+{% else %}
+<h1>Nothing to show!!!</h1>
+{% endif %}
+
+{%block courses_list %}
+{%endblock%}
+
+{%endblock%}
+
+{% block footer_css_js %}
+<script>
+$('ul.errorlist li').css('color','red');
+$('ul.errorlist li').css('font-size','12px');
+
+window.onload=get_weeks;
+function get_weeks(){
+    for(var i=1;i<=$('#weeks').text();i++){
+        $('#num_of_weeks').append('<option value='+i+'>Week '+ i+'</option>');
+    }
+}
+function checkModuleName(el){
+     if($(el).val().replace(/ /g,'')==='' || $(el).val().length<=6){
+                    alert('Please fill module name correctly and must be 6 characters long!');
+                    return false;
+      }
+      return true;
+} 
+function checkModulesUnderWeek(){
+    $.ajax({
+                    url : "/check/week/",
+                    data : { 'checkforweek':$('#num_of_weeks').val(),'c_uuid':'{{ course_uuid }}' },
+                    type : "GET",
+
+                    success : function(json_from_view) {
+                      if(!json_from_view){                     
+                        alert('A week can have atmost 4 modules. Delete others to add this.'); 
+                        $('#add_module_button').prop('disabled',true);
+                    }
+                    else{
+                    $('#add_module_button').prop('disabled',false);
+                        }
+                    },
+                    error : function(xhr,errmsg,err) {
+                        alert('Error in checking number of modules under week '+$('#num_of_weeks').val()+' !!!'); 
+                }
+                });
+
+}
+$('#num_of_weeks').change(function(event) {
+    checkModulesUnderWeek();
+});
+</script>
+{%endblock%} 

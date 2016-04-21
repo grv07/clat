@@ -1,0 +1,242 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% load default_tags %}
+{% block head_js_css %}
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/>
+{%endblock head_js_css %}
+{% block slider %}
+{% endblock %}
+{% block body %}
+<style type="text/css">
+body{ background-color:#e2e2e2 !important ;}
+li{
+  list-style-type: none;
+  color:red;
+}
+</style>
+
+<section id="dash" style="margin-top:10px;">
+
+<div class="con" >
+<h1 style=" font-weight:400 !important; margin-top:40px;">ACCOUNT SETTINGS</h1>
+<p style=" font-size:13px">
+These settings include basic information about your account. You can also specify additional information and see your linked social accounts on this page.
+</p>
+
+<div class="da1">
+
+<div id="fk">
+</div>
+
+<div id="fk" class="col-sm-4 profile_pic_div" id="profile_pic_div" style="font-size: 30px;">
+{% if socialaccount_picture %}
+<img id="profile_picture" style="width: 230px;height:200px" title="Click to change the profile picture" src="{{ socialaccount_picture }}">
+{% else %}
+{% if profile_pic %} 
+<img id="profile_picture" style="width: 230px;height:200px" title="Click to change the profile picture" src="{{ user|get_img }}">
+{% else %}
+<img style="width: 230px;height:200px" id="profile_picture" title="Click to change the profile picture" src="{% static '/static/custom/img/CLAT_default_DP.png'%}">
+{% endif %}
+{% endif %}
+</div>
+<span>{{  profile_picture_form.errors }}</span>
+<br>
+
+<div class="col-sm-4">
+<button type="button" id="upload_picture_button" class="ssubmit">{% if not is_default_picture %}Change picture{% else %}Upload Picture{% endif %}</button>
+
+<form id="update_profile_picture_form" action="/profile/picture/" method="post" enctype="multipart/form-data" onsubmit="return validate_file()">
+{{ profile_picture_form.picture }}
+{% if not is_default_picture %}
+<button type="button" id="remove_picture_button" class="ssubmit">Remove Picture</button>
+<br><br>
+{% endif %}
+</form>
+
+<br><br>
+<p id="picture_alert" style="color:red"></p>
+</div>
+
+<div class="col-sm-4">
+</div>
+</div>
+<form  method="post" action="{{ request.get_full_path }}" id="update_profile_details_form" autocomplete="off">
+{% csrf_token %}
+<div class="da1">
+
+<h1>Basic Account Information (required)<span style="float: right;font-size: 15px;">NOTE: <span style="color:red;">*</span> required fields</span></span></h1>
+     <div class="boss1">
+        <div class="text-name1">Full Name<span style="color:red;">*</span></div>
+        <input type="text" class="text-sbox" style="border: solid 1px #ccc;" placeholder="Enter full name"   value="{{logged_user.full_name}}" name="full_name" id="sname"/><br><br>
+             <p style="color:red;">{{ student_form.full_name.errors }}</p>
+      </div>
+      <div class="boss1">
+        <div class="text-name1">Date Of Birth<span style="color:red;">*</span></div>
+        <input type="text" name="d_o_b" class="text-sbox" value="{%if e%}{{logged_user.d_o_b}}{%else%}{{logged_user.d_o_b|date:'m/d/Y'}}{%endif%}" style="border: solid 1px #ccc;" id="d_o_b" placeholder="Please select Date" readonly><br><br>
+        <p style="color:red;">{{ student_form.d_o_b.errors }}</p>
+        </div>     
+       <div class="boss1">
+         
+        <div class="text-name1">Gender<span style="color:red;">*</span></div>
+        <select class="select1" id="gender" name="gender" style="margin-left:20px;">
+
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+                </select> 
+        </div>
+      
+         
+       <div class="boss1">
+        <div class="text-name1">Phone Number<span style="color:red;">*</span></div>
+        <input class="text-sbox" style="border: solid 1px #ccc;" maxlength="10" id="phone_number" name="phone_number" placeholder="Enter your Phone Number" value="{{logged_user.phone_number}}"><br><br>
+        <p style="color:red;">{{ student_form.phone_number.errors }}</p>
+        </div>
+
+        <div class="boss1">
+        <div class="text-name1">Highest level of education completed<span style="color:red;">*</span></div>
+        <select class="select1" id="higher_education" name="higher_education" style="margin-left:20px;" >
+              {% include '_education.html' %}
+        </select> 
+        </div>    
+        
+            
+          
+      
+        <div class="boss1">
+        <div class="text-name1">Country<span style="color:red;">*</span></div>
+        <select class="select1" id="country" name="country" style="margin-left:20px;">
+        <option value="India">India</option>
+        <option value="United States of America" disabled>United States of America</option>
+        <option value="United Kingdom" disabled>United Kingdom</option>
+        <option value="Russia" disabled>Russia</option>
+        </select> 
+        </div>
+
+        <div class="boss1">
+        <div class="text-name1">State<span style="color:red;">*</span></div>
+        <select class="select1" id="state" name="state" style="margin-left:20px;">
+                        <option value="Delhi">Delhi</option>
+                        <option value="Pondicherry">Pondicherry</option>
+                        <option value="Haryana">Haryana</option>                      
+                        <option value="Punjab">Punjab</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Daman and Diu">Daman and Diu</option>
+                        <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>    
+                </select> 
+        </div>
+
+        <div class="boss1">
+        <div class="text-name1">City<span style="color:red;">*</span></div>
+        <select class="select1" id="city" name="city" style="margin-left:20px;">
+        </select> 
+        </div>
+
+        <div class="boss1">
+        <div class="text-name1">Street 1<span style="color:red;">*</span></div>
+        <input type="text" class="text-sbox" style="border: solid 1px #ccc;" id="street1" name="street1" placeholder="Enter your Street" value="{%if e%}{{logged_user.street1}}{%else%}{{logged_user.address.street1}}{%endif%}"><br><br>
+        <p style="color:red;">{{ student_form.street1.errors }}</p>
+        </div>
+
+        <div class="boss1">
+        <div class="text-name1">Street 2</div>
+        <input class="text-sbox" style="border: solid 1px #ccc;" id="street2" name="street2" placeholder="Enter your Street Address (optional)" value="{%if e%}{{logged_user.street2}}{%else%}{{logged_user.address.street2}}{%endif%}">
+        <p style="color:red;">{{ student_form.street2.errors }}</p>
+        </div>
+
+        <div class="boss1">
+        <div class="text-name1">Pincode<span style="color:red;">*</span></div>
+        <input class="text-sbox" style="border: solid 1px #ccc;" id="pincode" name="pincode" placeholder="Enter your Pincode" value="{%if e%}{{logged_user.pincode}}{%else%}{{logged_user.address.pincode}}{%endif%}" maxlength="6"><br><br>
+        <p style="color:red;">{{ student_form.pincode.errors }}</p>
+        </div>
+
+       
+        </div>
+        <div class="da1"  style="margin-top:30px;">
+        
+
+     <div class="boss1">
+     
+        <h1>Connect Accounts</h1>
+
+                  <div class="boss1">
+        <div class="text-name1">Facebook</div>
+        <div class="text-name1">
+        {% if socialaccount_fb_id %}
+            <input type="url" name="fblink" class="text-sbox" value="https://www.facebook.com/app_scoped_user_id/{{ socialaccount_fb_id }}/" style="border: solid 1px #ccc;" id="fblink" readonly>
+        {% else %}
+            <input type="url" name="fblink" class="text-sbox" value="{{ logged_user.fblink }}" style="border: solid 1px #ccc;" id="fblink" placeholder="Enter facebook profile link...">
+        {% endif %}
+        </div>
+       
+       </div>
+
+    <div class="boss1">
+        <div class="text-name1">Google</div>
+       <div class="text-name1">
+        {% if socialaccount_g_id %}
+            <input type="url" name="glink" class="text-sbox" value="https://plus.google.com/{{ socialaccount_g_id }}/" style="border: solid 1px #ccc;" id="glink" readonly>
+        {% else %}
+            <input type="url" name="glink" class="text-sbox" value="{{ logged_user.glink }}" style="border: solid 1px #ccc;" id="glink" placeholder="Enter google profile link...">
+        {% endif %}
+    </div>
+    </div>
+    
+
+    <div class="boss1">
+        <input class="ssubmit" type="button" value="Update details" id="update_details_button">
+      <a href="/dashboard/">
+       <div class="ssubmit" type="button">Cancel</div>
+      </a>
+    </div>
+    </div>
+</div>
+</form>
+</div>
+</section>
+
+<script>
+//For selecting the value of country
+$('#country > option[value="{%if e%}{{logged_user.country}}{%else%}{{logged_user.address.country}}{%endif%}"]').prop('selected', true);
+//For selecting the value of state
+$('#state > option[value="{%if e%}{{logged_user.state}}{%else%}{{logged_user.address.city_obj.city_state}}{%endif%}"]').prop('selected', true);
+//For selecting the value of higher education
+$('#higher_education > option[value="{{logged_user.higher_education}}"]').prop('selected', true);
+//For selecting the value of gender
+$('#gender > option[value="{{logged_user.gender}}"]').prop('selected', true);
+//For selecting the value of city after page loading is complete.
+function setCity(){
+  $('#city > option[value="{%if e%}{{logged_user.city}}{%else%}{{logged_user.address.city_obj.city_name}}{%endif%}"]').prop('selected', true);
+}
+</script>
+<script type="text/javascript" src="{%static '/static/custom/js/profile.js'%}"></script>
+<script src="{% static '/static/custom/js/login_register.js' %}"></script>
+ 
+ {% endblock %}

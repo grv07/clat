@@ -1,0 +1,167 @@
+{%load static%}
+{% if user.teacher %}
+<script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css" />
+<script src="https://jonthornton.github.io/jquery-timepicker/lib/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/lib/bootstrap-datepicker.css" />
+<script type="text/javascript" src="{% static '/static/custom/Datepair.js'%}"></script>
+
+
+<form id="articulate_file_form" action="/upload/art_course/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+    <fieldset id="course_details_fieldset">
+        <div id="legend">
+            <legend class="">
+                <div class="section-title lines">
+                    <h2>
+                        <span class="text">Create Your Course</span>
+                    </h2>
+                </div>
+            </legend>
+        </div>
+          <div class="boss {% if form.course_name.errors %}has-error{%endif%}" style="margin-top:30px;">
+            <p>Enter Your Course Name<span style="color:red">*</span></p>
+            {{form.course_name}}
+            <p class="error">{{form.course_name.errors}}</p>
+
+        </div>
+        <div class="boss {% if form.course_sectors_and_associates.errors %}has-error{%endif%}" style="margin-top:30px;">
+            <!-- Username -->
+            <p>Enter Your Course Category<span style="color:red">*</span></p>
+            {{form.course_sectors_and_associates}}
+            <p class="error">{{form.course_sectors_and_associates.errors}}</p>
+        </div>
+
+        <div class="boss {% if form.course_durations.errors %}has-error{%endif%}" style="margin-top:30px;">
+            <!-- Username -->
+            <p>Enter Your Course Duration (in weeks)<span style="color:red">*</span></p>
+            {{form.course_durations}}
+            <p class="error">{{form.course_durations.errors}}</p>
+        </div>
+
+        <div class="boss" style="margin-top:30px;">
+            <p>Please provide a demo video<span style="color:red">*</span></p>
+            <div class="boss" name="demo_video_radio_groups" id="demo_video_radio_groups">
+              <input type="radio" value="youtube_button" name="demo_type" id="youtube_button"><label for="youtube_button" style="font-size: 14px;">Upload from Youtube video</label>
+              <input type="radio" value="mp4_button" name="demo_type" id="mp4_button" style="margin-left: 5%;" checked><label for="mp4_button" style="font-size: 14px;">Upload an MP4 file</label>
+            </div>
+
+        </div>
+        <div class="boss" style="margin-top:10px;">
+            <div class="boss" id="mp4_upload_div">
+                {{form.course_demo_file}}
+                <p class="error">{{form.course_demo_file.errors}}</p>
+                <p class="mime_error" style="color:red;display: none;">Video must be in .mp4 format</p>
+            </div>
+
+            <div class="boss" style="display: none;" id="youtube_upload_div">
+                {{form.course_demo_file_url}}
+              <p class="error">{{form.course_demo_file_url.errors}}</p>
+            </div>
+
+         </div>
+	
+	<div class="boss">
+            {{form.show_video}}<span style="font-size: 12px;">Do you want to this video on course detail page?</span>
+        </div>
+
+        <div class="boss row {% if form_course_info.course_description.errors %}has-error{%endif%}" style="margin-top: 30px;">
+            <p>Enter Your Course Description<span style="color:red">*</span></p>
+
+            <div class="boss">
+                {{form_course_info.course_description}}
+                <p class="error">{{form_course_info.course_description.errors}}</p>
+
+            </div>
+        </div>
+
+        <div class="boss row {% if form_course_info.course_objective.errors %}has-error{%endif%}" style="margin-top: 30px;">
+            <p>Enter Your Course Objective<span style="color:red">*</span></p>
+
+            <div class="boss">
+                {{form_course_info.course_objective}}
+                <p class="error">{{form_course_info.course_objective.errors}}</p>
+
+            </div>
+        </div>
+        <hr>
+        <div class="boss" style="margin-top: 30px;margin-bottom: 20px;">
+                <button type="submit" id="next" class="ssubmit">Submit</button>
+        </div>
+    </fieldset>
+</form>
+<script>
+
+  $('.error').css('color','red');
+ // For toggling between radio buttons 
+  var demo_video_choices = $('#demo_video_radio_groups');
+  demo_video_choices.click(function(event) {
+
+    if(event.target.id === 'mp4_button'){
+      $('#mp4_upload_div').css('display','inline-block');
+      $('#youtube_upload_div').css('display','none');
+      }
+      else{
+      $('#mp4_upload_div').css('display','none');
+      $('#youtube_upload_div').css('display','inline-block'); 
+      }
+    });
+  
+
+   //For checking field empty
+    function checkYoutubeURL(element){
+      if(element.value.replace(/ /g,'')==='')
+       {
+        $('#youtube_demo_url + p').css('color','red').html("Can't leave field blank!!!");
+        return false;
+       } 
+       return true;
+    }
+    
+
+  //For checking mime of uploaded document
+      function checkForMime(input){
+        var mime_ok=true;
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var actual_mime_type=input.files[0].type;
+                    if (actual_mime_type != 'video/mp4'){
+                        $(".mime_error").css('display','inline');
+                        mime_ok=false;
+                      }else{
+                        $(".mime_error").css('display','none');
+
+                      }
+
+                  if(mime_ok===false){
+                          $('button[type="submit"]').prop('disabled',true);
+
+                  }else{
+                          $('button[type="submit"]').prop('disabled',false);
+
+                  }
+
+                  };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+          $('#articulate_file_form').submit(function(event) {
+            event.preventDefault();
+            var start_date=new Date($('#course_start_date').val());
+            var end_date=new Date($('#course_end_date').val());
+            var diff_date=Math.abs(start_date.getTime()-end_date.getTime());
+            var diff_days=Math.ceil(diff_date/(1000* 3600*24)); 
+            if(diff_days<7)
+            {
+              alert('The course duration must be at least 1 week (7 days)!!!');
+              return False;
+            }
+          });
+</script>
+
+{% else %}
+<h1>Nothing to show!!!</h1>
+{% endif %}

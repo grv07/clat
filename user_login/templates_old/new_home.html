@@ -1,0 +1,376 @@
+{% load static %}
+{% load is_owner_tags %}
+{% load default_tags %}
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLAT</title>
+<!-- <link rel="icon" type="image/gif" href="{% static '/static/logo/Equest_DarkBlue_Symbol.gif' %}"/> -->
+<link rel="stylesheet" href="{%static '/static/css/alertify.core.css'%}" />
+<link rel="stylesheet" href="{%static '/static/css/alertify.default.css'%}" id="toggleCSS" />
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+<link href="{%static '/static/css/default.css'%}" rel="stylesheet" type="text/css">
+<link href="{%static '/static/css/strap.css'%}" rel="stylesheet" type="text/css">
+<link href="{%static '/static/css/fonts.css'%}" rel="stylesheet" type="text/css">
+<link href="{%static '/static/css/animate.css'%}" rel="stylesheet"  type="text/css">
+<link href="{%static '/static/css/styles.css'%}" rel="stylesheet"  type="text/css">
+<link href="{%static '/static/css/login.css'%}" rel="stylesheet"  type="text/css">
+<link rel="stylesheet" type="text/css" href="{%static '/static/custom/css/header.css' %}">
+
+<!-- Compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css"> -->
+<!-- Compiled and minified JavaScript -->
+<style>
+  div.dd {
+   /*position: relative; /* IE is dumb */
+    display: block;              
+    float: left;     
+    width: 500px; 
+    height: 30px; 
+    margin: 0 0 2px; 
+    background: #fff; 
+}
+
+div.dd div.blue {
+    /*position: relative; */
+    background: #00f; 
+    height: 16px; 
+    width: 75%; 
+    text-align:right; 
+    display:block;
+    float: left;
+}
+div.dd div.red { 
+    /*position: relative; */
+    background: #f00; 
+    height: 16px; 
+    width: 75%; 
+    text-align:right; 
+    display:block;
+    float: left;
+}
+div.dd div.white { 
+    /*position: relative; */
+    background: rgb(47, 150, 232); 
+    height: 16px; 
+    width: 75%; 
+    text-align:right; 
+    display:block;
+    float: left;
+}
+div.dd div.yellow { 
+    /*position: relative; */
+    background: white; 
+    height: 16px; 
+    width: 75%; 
+    text-align:right; 
+    display:block;
+    float: left;
+}
+</style>
+
+<script type="text/javascript" src="{% static '/static/js/jquery.min.js' %}"></script>
+<script src="{% static '/static/custom/js/alertify.js' %}"></script>
+<script type="text/javascript" src="{% static '/static/js/cycle.js' %}"></script>
+
+<!-- <script src="{% static '/static/custom/js/notifIt.min.js' %}"></script> -->
+
+<link rel="stylesheet" type="text/css" media="screen" href="{% static '/static/custom/css/notifIt.css' %}" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/>
+
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<!-- <script type="text/javascript" src="{% static '/static/custom/js/jquery_notification_v.1.js' %}"></script> -->
+<script src="{% static '/static/custom/js/notifIt.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="{% static '/static/custom/css/notifIt.css' %}" />
+<script>
+  $(function() {
+    $(document).tooltip({
+      position: {
+        my: "center bottom",
+        at: "center top",
+      }
+    });
+
+ $(document).tooltip({
+     open: function(event, ui) {
+   $(ui.tooltip).fadeTo(2000,0);
+     }
+ })
+  });
+
+
+</script>
+
+{% block head_js_css %}
+    
+{% endblock head_js_css %}
+
+<!-- Use for check net online or connection lost -->
+<!-- <link rel="stylesheet" href="{% static '/static/custom/css/checknet.css'%}" media="all" /> -->
+<!-- <script src="{% static '/static/custom/js/jquery.checknet-1.6.min.js' %}"></script> -->
+<!--
+<script>
+//   $(document).ready(function(){
+//     // $.fn.checknet();
+//   });
+// </script>
+-->
+<!-- end connection lost code -->
+
+<script type="text/javascript">
+function call_login(){
+  $("#e_regid").trigger('click',(function(){ $("#logpanel").show(); $("#register").show();$("#login").hide();   }))
+}
+
+  call_login();
+
+  $(document).ready(function() {  $(".buttons").click(function(){  $(".pop").show();    });});
+  $(document).ready(function read() {  $(".e_regid").click(function(){ $("#logpanel").show(); $("#register").show();$("#login").hide();    });});
+  $(document).ready(function() {  $(".logid").click(function(){ $("#logpanel").show(); $("#register").hide();$("#login").show();    });});
+  $(document).ready(function() {  $(".lo1").click(function(){  $("#login").show();$("#register").hide();    });});
+  $(document).ready(function() {  $(".re1").click(function(){  $("#login").hide();$("#register").show();    });});
+  
+  $(document).ready(function() {  $(".close-button").click(function(){  $("#logpanel").hide();   $(".pop").hide();
+        var url = $('#youtube-video').attr('src');
+        //Then assign the src to null, this then stops the video been playing
+        $('#youtube-video').attr('src', '');
+        //// Finally you reasign the URL back to your iframe, so when you hide and load it again you still have the link
+        $('#youtube-video').attr('src', url);
+     });});
+  
+  $(document).ready(function() {  $("#pu").click(function(){ $("#pop").show(); $("#popup").show();    });});
+  $(document).ready(function() {  $("#cbutton").click(function(){  $("#pop").hide();    });});
+  $(document).ready(function() {  $("#cbutton").click(function(){  $("#pop").hide();    });});
+  $(document).ready(function() {  $("#menu1").click(function(){  $("#drop").slideToggle();    });});
+  $(document).ready(function() {  $(".sign-btn").click(function(){  $(".user-menu").slideToggle();   });});
+  $(document).ready(function() {  $(".sign-btn-1").click(function(){  $(".user-menu-1").slideToggle();   });});
+
+  $('#teplace').cycle({'fx':'scrollLeft','timeout':5000});
+
+   $(document).ready(function() {  
+    $("#teplace").hover(function(){ cycle().stop();  
+    });});
+</script>
+</head>
+
+<body id="ex3">
+<section id="logpanel">
+  <div id="register">
+    <div class="boss" style="border-bottom: 3px solid black;">
+      <li class="active" style="color:green;font-size: 21.5px;">Welcome to Clat</li>
+      <div class="close-button" data-icon="z" title="Close"></div>
+    </div>
+    <p style="font-size: 12px;font-weight: bold;color:blue;text-align: center;">New User</p>
+    <a href="/register/" style=" text-decoration:none" >
+    <div style="text-align: center">
+    Click here to <a href="/register/" style="color: blue;">create a new account.</a>
+    </div>
+    </a>
+    <!-- <a href="/accounts/facebook/login/?process=login">
+    <div class="login-with facebook">
+      <div class="s" data-icon=";"></div>
+      Login with Facebook </div>
+    </a> <a href="/accounts/google/login/?process=login">
+    <div class="login-with gmail">
+      <div class="s" data-icon="'"></div>
+      Login with Google 
+    </div>
+    </a> -->
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-8">
+    <h3 style="font-size: 12px;font-weight: bold;color:blue;"><hr>Existing user</h3>
+    </div>
+    <div class="col-sm-12">
+    </div>
+    {% include '_login_form.html'%}
+    </div>
+  
+  <!--  Login Con   -->
+  <div id="login">
+  </div>
+</section>
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<section id="container">
+<p id='_b_notification' style='background-color:yellow;text-align:center;display: none;'>
+      Please update your browser to latest version for good support <span><a href="http://outdatedbrowser.com/en" target="_blank">click here</a></span>&nbsp;.</p>
+<header id='lms_header'>
+{% block header %}
+  {% include '_home_header.html'%}
+{% endblock %}
+</header>
+{% block body %}
+<section id="slider">
+  <div class="pop">
+    <div class="close-button" data-icon="z"></div>
+    <div class="video-pop">
+      <iframe width="100%" id="how_it_work" height="100%" src="https://www.youtube.com/embed/PO6WyU7BxX0?enablejsapi=1&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+<section id="slider1"  style="margin-top:60px;">
+  <div class="con">
+    <div class="slider-content">
+      <div class="slider_con">
+        <div id="teplace" style="overflow: hidden;">
+          <div class="whole_con as1" >
+            <h1>A <strong>Clat</strong> For <strong>Students</strong> Through Quality, Employability  Skill And Training</h1>
+            <div class="buttons">About CLAT</div>
+          </div>
+          <div class="whole_con as2">
+            <h1>Nation's <strong>First</strong> Intelligent e-Quality  Learning Management System  Hosting <strong>Online Certification</strong></h1>
+            <div class="buttons">About CLAT</div>
+          </div>
+          <div class="whole_con as3">
+            <h1>If "Quality is Your  Goal Statement, Then It's <strong>Our Mission To Help You</strong> Achieve That"</h1>
+            <div class="buttons">About CLAT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</section>
+<section id="course">
+  <div class="con" style='width:80%;margin: -60px auto;'>
+  {% if user.teacher %}
+  <h1> Your Courses</h1>
+  {% else %}
+  <h1> Our Most Popular Courses</h1>
+  {% endif %}
+  
+  {% block course_list %}
+  <div class="row courses-list" id='uniqe'> {%block course%}
+    {%include 'course_mang/course_list.html'%}
+    {%endblock%} </div>
+  {% endblock %} </section>
+{% endblock %}
+
+
+
+
+<!-- Notification message template --> 
+{% include '_notifications.html' %}
+
+{% block footer %}
+{% include '_footer.html' %} 
+
+<div class="after-footer">
+  <div class="con">
+    <p style="width:60%; margin-left:20%; text-align:center;">© CLAT. All Rights Reserved. Copyright 2016. </p>
+  </div>
+</div>
+{% endblock %}
+{% if login_error %} 
+<script>
+       $('#reg_lgn_id').trigger( "click" );
+</script> 
+{% endif %}
+
+{% block footer_css_js %}
+
+{%endblock%} 
+<script src="{%static '/static/js/custom.js'%}"></script> 
+<script src="{% static '/static/custom/js/footer_js.js'%}"></script> 
+<script>
+
+function  hello(){
+    alertify.alert("Message");
+}
+
+function checkForCourseName(){
+  var target_id = event.target.id;
+  if(target_id === 'search_link_1'){
+  if($('#course_name_1').val().replace(/ /g,'')===''){
+      $('#search_box_1').css('background-color','red');
+      return false;
+    }
+  }
+  if(target_id === 'search_link'){
+  if($('#course_name').val().replace(/ /g,'')===''){
+      $('#search_box').css('background-color','red');
+      return false;
+    }
+  }
+  return true;
+}
+  $('#search_link').click(function(event) {
+    if(checkForCourseName(event))    
+      $('#search_course_form').submit();
+  return false;
+  });
+  $('#search_link_1').click(function(event) {
+    if(checkForCourseName(event))    
+      $('#search_course_form_1').submit();
+  return false;
+  });
+$('#search_course_form').submit(function(event) {
+  if(!checkForCourseName())    
+      return false;
+  return true;
+});
+
+$(function() {
+  $("#course_name").autocomplete({
+    source: "/get/course_names/",
+    minLength: 2,
+    select: function(event, ui) {
+            var url = ui.item.value;
+            if(url != '#') {
+                location.href = '/allcourses/?course_name=' + url;
+            }
+        }
+
+  });
+
+  $("#course_name_1").autocomplete({
+    source: "/get/course_names/",
+    minLength: 2,
+    select: function(event, ui) {
+            var url = ui.item.value;
+            if(url != '#') {
+                location.href = '/allcourses/?course_name=' + url;
+            }
+        }
+
+  });
+
+
+
+  $.ui.autocomplete.prototype._renderItem = function (ul, item) {        
+        var t = String(item.value).replace(
+                new RegExp(this.term, "gi"),
+                "<span class='ui-state-highlight' style='color:blue;'>$&</span>");
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a>" + t + "</a>")
+            .appendTo(ul);
+    };
+});
+
+$(document).ready(function() {  $(".close-button").click(function(){  $("#logpanel").hide();   $(".pop").hide();
+        var url = $('#how_it_work').attr('src');
+        $('#how_it_work').attr('src', '');
+        $('#how_it_work').attr('src', url);
+     });
+
+});
+$("body").live('click', function(e) { 
+   if( e.which == 2 ) {
+      alert("middle button"); 
+   }
+});
+
+</script>
+</body>
+</html>

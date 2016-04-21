@@ -16,106 +16,125 @@ li{
 }
 </style>
 
-<section id="dash" style="margin-top:10px;">
 
-<div class="con" >
-<h1 style=" font-weight:400 !important; margin-top:40px;">ACCOUNT SETTINGS</h1>
-<p style=" font-size:13px">
-These settings include basic information about your account. You can also specify additional information and see your linked social accounts on this page.
+<div class="container profile" style='background-color:white;'>
+<div class="col-lg-2 col-md-2 col-sm-2"></div>
+<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 profile-form">
+    <div class="hidden-xs">
+       <h2 class="text-center" style="font-weight:400 !important; margin-top:40px;">ACCOUNT SETTINGS</h2>
+    </div>
+    <div class="hidden-md hidden-lg">
+        <h4 class="text-center" style="margin-top:40px;" >ACCOUNT SETTINGS</h4>
+    </div>
+
+<p style="font-size:13px">
+    These settings include basic information about your account. You can also specify additional information and see your linked social accounts on this page.
 </p>
+<hr>
+<div class="col-sm-12 col-xs-12">
 
-<div class="da1">
+    <!-- <div id="fk"> -->
+    <!-- </div> -->
 
-<div id="fk">
+    <div id="fk" class="col-sm-3 col-xs-12 profile_pic_div" id="profile_pic_div" style="font-size: 30px;">
+        {% if socialaccount_picture %}
+            <img id="profile_picture" style="width: 100%"  src="{{ socialaccount_picture }}">
+        {% else %}
+        {% if profile_pic %} 
+            <img id="profile_picture" style="width: 100%"  src="{{ user|get_img }}">
+        {% else %}
+            <img style="width: 100%" id="profile_picture"  src="{% static '/static/custom/img/EQUEST_default_DP.png'%}">
+        {% endif %}
+        {% endif %}
+        <hr>
+    </div>
+    <span>{{  profile_picture_form.errors }}</span>
+
+    <div class="row col-sm-8 col-xs-12">
+        <div class="col-sm-4">
+            <button type="button" id="upload_picture_button" class="btn btn-primary sharp">{% if not is_default_picture %}Change Picture{% else %}Upload Picture{% endif %}</button>
+        </div>
+        <div class="hidden-sm hidden-md hidden-lg">
+           <br>
+        </div>
+        <div class="col-sm-4">
+            <form id="update_profile_picture_form" action="/profile/picture/" method="post" enctype="multipart/form-data" onsubmit="return validate_file()">
+                {{ profile_picture_form.picture }}
+                {% if not is_default_picture %}
+                <button type="button" id="remove_picture_button" class="btn btn-info sharp">Remove Picture</button>
+                <br><br>
+                {% endif %}
+            </form>
+        </div>
+
+        <br><br>
+        <p id="picture_alert" style="color:red"></p>
+    </div>
+
+    <div class="col-sm-4 col-xs-12">
+    </div>
 </div>
-
-<div id="fk" class="col-sm-4 profile_pic_div" id="profile_pic_div" style="font-size: 30px;">
-{% if socialaccount_picture %}
-<img id="profile_picture" style="width: 230px;height:200px" title="Click to change the profile picture" src="{{ socialaccount_picture }}">
-{% else %}
-{% if profile_pic %} 
-<img id="profile_picture" style="width: 230px;height:200px" title="Click to change the profile picture" src="{{ user|get_img }}">
-{% else %}
-<img style="width: 230px;height:200px" id="profile_picture" title="Click to change the profile picture" src="{% static '/static/custom/img/CLAT_default_DP.png'%}">
-{% endif %}
-{% endif %}
-</div>
-<span>{{  profile_picture_form.errors }}</span>
-<br>
-
-<div class="col-sm-4">
-<button type="button" id="upload_picture_button" class="ssubmit">{% if not is_default_picture %}Change picture{% else %}Upload Picture{% endif %}</button>
-
-<form id="update_profile_picture_form" action="/profile/picture/" method="post" enctype="multipart/form-data" onsubmit="return validate_file()">
-{{ profile_picture_form.picture }}
-{% if not is_default_picture %}
-<button type="button" id="remove_picture_button" class="ssubmit">Remove Picture</button>
-<br><br>
-{% endif %}
-</form>
-
-<br><br>
-<p id="picture_alert" style="color:red"></p>
-</div>
-
-<div class="col-sm-4">
-</div>
-</div>
-<form  method="post" action="{{ request.get_full_path }}" id="update_profile_details_form" autocomplete="off">
+<form  method="post" role="form" action="{{ request.get_full_path }}" id="update_profile_details_form" autocomplete="off">
 {% csrf_token %}
-<div class="da1">
 
-<h1>Basic Account Information (required)<span style="float: right;font-size: 15px;">NOTE: <span style="color:red;">*</span> required fields</span></span></h1>
-     <div class="boss1">
-        <div class="text-name1">Full Name<span style="color:red;">*</span></div>
-        <input type="text" class="text-sbox" style="border: solid 1px #ccc;" placeholder="Enter full name"   value="{{logged_user.full_name}}" name="full_name" id="sname"/><br><br>
+<!-- <div class="da1"> -->
+<div class="row">
+<h4 class="hidden-md hidden-lg text-center">Basic Information(s)<span style="color:red;">*</span></h4>
+
+<h2 class="hidden-xs text-center">Basic Account Information (required)</h2>
+</div>
+<div class="row">
+<span class="right" style="font-size: 15px;margin-right: 5px;">
+    NOTE: <span style="color:red;">*</span> required fields</span>
+</div>
+     <hr>
+     <div class="form-group">
+        <label for="email">Full Name<span style="color:red;">*</span></label>
+        <input type="text" class="form-control sharp" style="border: solid 1px #ccc;" placeholder="Enter full name"   value="{{logged_user.full_name}}" name="full_name">
              <p style="color:red;">{{ student_form.full_name.errors }}</p>
-      </div>
-      <div class="boss1">
-        <div class="text-name1">Date Of Birth<span style="color:red;">*</span></div>
-        <input type="text" name="d_o_b" class="text-sbox" value="{%if e%}{{logged_user.d_o_b}}{%else%}{{logged_user.d_o_b|date:'m/d/Y'}}{%endif%}" style="border: solid 1px #ccc;" id="d_o_b" placeholder="Please select Date" readonly><br><br>
-        <p style="color:red;">{{ student_form.d_o_b.errors }}</p>
-        </div>     
-       <div class="boss1">
-         
-        <div class="text-name1">Gender<span style="color:red;">*</span></div>
-        <select class="select1" id="gender" name="gender" style="margin-left:20px;">
+     </div><br>
 
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-                </select> 
-        </div>
+      <div class="form-group">
+            <label for="d_o_b">Date Of Birth<span style="color:red;">*</span></label>
+            <input type="text" name="d_o_b" class="form-control sharp" value="{{logged_user.d_o_b|date:'m/d/Y'}}" style="border: solid 1px #ccc;" id="d_o_b" placeholder="Please select Date">
+            <p style="color:red;">{{ student_form.d_o_b.errors }}</p>
+       </div>    <br> 
+       <div class="form-group">
+         
+            <label for="gender">Gender<span style="color:red;">*</span></label>
+            <select class="form-control sharp" id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+                    </select> 
+        </div><br>
       
          
-       <div class="boss1">
-        <div class="text-name1">Phone Number<span style="color:red;">*</span></div>
-        <input class="text-sbox" style="border: solid 1px #ccc;" maxlength="10" id="phone_number" name="phone_number" placeholder="Enter your Phone Number" value="{{logged_user.phone_number}}"><br><br>
-        <p style="color:red;">{{ student_form.phone_number.errors }}</p>
-        </div>
+       <div class="form-group">
+            <label for="phone_number">Phone Number<span style="color:red;">*</span></label>
+            <input class="form-control sharp" id="phone_number" name="phone_number" placeholder="Enter your Phone Number" value="{{logged_user.phone_number}}">
+            <p style="color:red;">{{ student_form.phone_number.errors }}</p>
+        </div><br>
 
-        <div class="boss1">
-        <div class="text-name1">Highest level of education completed<span style="color:red;">*</span></div>
-        <select class="select1" id="higher_education" name="higher_education" style="margin-left:20px;" >
-              {% include '_education.html' %}
-        </select> 
-        </div>    
+        <div class="form-group">
+            <label for="higher_education">Highest level of education completed<span style="color:red;">*</span></label>
+            <select class="form-control sharp" id="higher_education" name="higher_education" >
+                  {% include '_education.html' %}
+            </select> 
+        </div>   <br> 
         
-            
-          
-      
-        <div class="boss1">
-        <div class="text-name1">Country<span style="color:red;">*</span></div>
-        <select class="select1" id="country" name="country" style="margin-left:20px;">
-        <option value="India">India</option>
-        <option value="United States of America" disabled>United States of America</option>
-        <option value="United Kingdom" disabled>United Kingdom</option>
-        <option value="Russia" disabled>Russia</option>
-        </select> 
-        </div>
+        <div class="form-group">
+            <label for="country">Country<span style="color:red;">*</span></label>
+            <select class="form-control sharp" id="country" name="country" >
+            <option value="India">India</option>
+            <option value="United States of America" disabled>United States of America</option>
+            <option value="United Kingdom" disabled>United Kingdom</option>
+            <option value="Russia" disabled>Russia</option>
+            </select> 
+        </div><br>
 
-        <div class="boss1">
-        <div class="text-name1">State<span style="color:red;">*</span></div>
-        <select class="select1" id="state" name="state" style="margin-left:20px;">
+        <div class="form-group">
+        <label for="state">State<span style="color:red;">*</span></label>
+        <select class="form-control sharp" id="state" name="state">
                         <option value="Delhi">Delhi</option>
                         <option value="Pondicherry">Pondicherry</option>
                         <option value="Haryana">Haryana</option>                      
@@ -151,92 +170,97 @@ These settings include basic information about your account. You can also specif
                         <option value="Uttar Pradesh">Uttar Pradesh</option>
                         <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>    
                 </select> 
-        </div>
+        </div><br>
 
-        <div class="boss1">
-        <div class="text-name1">City<span style="color:red;">*</span></div>
-        <select class="select1" id="city" name="city" style="margin-left:20px;">
+        <div class="form-group">
+        <label for="city">City<span style="color:red;">*</span></label>
+        <select class="form-control sharp" id="city" name="city">
         </select> 
-        </div>
+        </div><br>
 
-        <div class="boss1">
-        <div class="text-name1">Street 1<span style="color:red;">*</span></div>
-        <input type="text" class="text-sbox" style="border: solid 1px #ccc;" id="street1" name="street1" placeholder="Enter your Street" value="{%if e%}{{logged_user.street1}}{%else%}{{logged_user.address.street1}}{%endif%}"><br><br>
+        <div class="form-group">
+        <label for="street1">Street 1<span style="color:red;">*</span></label>
+        <input type="text" class="form-control sharp" style="border: solid 1px #ccc;" id="street1" name="street1" placeholder="Enter your Street" value="{{logged_user.address.street1}}">
         <p style="color:red;">{{ student_form.street1.errors }}</p>
-        </div>
+        </div><br>
 
-        <div class="boss1">
-        <div class="text-name1">Street 2</div>
-        <input class="text-sbox" style="border: solid 1px #ccc;" id="street2" name="street2" placeholder="Enter your Street Address (optional)" value="{%if e%}{{logged_user.street2}}{%else%}{{logged_user.address.street2}}{%endif%}">
+        <div class="form-group">
+        <label for="street2">Street 2</label>
+        <input class="form-control sharp" style="border: solid 1px #ccc;" id="street2" name="street2" placeholder="Enter your Street Address (optional)" value="{{logged_user.address.street2}}">
         <p style="color:red;">{{ student_form.street2.errors }}</p>
-        </div>
+        </div><br>
 
-        <div class="boss1">
-        <div class="text-name1">Pincode<span style="color:red;">*</span></div>
-        <input class="text-sbox" style="border: solid 1px #ccc;" id="pincode" name="pincode" placeholder="Enter your Pincode" value="{%if e%}{{logged_user.pincode}}{%else%}{{logged_user.address.pincode}}{%endif%}" maxlength="6"><br><br>
+        <div class="form-group">
+        <label for="pincode">Pincode<span style="color:red;">*</span></label>
+        <input class="form-control sharp" style="border: solid 1px #ccc;" id="pincode" name="pincode" placeholder="Enter your Pincode" value="{{logged_user.address.pincode}}" maxlength="6">
         <p style="color:red;">{{ student_form.pincode.errors }}</p>
-        </div>
+        </div><br>
 
-       
-        </div>
-        <div class="da1"  style="margin-top:30px;">
-        
-
-     <div class="boss1">
-     
-        <h1>Connect Accounts</h1>
-
-                  <div class="boss1">
-        <div class="text-name1">Facebook</div>
-        <div class="text-name1">
-        {% if socialaccount_fb_id %}
-            <input type="url" name="fblink" class="text-sbox" value="https://www.facebook.com/app_scoped_user_id/{{ socialaccount_fb_id }}/" style="border: solid 1px #ccc;" id="fblink" readonly>
-        {% else %}
-            <input type="url" name="fblink" class="text-sbox" value="{{ logged_user.fblink }}" style="border: solid 1px #ccc;" id="fblink" placeholder="Enter facebook profile link...">
-        {% endif %}
-        </div>
-       
-       </div>
-
-    <div class="boss1">
-        <div class="text-name1">Google</div>
-       <div class="text-name1">
-        {% if socialaccount_g_id %}
-            <input type="url" name="glink" class="text-sbox" value="https://plus.google.com/{{ socialaccount_g_id }}/" style="border: solid 1px #ccc;" id="glink" readonly>
-        {% else %}
-            <input type="url" name="glink" class="text-sbox" value="{{ logged_user.glink }}" style="border: solid 1px #ccc;" id="glink" placeholder="Enter google profile link...">
-        {% endif %}
+        <!-- <div style="margin-top:30px;"> -->
+             <div class="form-group">
+              <div class="hidden-xs">
+               <h2 class="text-center">Connect Accounts</h2>
     </div>
+    <div class="hidden-md hidden-lg">
+               <h4 class="text-center">Connect Accounts</h4>
     </div>
+             <hr>  
+               <div class="form-group">
+                    <label for="fblink">Facebook</label>
+                    {% if socialaccount_fb_id %}
+                        <input type="url" name="fblink" class="form-control sharp" value="{{ socialaccount_fb_id }}" style="border: solid 1px #ccc;" id="fblink" readonly>
+                    {% else %}
+                        <input type="url" name="fblink" class="form-control sharp" value="{{ logged_user.fblink }}" style="border: solid 1px #ccc;" id="fblink" placeholder="Enter facebook profile link...">
+                    {% endif %}
+                </div>
+               </div><br>
+
+                <div class="form-group">
+                   <label for="glink">Google</label>
+                    {% if socialaccount_g_id %}
+                        <input type="url" name="glink" class="form-control sharp" value="{{ socialaccount_g_id }}" style="border: solid 1px #ccc;" id="glink" readonly>
+                    {% else %}
+                        <input type="url" name="glink" class="form-control sharp" value="{{ logged_user.glink }}" style="border: solid 1px #ccc;" id="glink" placeholder="Enter google profile link...">
+                    {% endif %}
+                </div>
+       <!-- </div> -->
     
 
-    <div class="boss1">
-        <input class="ssubmit" type="button" value="Update details" id="update_details_button">
+    <div class="form-group">
+        <input class="btn btn-primary sharp" type="button" value="Update details" id="update_details_button">&nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
       <a href="/dashboard/">
-       <div class="ssubmit" type="button">Cancel</div>
+       <div class="btn btn-info sharp" type="button">Cancel</div>
       </a>
     </div>
-    </div>
-</div>
+    <!-- </div> -->
 </form>
 </div>
-</section>
+<div class="col-lg-2 col-md-2 col-sm-2"></div>
+</div>
 
+{% endblock %}
+
+{% block footer_css_js %}
 <script>
-//For selecting the value of country
-$('#country > option[value="{%if e%}{{logged_user.country}}{%else%}{{logged_user.address.country}}{%endif%}"]').prop('selected', true);
+$(document).ready(function($) {
+  //For selecting the value of country
+$('#country > option[value="{{logged_user.address.country}}"]').prop('selected', true);
 //For selecting the value of state
-$('#state > option[value="{%if e%}{{logged_user.state}}{%else%}{{logged_user.address.city_obj.city_state}}{%endif%}"]').prop('selected', true);
+$('#state > option[value="{{logged_user.address.city_obj.city_state}}"]').prop('selected', true);
 //For selecting the value of higher education
 $('#higher_education > option[value="{{logged_user.higher_education}}"]').prop('selected', true);
 //For selecting the value of gender
 $('#gender > option[value="{{logged_user.gender}}"]').prop('selected', true);
+});
 //For selecting the value of city after page loading is complete.
 function setCity(){
-  $('#city > option[value="{%if e%}{{logged_user.city}}{%else%}{{logged_user.address.city_obj.city_name}}{%endif%}"]').prop('selected', true);
+  $('#city > option[value="{{logged_user.address.city_obj.city_name}}"]').prop('selected', true);
 }
 </script>
 <script type="text/javascript" src="{%static '/static/custom/js/profile.js'%}"></script>
 <script src="{% static '/static/custom/js/login_register.js' %}"></script>
- 
- {% endblock %}
+{%endblock%}

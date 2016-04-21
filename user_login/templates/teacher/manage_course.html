@@ -54,15 +54,7 @@ ol li:before {
       <div class="col s3">
         <div class="row">
           <img src="{{ course|get_course_img }}" alt="Course Picture" class="rectangle responsive-img">
-	  <div class="row">
-	    {% if course.course_demo_file == 'img' %}
-            <input class="filled-in" type="checkbox" id="showVideo" checked>
-	    {% else %}
-	    <input class="filled-in" type="checkbox" id="showVideo">
-	    {% endif %}
-	    <label for="showVideo">Do you want to show this image on course detail page instead of demo video?</label>
-	  </div>
-        </div>
+        </div><br>
         <div class="row">
         <h5 class="flow-text black-text" style="font-weight: bold;">{{ course.course_name }}</h5>
         </div>
@@ -82,7 +74,7 @@ ol li:before {
 
       <div class="col s9">
         <div class="row">
-        <h5 class="flow-text blue-text" style="font-weight: bold;color:blue;">Upload a Course Image&nbsp;<sup style="font-size:12px;" class="red-text">Image should be of width (250-300px) and height (200-300px)</sup></h5><hr class="sep">
+        <h5 class="flow-text blue-text" style="font-weight: bold;color:blue;">Upload a Course Image</h5><hr class="sep">
         <label for="first_name">Course Image</label>
         <form id="update_course_demo_image_form" action="/upload/course_demo_image/" method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -113,35 +105,22 @@ ol li:before {
         <div class="row">
         <label for="course_description">Course description</label>
         <textarea id="course_description" class="materialize-textarea validate">
-        {{ course.course_information.description }}
+        {{ course.course_information.course_description }}
         </textarea>
         </div>
         </div>
         </div>
+
 
         <div class="row">
         <div class="col s12">
         <div class="row">
         <label for="course_objective">Course Objective</label>
         <textarea id="course_objective" class="materialize-textarea validate">
-        {{ course.course_information.objective }}
+        {{ course.course_information.course_objective }}
         </textarea>
         </div>
         </div>
-        </div>
-	
-	<div class="row">
-        <label for="course_certificationbenefits">Certification Benefits</label>
-        <textarea id="course_certificationbenefits" class="materialize-textarea validate">
-        {{ course.course_information.crt_benefits }}
-        </textarea>
-        </div>
-
-	<div class="row">
-        <label for="course_short_description">Short Description</label>
-        <textarea id="course_short_description" class="materialize-textarea validate">
-        {{ course.course_information.short_description }}
-        </textarea>
         </div>
 
         <div class="row">
@@ -149,7 +128,7 @@ ol li:before {
         <div class="row">
         <label for="course_eligibility">Course Eligibility</label>
         <textarea id="course_eligibility" class="materialize-textarea validate">
-        {{ course.course_information.eligibility }}
+        {{ course.course_information.course_eligibility }}
         </textarea>
         </div>
         </div>
@@ -206,26 +185,10 @@ ol li:before {
         <label class="course_duration">Duration</label>
         
         <select name="course_duration" id="course_duration" class="black-text">
-          <option value="1">1</option>
-          <option value="2">2</option>
           <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
           <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
           <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
           <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
         </select>
         </div>
         </div>
@@ -274,25 +237,7 @@ ol li:before {
     <script>
 
     $(document).ready(function(){
-      $('#showVideo').change(function(){
-	   $.ajax({
-                    url : "/teacher/change/displayDemoImageVideo/",
-                    data : { '_c_id' : '{{course.course_uuid}}', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
-                    type : "POST",
 
-                    success : function(json_from_view) {
-			if(json_from_view)
-                      	    window.location.reload()
-			else
-			    alert("Can't change display of Image on course detail page.Try again.");
-				
-              },
-
-                    error : function(xhr,errmsg,err) {
-                      alert("Server error : Can't change display of Image on course detail page."); 
-                }
-                });
-	});
       $('#course_type > option[value="{{course.course_sectors_and_associates}}"]').prop('selected', true);
       $('#course_duration > option[value="{% if course.course_durations == '01' %}{{ course|course_week }}{% else %}{{ course.course_durations }}{% endif %}"]').prop('selected', true);
 
@@ -407,7 +352,7 @@ function getWeekDetails(){
 
 $('#update_course_details_button').click(function(event) {
     $('#multiple_use_course_modal').openModal({dismissible: false});
-    $('#confirm_question').html('<p class="flow-text black-text" style="font-weight:bold;">Do you really want to update details, objective, certfication benefits and eligibility ?</p>');
+    $('#confirm_question').html('<p class="flow-text black-text" style="font-weight:bold;">Do you really want to update details, objective and eligibility ?</p>');
     $("#confirm_detail_1").html('')
     $('#confirm_operation').html('Update It');
     $('#confirm_operation').attr('data-course-operation', 'change_course_details_objective');              
@@ -464,7 +409,7 @@ $('#update_course_details_button').click(function(event) {
     if(operation_type === 'change_course_details_objective'){
       $.ajax({
                     url : "/teacher/update/course/details/",
-                    data : { '_c_desc':$('#course_description').val(), '_c_objve':$('#course_objective').val(),'_c_eligbty':$('#course_eligibility').val() , '_c_cbf' : $('#course_certificationbenefits').val(), '_c_csd' : $('#course_short_description').val(), '_c_id' : '{{course.course_uuid}}', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    data : { '_c_desc':$('#course_description').val(), '_c_objve':$('#course_objective').val(),'_c_eligbty':$('#course_eligibility').val() ,'_c_id' : '{{course.course_uuid}}','csrfmiddlewaretoken': '{{ csrf_token }}' },
                     type : "POST",
 
                     success : function(json_from_view) {

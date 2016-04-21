@@ -1,71 +1,77 @@
-//AJAX POST request for review posting  
-	var theForm = document.getElementById( 'theForm' );
-	new stepsForm( theForm, {
-		  onSubmit : function( form ) {
-			// hide form
-		  classie.addClass( theForm.querySelector( '.simform-inner' ), 'hide' );
-	      var messageEl = theForm.querySelector( '.final-message' );
-	      var rating  = $('#review_rating').val() 
-	      var review_text  = $('#review_text').val() 
+$('#rating_stars').click(function(event) {
+	var rated = parseInt($(event.target).data('rate'));
+	console.log(typeof(rated));
+	if(isNaN(rated)){
+		$('#ratedmsg').html('Click properly on the stars.');
+		$('#post_review_button').prop('disabled',true);
+		return false;
+	}else{
+		$('#post_review_button').prop('disabled',false);
+	}
+	if($("#rating_stars").find('[data-rate="'+rated+'"]').hasClass('glyphicon-star-empty')){
+	for(i=rated;i>0;i--){
+		var star = $("#rating_stars").find('[data-rate="'+i+'"]');
+		if(star.hasClass('glyphicon-star-empty')){
+			star.removeClass('glyphicon-star-empty')
+			star.addClass('glyphicon-star');
+		}
+	}
+}
+	if($("#rating_stars").find('[data-rate="'+rated+'"]').hasClass('glyphicon-star')){
+	for(i=rated+1;i<=5;i++){
+	var star = $("#rating_stars").find('[data-rate="'+i+'"]');
+	if(star.hasClass('glyphicon-star')){
+			star.removeClass('glyphicon-star');
+			star.addClass('glyphicon-star-empty');
+		}
+	}
+}
+	$('#ratedmsg').html('( You rated '+rated+' stars. )');
+	$('#rated').val(rated);
+});
 
-	        $.ajax({
+//AJAX POST request for posting review
+	function post_review(el,form) {
+		// var rating  = $('#review_rating').val() 
+	    var rated  = form.elements['rated'].value;
+	    var review_text  = form.elements['review_text'].value;
+	    if(review_text && rated){
+		$.ajax({
+		        url : "/add_rating/",
+		        data : {'c_id':$(el).data('course'),'rating':rated,'review_text':review_text,'csrfmiddlewaretoken': $('#ctkn').val()},
+		        type : "POST",
+		        success : function(json_from_view) {
+		        		window.location = window.location;
+		       },
+		        error : function(xhr,errmsg,err) {
+					alert('Server error in posting the review! Try again.');
+		         }
+		    });
+	}else{
+		alert('Please rate and write a review.');
+	}
+	}	      
 
-	                url : "/add_rating/",
-	                data : {'c_id':c_id,'rating':rating,'review_text':review_text,'csrfmiddlewaretoken': csrfmiddlewaretoken},
-	                type : "POST",
-	                success : function(json_from_view) {
-	                	if(json_from_view){
-				               messageEl.innerHTML = 'Thank You For Your Valuable Feedback';
-	                     $('#u_review').text(review_text);
-	                     $('#u_star').text('You rated '+rating+' stars.');
-	                     current_width = $('#rating_bar_'+rating).width();
-	                     if (current_width == 0){
-	                       $('#rating_bar_'+rating).width(current_width+10)
-	                     }
-	                     else{
-	                      if(current_width <= 97){
-	                        $('#rating_bar_'+rating).width(current_width+3)
-	                      }
-	                     }
-	                    }
-	          				else{
-	              			messageEl.innerHTML = 'We cannot save the review posted!!!';
-	              			classie.addClass( messageEl, 'show' );
-	                  }
-	               },
-	                // handle a non-successful response
-	                error : function(xhr,errmsg,err) {
-						messageEl.innerHTML = 'Error in posting the review! Try again.';
-						classie.addClass( messageEl, 'show' );
-	                 }
-	            });
-				
-			}
-	});
-//AJAX GET request for review removal
-function remove_review(){
-	// confirm dialog
-		alertify.confirm("You want to remove your rating ?", function (e) {
-		    if (e) {
-		        // user clicked "ok"
-		        $.ajax({
-		          url : "/remove_rating/",
-		          data : {'c_id':c_id,'csrfmiddlewaretoken': csrfmiddlewaretoken},
-		          type : "POST",
+  //AJAX POST request for review removal
+function remove_review(el){
+  // confirm dialog
+    // alertify.confirm("You want to remove your rating ?", function (e) {
+    //     if (e) {
+    //         $.ajax({
+    //           url : "/remove_rating/",
+    //           data : {'c_id':$(el).data('course'),'rating':$(el).data('rating'),'csrfmiddlewaretoken': $('#ctkn').val()},
+    //           type : "POST",
 
-		          success : function(json_from_view) {
-		          		if(json_from_view)
-		          		   window.location = window.location;
-		          		else
-		          			 alertify.alert("Can't remove the review");
-		         },
-		          error : function(xhr,errmsg,err) {
-		            console.log('error in removing review');
-		      }
-		      });
-		    } else {
-		    	alertify.error( 'Operation Cancelled' );
-		        // user clicked "cancel"
-		    }
-		});
+    //           success : function(json_from_view) {
+    //                 window.location = window.location;
+    //             },
+    //           error : function(xhr,errmsg,err) {
+    //             alert('Server error in removing review.');
+    //       }
+    //       });
+    //     } else {
+    //      alertify.error('Operation Cancelled.');
+    //     }
+    // })};
+	showConfirmModal("formSubmission", "You want to remove your rating ?", "#remove_review_form", "Review deletion cancelled.");
 }

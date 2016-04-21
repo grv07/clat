@@ -6,93 +6,95 @@
 <link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/lib/bootstrap-datepicker.css" />
 <script type="text/javascript" src="{% static '/static/custom/Datepair.js'%}"></script>
 
-
-<form id="articulate_file_form" action="/upload/art_course/" method="POST" enctype="multipart/form-data">
+<div class="container-fluid createcourse">
+  <div class="row">
+    <div class="col-lg-1 col-md-1 col-sm-1"></div>
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+      <form id="articulate_file_form" role="form" action="/upload/art_course/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-    <fieldset id="course_details_fieldset">
-        <div id="legend">
-            <legend class="">
-                <div class="section-title lines">
-                    <h2>
-                        <span class="text">Create Your Course</span>
-                    </h2>
-                </div>
-            </legend>
-        </div>
-          <div class="boss {% if form.course_name.errors %}has-error{%endif%}" style="margin-top:30px;">
-            <p>Enter Your Course Name<span style="color:red">*</span></p>
-            {{form.course_name}}
-            <p class="error">{{form.course_name.errors}}</p>
+              <div class="row">
+                  <h2 class="center">
+                    Create Your Course
+                  </h2>
+              </div>
+                <div class="row {% if form.course_name.errors %}has-error{%endif%}">
+                  <p>Enter Your Course Name<span class="error">*</span></p>
+                  {{form.course_name}}
+                  <p class="error">{{form.course_name.errors}}</p>
 
-        </div>
-        <div class="boss {% if form.course_sectors_and_associates.errors %}has-error{%endif%}" style="margin-top:30px;">
-            <!-- Username -->
-            <p>Enter Your Course Category<span style="color:red">*</span></p>
-            {{form.course_sectors_and_associates}}
-            <p class="error">{{form.course_sectors_and_associates.errors}}</p>
-        </div>
+              </div>
+              <div class="row {% if form.course_sectors_and_associates.errors %}has-error{%endif%}">
+                  <!-- Username -->
+                  <p>Enter Your Course Category<span class="error">*</span></p>
+                  {{form.course_sectors_and_associates}}
+                  <p class="error">{{form.course_sectors_and_associates.errors}}</p>
+              </div>
 
-        <div class="boss {% if form.course_durations.errors %}has-error{%endif%}" style="margin-top:30px;">
-            <!-- Username -->
-            <p>Enter Your Course Duration (in weeks)<span style="color:red">*</span></p>
-            {{form.course_durations}}
-            <p class="error">{{form.course_durations.errors}}</p>
-        </div>
+              <div class="row {% if form.course_durations.errors %}has-error{%endif%}">
+                  <!-- Username -->
+                  <p>Enter Your Course Duration (in weeks)<span class="error">*</span></p>
+                  {{form.course_durations}}
+                  <p class="error">{{form.course_durations.errors}}</p>
+              </div>
 
-        <div class="boss" style="margin-top:30px;">
-            <p>Please provide a demo video<span style="color:red">*</span></p>
-            <div class="boss" name="demo_video_radio_groups" id="demo_video_radio_groups">
-              <input type="radio" value="youtube_button" name="demo_type" id="youtube_button"><label for="youtube_button" style="font-size: 14px;">Upload from Youtube video</label>
-              <input type="radio" value="mp4_button" name="demo_type" id="mp4_button" style="margin-left: 5%;" checked><label for="mp4_button" style="font-size: 14px;">Upload an MP4 file</label>
-            </div>
+              <div class="row radio-inline">
+                  <p>Please provide a demo video<span class="error">*</span></p>
+                  <div class="row" name="demo_video_radio_groups" id="demo_video_radio_groups">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <input type="radio" value="youtube_button" name="demo_type" id="youtube_button"><label for="youtube_button" style="font-size: 14px;">Upload from Youtube video</label>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <input type="radio" value="mp4_button" name="demo_type" id="mp4_button" checked><label for="mp4_button" style="font-size: 14px;">Upload an MP4 file</label>
+                    </div>
+                  </div>
 
-        </div>
-        <div class="boss" style="margin-top:10px;">
-            <div class="boss" id="mp4_upload_div">
-                {{form.course_demo_file}}
-                <p class="error">{{form.course_demo_file.errors}}</p>
-                <p class="mime_error" style="color:red;display: none;">Video must be in .mp4 format</p>
-            </div>
+              </div>
+              <div class="row">
+                  <div class="row" id="mp4_upload_div">
+                      {{form.course_demo_file}}
+                      <p class="error">{{form.course_demo_file.errors}}</p>
+                      <p class="mime_error error" style="display: none;">Video must be in .mp4 format</p>
+                  </div>
 
-            <div class="boss" style="display: none;" id="youtube_upload_div">
-                {{form.course_demo_file_url}}
-              <p class="error">{{form.course_demo_file_url.errors}}</p>
-            </div>
+                  <div class="row" style="display: none;" id="youtube_upload_div">
+                      {{form.course_demo_file_url}}
+                    <p class="error">{{form.course_demo_file_url.errors}}</p>
+                  </div>
 
-         </div>
-	
-	<div class="boss">
-            {{form.show_video}}<span style="font-size: 12px;">Do you want to this video on course detail page?</span>
-        </div>
+               </div>
 
-        <div class="boss row {% if form_course_info.course_description.errors %}has-error{%endif%}" style="margin-top: 30px;">
-            <p>Enter Your Course Description<span style="color:red">*</span></p>
+              <div class="row {% if form_course_info.course_description.errors %}has-error{%endif%}">
+                  <p>Enter Your Course Description<span class="error">*</span></p>
 
-            <div class="boss">
-                {{form_course_info.course_description}}
-                <p class="error">{{form_course_info.course_description.errors}}</p>
+                  <div class="row">
+                      {{form_course_info.course_description}}
+                      <p class="error">{{form_course_info.course_description.errors}}</p>
 
-            </div>
-        </div>
+                  </div>
+              </div>
 
-        <div class="boss row {% if form_course_info.course_objective.errors %}has-error{%endif%}" style="margin-top: 30px;">
-            <p>Enter Your Course Objective<span style="color:red">*</span></p>
+              <div class="row {% if form_course_info.course_objective.errors %}has-error{%endif%}">
+                  <p>Enter Your Course Objective<span class="error">*</span></p>
 
-            <div class="boss">
-                {{form_course_info.course_objective}}
-                <p class="error">{{form_course_info.course_objective.errors}}</p>
+                  <div class="row">
+                      {{form_course_info.course_objective}}
+                      <p class="error">{{form_course_info.course_objective.errors}}</p>
 
-            </div>
-        </div>
-        <hr>
-        <div class="boss" style="margin-top: 30px;margin-bottom: 20px;">
-                <button type="submit" id="next" class="ssubmit">Submit</button>
-        </div>
-    </fieldset>
-</form>
+                  </div>
+              </div>
+              <hr>
+              <div class="row" style="margin-bottom: 20px;">
+                      <button type="submit" id="next" class="btn btn-primary btn-block sharp">Submit</button>
+              </div>
+      </form>
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1"></div>
+
+  </div>
+</div>
+
 <script>
 
-  $('.error').css('color','red');
  // For toggling between radio buttons 
   var demo_video_choices = $('#demo_video_radio_groups');
   demo_video_choices.click(function(event) {
@@ -165,3 +167,7 @@
 {% else %}
 <h1>Nothing to show!!!</h1>
 {% endif %}
+
+{%block footer_css_js%}
+   <script type="text/javascript" src="{%static '/static/custom/js/course_upload_js.js'%}" ></script>
+{%endblock%}

@@ -1,7 +1,7 @@
-{% load default_tags %}
 {% if course.course_demo_file == 'utb' %}
-  <div class="iframewrapper">
-    <iframe id="youtube-video" src="https://www.youtube.com/embed/{{course.course_demo_file_url}}?enablejsapi=1&rel=0&iv_load_policy=3" frameborder="0" enablejsapi="1" allowfullscreen style="width:100%;height: 100%;margin:auto;"></iframe>   
+    <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" id="youtube-video" src="https://www.youtube.com/embed/{{course.course_demo_file_url}}?enablejsapi=1&rel=0&iv_load_policy=3" frameborder="0" enablejsapi="1" allowfullscreen></iframe>  
+    </div> 
     <script>
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -26,8 +26,13 @@
             console.log("my state changed");
         }
     </script>
-</div>
 
     {% else %}
-    <img src="{{course|get_course_img}}" alt="Demo Image" width="100%" height="100%">
+    <video id="demo-video" controls style="width:100%;height: auto;">
+        <source src="http://{{ request.META.HTTP_HOST }}{{course.course_demo_file}}"
+                type="video/mp4">
+        <source src="http://{{ request.META.HTTP_HOST }}{{course.course_demo_file}}"
+                type="video/ogg">
+        Your browser does not support the video tag.
+    </video>
   {% endif %}

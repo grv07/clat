@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+body{ background-color:transparent !important;}
+.slider_con{height:350px; width:100%; position:absolute; float:left; left:0px; top:00px; }
+h1{ height:auto; top:0px; position:relative;  float:left;left:0px; margin:3% 5%; color:#fff !important;font-family: "Lato",Arial,sans-serif;
+font-weight:300 !important; font-size:35px !important; width:90%; }
+.tagline{height:auto; width:100%; position:absolute; float:left; left:20px; top:190px; color:#999; font-family:calibri;  font-size:16px;}
+
+.buttons{height:auto; width:auto; position:relative; float:left; left:5%;   padding:10px 20px; border: solid 1px #FFFFFF; color:#FFF; font-family:calibri;}
+.buttons:hover{ background-color:#222; cursor:pointer; border: solid 1px #222; }
+.whole_con{height:350px; width:100%; overflow:hidden; position:absolute; float:left; left:0px; top:0px;}
+@media screen and (min-width:320px)
+and (max-width:768px)
+{ .menu_container{display:none;} .menu_icon{ display:block;}}
+@media screen and (max-width:768px)
+{h1{ font-size:30px;}}
+
+@media screen and (min-width:769px)
+and (max-width:1768px)
+{.close , .menu_icon , .side_menu_con{display:none !important;}
+h1{font-size:50px;}}
+
+
+</style>
+<script type="text/javascript" src="js/cycle.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript">
+$('#teplace').cycle({'fx':'scrollLeft','timeout':8000});
+$(document).ready(function() {	$("#teplace").hover(function(){ cycle().stop();  });});
+</script>
+
+
+</head>
+
+<body>
+
+<div class="slider_con">
+
+
+<div id="teplace" style="overflow: hidden;">
+<div class="whole_con as1" >
+<h1>An <strong>Clat</strong> For <strong>Students</strong>  Through Quality, Employability  Skill And Training</h1>
+<div class="buttons">How it Works</div>
+</div>
+
+<div class="whole_con as2">
+<h1>Nation's <strong>First</strong> Intelligent e-Quality  Learning Management System  Hosting <strong>Online Certification</strong></h1>
+<div class="buttons">How it Works</div>
+
+</div>
+
+<div class="whole_con as3">
+<h1>If "Quality is Your  Goal Statement, Then It's <strong>Our Mission To Help You</strong>  Achieve That"</h1>
+<div class="buttons">How it Works</div>
+
+</div>
+
+
+</div></div>
+</body>
+</html>

@@ -34,14 +34,20 @@
         </div>
           <div class="input-field col s12 m12" style="display: none;" id="inline_url_fields">
         <h6 class="black-text">Fill the URL of the quiz</h6>
-        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+        <input type="url" class="validate" placeholder="Enter METTL quiz url 1"  name="quiz_url1" id="quiz_url"  autocomplete="off" required>
+        <input type="url" class="validate" placeholder="Enter METTL quiz url 2"  name="quiz_url2" id="quiz_url"  autocomplete="off" required>
+        <input type="url" class="validate" placeholder="Enter METTL quiz url 3"  name="quiz_url3" id="quiz_url"  autocomplete="off" required>
           </div>
            <div class="input-field col s12 m12">
         <button type="submit" class="btn waves-effect waves-light" id="inline_add_quiz_button">Add Inline Quiz</button>
-        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#inlinequiz_modal').closeModal();">Cancel</button>
           </div>
+
           </form>
+
           </div>
+        </div>
+        <div class="modal-footer">
+        <a href="javascript:void(0);" class=" modal-action modal-close waves-effect waves-green btn-flat" onclick="$('#inlinequiz_modal').closeModal();">Cancel</a>
         </div>
   </div>
 
@@ -57,22 +63,24 @@
             <input id="quiz_category" type="hidden" name="quiz_category" value="end">
           <div class="input-field col s12 m12">
         <h6 class="black-text">Fill the URL of the end term quiz</h6>
-        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+        <input type="url" class="validate" placeholder="Enter METTL quiz url."  name="quiz_url1" id="quiz_url"  autocomplete="off" required>
           </div>
            <div class="input-field col s12 m12">
         <button type="submit" class="btn waves-effect waves-light" id="endterm_add_quiz_button">Add End Term Quiz</button>
-        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#endtermquiz_modal').closeModal();">Cancel</button>
           </div>
 
           </form>
 
           </div>
         </div>
+        <div class="modal-footer">
+        <a href="javascript:void(0);" class=" modal-action modal-close waves-effect waves-green btn-flat" onclick="$('#endtermquiz_modal').closeModal();">Cancel</a>
+        </div>
   </div>
 
 
   <div id="casestudyquiz_modal" class="modal">
-        <div class="modal-content" style="height:500px;">
+        <div class="modal-content" style="height:400px;">
         <div class="row">
                 <h3>Add Case Study according to a specific module.</h3>
           <form action="{{ request.get_full_path }}" method="post">
@@ -100,20 +108,24 @@
         </div>
           <div class="input-field col s12 m12" style="display:none;" id="casestudy_url_field">
         <h6 class="black-text">Fill the URL of the end term quiz</h6>
-        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+        <input type="url" class="validate" placeholder="Enter METTL quiz url."  name="quiz_url1" id="quiz_url"  autocomplete="off" required>
           </div>
            <div class="input-field col s12 m12">
-        <button type="submit" class="btn waves-effect waves-light " id="casestudy_add_quiz_button">Add Case Study</button>
-        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#casestudyquiz_modal').closeModal();">Cancel</button>
+        <button type="submit" class="btn waves-effect waves-light" id="casestudy_add_quiz_button">Add Case Study</button>
           </div>
+
           </form>
+
           </div>
+        </div>
+        <div class="modal-footer">
+        <a href="javascript:void(0);" class=" modal-action modal-close waves-effect waves-green btn-flat" onclick="$('#casestudyquiz_modal').closeModal();">Cancel</a>
         </div>
   </div>
 
   {% if course_duration_list|length == 16 %}
   <div id="midtermquiz_modal" class="modal">
-        <div class="modal-content" style="height:500px;">
+        <div class="modal-content" style="height:400px;">
         <div class="row">
                 <h3>Add Mid Term Quiz according to a specific module.</h3>
           <form action="{{ request.get_full_path }}" method="post">
@@ -141,16 +153,18 @@
         </div>
           <div class="input-field col s12 m12" style="display:none;" id="midterm_url_field">
         <h6 class="black-text">Fill the URL of the end term quiz</h6>
-        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+        <input type="url" class="validate" placeholder="Enter METTL quiz url."  name="quiz_url1" id="quiz_url"  autocomplete="off" required>
           </div>
            <div class="input-field col s12 m12">
         <button type="submit" class="btn waves-effect waves-light" id="midtermquiz_add_quiz_button">Add Mid Term</button>
-        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#midtermquiz_modal').closeModal();">Cancel</button>
           </div>
 
           </form>
 
           </div>
+        </div>
+        <div class="modal-footer">
+        <a href="javascript:void(0);" class=" modal-action modal-close waves-effect waves-green btn-flat" onclick="$('#midtermquiz_modal').closeModal();">Cancel</a>
         </div>
   </div>
   {% endif %}

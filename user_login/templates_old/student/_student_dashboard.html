@@ -1,0 +1,45 @@
+{% load default_tags %}
+{% load test_tags %}
+{% for enroll_course in total_courses_enrolled %}
+<div class="col-lg-4" style=" border-bottom: solid 1px #666; min-height:250px; margin:10px 0px;" >
+<h2 style=" margin:0px; width:100%; text-align:center;">{{enroll_course.course.course_name}}</h2>
+<div class="col-sm-3" >
+<a href="/course/details/{{enroll_course.course.course_uuid}}/" style="text-decoration: none;" >
+	<img src="{{ enroll_course.course|get_course_img }}" alt="Demo Image" class="dash-img" titlle='Start Course'>
+	<br>
+	<h1 style='text-align:center;'>Start Course</h1>
+</a>
+</div>
+
+<div class="col-lg-1">
+<ul class="bar2">
+<li><p>Time </p>
+	<div class="dd full-fill2" style='border: 1px solid black;'>
+	    {% for module in enroll_course.course|module_list %}
+		    <div class="white" style="width:{{enroll_course.course|module_width}}%;height:100%;"><div class="fill2" style="width:{{module|time_progress:user}}%;"></div></div>
+	    {%empty%}
+	        <span style='color:red;'>NOT AVAIL</span>
+	    {% endfor %}
+	</div>
+	<div class="full-down" style=" top:-4px !important;">
+		<div class="col-lg-4">
+		{% for module in enroll_course.course|module_list %}
+		  <div class="col8" style="width:{{enroll_course.course|module_width}}%; color:white; !important" title="{{ module }}">{{module|time_progress:user}}%</div>
+		{%empty%}
+		{% endfor %}
+		</div>
+	</div>
+</li>
+<li>
+<p></p>
+<p style='margin-left: -7px;width: 50%;'><a href="/{{ enroll_course.course.course_uuid }}/progress/">View Test Progress</a>
+{% if enroll_course.is_complete %}&nbsp;&nbsp;&nbsp;
+<a href="/download/certificate/{{ enroll_course.course.course_uuid }}/">Create Certificate</a>
+{% endif %}
+</p>
+</li>
+</ul>
+</div>
+
+</div>
+{% endfor %}

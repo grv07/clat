@@ -1,0 +1,32 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% block body %}
+<section id="revi" style="margin-top:40px;">
+<h1 style=" font-size:32px !important; text-align:center; font-weight:300 !important">List of all certificates achieved by you.</h1><br>
+<div style="margin-left: 20%;margin-right: 20%;">
+{% for certificate in courses_certificates %}
+
+<div class="col-lg-4" style=" border-bottom: solid 1px #666; min-height:250px; margin:10px 0px;" >
+<div class="col-sm-3" >
+<img src="http://{{ request.META.HTTP_HOST }}/lms/media/certificate/{{ certificate.uuid_key }}/cert.png" width="200" height="200" style=" margin-left:0px !important; max-width:350px !important" />
+</div>
+
+<div class="col-lg-1">
+<ul id="cert" style="text-decoration: none;">
+<li>Certificate ID : <span style="color:blue;">{{  certificate.uuid_key }}</span></li>
+<li>Course : <span style="color:blue;">{{  certificate.enr_course.course.course_name }}</span></li>
+<li>Status : <span style="color:blue;">{{  certificate.status }}</span></li>
+<li>Marks Scored : <span style="color:blue;">{{  certificate.marks_score }} / {{  certificate.max_marks }} </span></li>
+<li><a class="ssubmit" style="text-decoration: none;" href="http://{{ request.META.HTTP_HOST }}/lms/media/certificate/{{ certificate.uuid_key }}/cert.png" download>Download</a></li>
+
+</ul>
+</div>
+</div>
+{% empty %}
+<section class="copyrights">
+   <h3 style="color:red;text-align:center;">No certificates achieved so far!!!</h3>
+</section>
+{% endfor %}
+</div>
+</section>
+{% endblock %}

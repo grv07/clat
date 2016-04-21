@@ -1,91 +1,51 @@
 {% extends 'new_home.html' %}
 {% load static %}
 
-{% block slider %}
-{% endblock %}
 {% block head_js_css %}
-<style>
-a{
-  text-decoration: none; color: #EC5C93; 
-}
-.login{
-  border-bottom: 2px solid #C5C5C8;
-  border-radius: 5px;
-  text-align: center;
-  color: #36383C;
-  text-shadow: 0 1px 0 #FFF;
-  width : 320px;
-  margin: 0 auto;
-  padding: 30px 20px 20px 30px;
-  box-shadow: 0 0 3px #000;
-}
-h1{
-  font-size: 1.6em;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-p{
-  font-family:'Helvetica Neue';
-  font-weight: 300;
-  color: #7B808A;
-  margin-top: 0;
-  margin-bottom: 30px;
-}
-/*input[class="text-sbox"]{
-  background: transparent;
-  border: 1;
-  margin-left: 10%;
-  margin-right: :10%;
-  width: 80%;
-  line-height: 2em;
-  box-sizing: border-box;
-  color: #71747A;
-  font-family:'Helvetica Neue';
-  text-shadow: 0 1px 0 #FFF;
-  font-size: 18px;
-}*/
-button{
-  margin-top: 20px;
-  display: block;
-  width: 100%;
-  line-height: 1.2em;
-  background: white;
-  border-radius: 5px;
-  border:0;
-  border-top: 1px solid black;
-  box-shadow: 0 0 0 1px black, 0 2px 2px black;
-  color: black;
-  font-size: 1.5em;
-  text-shadow: 0 1px 2px black;
-}
-
-</style>
 {% endblock %}
 
 {% block body %}
-  <div class="login" style="height: 459px;margin-bottom: 5%;margin-top: 10%;width: 52%;">
-  <h1 style="color:threeddarkshadow; ">Rescue your credentials</h1><hr>
- <form action="{{ request.get_full_path }}" method="post" id="passwordresetform">
-    {% csrf_token %}
-    <div class="boss">
-    <h3 style="font-weight: bold;">Select the way you want to receive the activation link -</h3>
-    </div>
-    <div class="col-sm-4">
-    <input type="radio" id="emailoption" name="option" value="emailoption" checked><label for="emailoption">Email</label>
-    </div>
-    <div class="col-sm-4">
-    <input type="radio" id="mobileoption" name="option" value="mobileoption"><label for="mobileoption">Mobile</label>
-    </div>
-    <div class="boss">
-    <br>
-    <input name="email" id="email" type="email" placeholder="Type your email here..." autocomplete="off" style="width:100%;height:50px;">
-    <input name="phone_number" id="phone_number" type="text" placeholder="Type your phone number here..." autocomplete="off" maxlength="10" style="display:none;width:100%;height:50px;">
-    </div>
-    <div>
-       <button type="submit" class="ssubmit">Submit</button>
-    </div>
-</form>
+<div class="container passwordreset">
+<div class="row">
+  <div class="col-lg-2 col-md-2 col-sm-2">
   </div>
+  <div class=" col-lg-8 col-md-8 col-sm-8">
+    <div class="row"><h4 class="text-center">Select the way you want to receive the activation link -</h4></div>
+    <form role="form" action="{{ request.get_full_path }}" method="post" id="passwordresetform">
+    {% csrf_token %}
+      <div class="form-group">
+      <div class="row" style="margin-top: 40px;margin-bottom: 40px;">
+      <div class="col-lg-3 col-md-3 col-sm-3"></div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="radio-inline">
+      <input type="radio" id="emailoption" name="option" value="emailoption" checked><label for="emailoption">Email</label>
+      </label>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="radio-inline">
+      <input type="radio" id="mobileoption" name="option" value="mobileoption"><label for="mobileoption">Mobile</label>
+      </label>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3"></div>
+      </div>
+      </div>
+      <div class="form-group">
+      <input class="form-control sharp" name="email" id="email" type="email" placeholder="Type your email here..." autocomplete="off">
+      <input name="phone_number" id="phone_number" type="text" class="form-control" placeholder="Type your phone number here..." autocomplete="off" maxlength="10" style="display:none;">
+      </div>
+      <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-block sharp">Submit</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2">
+  </div>
+</div>
+</div>
+  </div>
+{% endblock %}
+
+{% block footer_css_js %}
 <script>
 $('input[type="radio"]').click(function(e) {
   var type_selected = e.target.id;
@@ -114,7 +74,7 @@ $(function () {
                         },
                         phone_number: {
                             required: true,
-                            remote:'/verify_phone_number/?m=troubleshoot',
+                            remote:'/verify_phone_number/',
                             phoneUK: true
                         }
                     },
@@ -130,12 +90,12 @@ $(function () {
                     messages: {
                         email: {
                             required: "Please enter your email.",
-                            remote: 'Please enter your email.'
+                            remote: 'This email does not exist with eQUEST.'
                         },
                         phone_number: {
                         required :  "Please enter phone number.",
                         phoneUK  : "Phone number must be in Indian format.", 
-                        remote : "Please enter your phone number.",
+                        remote : "This phone number does not exist with eQUEST.",
                         }
                     }
                 });
@@ -143,4 +103,4 @@ $(function () {
     });
 
 </script>
-{% endblock %}
+{%endblock%}

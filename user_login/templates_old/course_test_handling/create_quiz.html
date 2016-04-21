@@ -1,0 +1,270 @@
+{% extends 'teacher/teacher_home.html' %}
+{%load static%}
+{% load course_tags %}
+{%block head_script %}
+{%endblock%} 
+{% block body %}
+ <div id="inlinequiz_modal" class="modal">
+        <div class="modal-content">
+        <div class="row">
+                <h3>Add Inline quizes for a specific module.</h3>
+          <form action="{{ request.get_full_path }}" method="post">
+            {% csrf_token %}
+            <input id="quiz_type" type="hidden" name="quiz_type" value="inline_quiz">
+      <div class="input-field col s4 m4">
+      <h6 id="week_text">Select any week</h6>
+        <select class="select1" name="week" id='inline_week'>
+        <option disabled id="inline_default_week_option">Select a week</option>
+        {% for week in course_duration_list %}
+        <option>{{ week }}</option>
+        {% endfor %}
+        </select>
+      </div>
+
+      <div class="input-field col s6 m6" id="inline_module">
+        <h6 id="module_text">Select any module</h6>
+        <h6 id="inline_result" class="red-text"></h6>
+        <select class="select1" name="quiz_category" id='inline_quiz_category'>
+        </select>
+          </div>
+
+        <div class="input-field col s2 m2">
+        <h6 class="black-text">Module Number</h6>
+        <h6 id="inline_ordering"></h6>
+        </div>
+          <div class="input-field col s12 m12" style="display: none;" id="inline_url_fields">
+        <h6 class="black-text">Fill the URL of the quiz</h6>
+        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+          </div>
+           <div class="input-field col s12 m12">
+        <button type="submit" class="btn waves-effect waves-light" id="inline_add_quiz_button">Add Inline Quiz</button>
+        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#inlinequiz_modal').closeModal();">Cancel</button>
+          </div>
+          </form>
+          </div>
+        </div>
+  </div>
+
+
+
+ <div id="endtermquiz_modal" class="modal">
+        <div class="modal-content" style="height:400px;">
+        <div class="row">
+                <h3>Add End Term quiz.</h3>
+          <form action="{{ request.get_full_path }}" method="post">
+            {% csrf_token %}
+            <input id="quiz_type" type="hidden" name="quiz_type" value="endterm_quiz">
+            <input id="quiz_category" type="hidden" name="quiz_category" value="end">
+          <div class="input-field col s12 m12">
+        <h6 class="black-text">Fill the URL of the end term quiz</h6>
+        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+          </div>
+           <div class="input-field col s12 m12">
+        <button type="submit" class="btn waves-effect waves-light" id="endterm_add_quiz_button">Add End Term Quiz</button>
+        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#endtermquiz_modal').closeModal();">Cancel</button>
+          </div>
+
+          </form>
+
+          </div>
+        </div>
+  </div>
+
+
+  <div id="casestudyquiz_modal" class="modal">
+        <div class="modal-content" style="height:500px;">
+        <div class="row">
+                <h3>Add Case Study according to a specific module.</h3>
+          <form action="{{ request.get_full_path }}" method="post">
+            {% csrf_token %}
+            <input id="quiz_type" type="hidden" name="quiz_type" value="casestudy_quiz">
+    <div class="input-field col s4 m4">
+      <h6 id="week_text">Select any week</h6>
+        <select class="select1" name="week" id='casestudy_week'>
+        <option disabled id="casestudy_default_week_option">Select a week</option>
+        {% for week in course_duration_list %}
+        <option>{{ week }}</option>
+        {% endfor %}
+        </select>
+      </div>
+
+      <div class="input-field col s6 m6" id="casestudy_module">
+        <h6 id="module_text">Select any module</h6>
+        <h6 id="casestudy_result" class="red-text"></h6>
+        <select class="select1" name="quiz_category" id='casestudy_quiz_category'>
+        </select>
+    </div>
+    <div class="input-field col s2 m2">
+    <h6 class="black-text">Module Number</h6>
+        <h6 id="casestudy_ordering"></h6>
+        </div>
+          <div class="input-field col s12 m12" style="display:none;" id="casestudy_url_field">
+        <h6 class="black-text">Fill the URL of the end term quiz</h6>
+        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+          </div>
+           <div class="input-field col s12 m12">
+        <button type="submit" class="btn waves-effect waves-light " id="casestudy_add_quiz_button">Add Case Study</button>
+        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#casestudyquiz_modal').closeModal();">Cancel</button>
+          </div>
+          </form>
+          </div>
+        </div>
+  </div>
+
+  {% if course_duration_list|length == 16 %}
+  <div id="midtermquiz_modal" class="modal">
+        <div class="modal-content" style="height:500px;">
+        <div class="row">
+                <h3>Add Mid Term Quiz according to a specific module.</h3>
+          <form action="{{ request.get_full_path }}" method="post">
+            {% csrf_token %}
+            <input id="quiz_type" type="hidden" name="quiz_type" value="midterm_quiz">
+    <div class="input-field col s4 m4">
+      <h6 id="week_text">Select any week</h6>
+        <select class="select1" name="week" id='midterm_week'>
+        <option disabled id="midterm_default_week_option">Select a week</option>
+        {% for week in course_duration_list %}
+        <option>{{ week }}</option>
+        {% endfor %}
+        </select>
+      </div>
+
+      <div class="input-field col s6 m6" id="midterm_module">
+        <h6 id="module_text">Select any module</h6>
+        <h6 id="midterm_result" class="red-text"></h6>
+        <select class="select1" name="quiz_category" id='midterm_quiz_category'>
+        </select>
+    </div>
+    <div class="input-field col s2 m2">
+    <h6 class="black-text">Module Number</h6>
+        <h6 id="midterm_ordering"></h6>
+        </div>
+          <div class="input-field col s12 m12" style="display:none;" id="midterm_url_field">
+        <h6 class="black-text">Fill the URL of the end term quiz</h6>
+        <input type="text" class="validate" placeholder="Enter quiz schedule key"  name="quiz_key" id="quiz_key"  autocomplete="off" required>
+          </div>
+           <div class="input-field col s12 m12">
+        <button type="submit" class="btn waves-effect waves-light" id="midtermquiz_add_quiz_button">Add Mid Term</button>
+        <button type="button" class="modal-action modal-close waves-effect waves-green btn-flat red" onclick="$('#midtermquiz_modal').closeModal();">Cancel</button>
+          </div>
+
+          </form>
+
+          </div>
+        </div>
+  </div>
+  {% endif %}
+  
+<div class="row">
+<br><br><br>
+</div>
+<div class="row">
+      <div class="col m1">
+      &nbsp;
+      </div>
+      <div class="col s12 m10">
+        <div class="row">
+        <a class="waves-effect waves-light btn" id="inline_type" style="font-weight: bold;" onclick="$('#inlinequiz_modal').openModal({dismissible: false});">Add an Inline Quiz</a>
+        <br>
+        </div>     
+        <hr class="style-four">
+        <div class="row">
+        <a class="waves-effect waves-light btn" id="endterm_type" style="font-weight: bold;" onclick="$('#endtermquiz_modal').openModal({dismissible: false});">Add End Term Quiz</a>
+        </div>
+        <hr class="style-four">
+        <div class="row">
+        <a class="waves-effect waves-light btn" id="endterm_type" style="font-weight: bold;" onclick="$('#casestudyquiz_modal').openModal({dismissible: false});">Add a Case Study</a>
+        </div>
+        {% if course_duration_list|length == 16 %}
+        <hr class="style-four">
+        <div class="row">
+        <a class="waves-effect waves-light btn" id="midterm_type" style="font-weight: bold;" onclick="$('#midtermquiz_modal').openModal({dismissible: false});">Add Mid Term</a>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="col m1">
+      &nbsp;
+      </div>
+  </div>
+{% endblock %}
+
+{%block footer_script %}
+  <script>
+
+function getOrdering(elweek,elmodule,elordering){
+      $.ajax({
+                    url : "/getordering/",
+                    data : { 'week_number' : $(elweek).val(),'_c_id' : '{{course.course_uuid}}','module_name':$(elmodule).val()},
+                    type : "GET",
+
+                    success : function(json_from_view) {
+                      if(json_from_view)
+                      $(elordering).html(json_from_view);
+                    else
+                      $(elordering).html('Error in retrieving ordering');
+
+                },
+                    error : function(xhr,errmsg,err) {
+                      alert("Can't get ordering for module "+$(elmodule).val());
+                }
+                });
+    }
+
+function getModules(elweek,elmodule,eladdbutton,elresult,elmodulediv){
+      $.ajax({
+                    url : "/load_modules/",
+                    data : { 'week' : $(elweek).val(),'_c_id' : '{{course.course_uuid}}'},
+                    type : "GET",
+
+                    success : function(json_from_view) {
+                      $(elmodule).empty().html('');
+                      $(elresult).empty().html('');
+                       if(json_from_view.length!=0){
+                for(var i=0;i<json_from_view.length;i++){
+                $(elmodule).append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+                }
+                $(eladdbutton).prop('disabled',false);
+              }
+              else{
+              $(elresult).html("No modules present!!!"); 
+              $(elmodule).append('<option value="">Nothing</option>');
+              $(eladdbutton).prop('disabled',true);
+              }
+                $(elmodule).material_select();
+                $(elmodulediv).find('.caret').remove();
+                },
+                    // handle a non-successful response
+                    error : function(xhr,errmsg,err) {
+                      $(eladdbutton).prop('disabled',true);
+                      $(elresult).html("Modules are not loading!!!"); 
+                }
+                });
+    }
+
+  $('#inline_week').change(function(event) {
+    getModules(this,$('#inline_quiz_category'),$('#inline_add_quiz_button'),$('#inline_result'),$("#inline_module"));
+  });
+  $('#casestudy_week').change(function(event) {
+    getModules(this,$('#casestudy_quiz_category'),$('#casestudy_add_quiz_button'),$('#casestudy_result'),$("#casestudy_module"));
+  });
+ $('#midterm_week').change(function(event) {
+    getModules(this,$('#midterm_quiz_category'),$('#midtermquiz_add_quiz_button'),$('#midterm_result'),$("#midterm_module"));
+  });
+
+  $('#inline_quiz_category').change(function(event) {
+    $('#inline_url_fields').css('display','inline-block');
+  getOrdering($('#inline_week'),this,$('#inline_ordering'));
+});
+
+  $('#casestudy_quiz_category').change(function(event) {
+    $('#casestudy_url_field').css('display','inline-block');
+  getOrdering($('#casestudy_week'),this,$('#casestudy_ordering'));
+});
+  $('#midterm_quiz_category').change(function(event) {
+    $('#midterm_url_field').css('display','inline-block');
+  getOrdering($('#midterm_week'),this,$('#midterm_ordering'));
+});
+  </script>
+{% endblock %}
+

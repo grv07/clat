@@ -8,319 +8,451 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CLAT</title>
-<!-- <link rel="icon" type="image/gif" href="{% static '/static/logo/Equest_DarkBlue_Symbol.gif' %}"/> -->
-<link rel="stylesheet" href="{%static '/static/css/alertify.core.css'%}" />
-<link rel="stylesheet" href="{%static '/static/css/alertify.default.css'%}" id="toggleCSS" />
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+<!-- <link rel="icon" type="image/gif" href="{% static '/static/logo/Equest_DarkBlue_Symbol.gif' %}"> -->
 
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
-<link href="{%static '/static/css/default.css'%}" rel="stylesheet" type="text/css">
-<link href="{%static '/static/css/strap.css'%}" rel="stylesheet" type="text/css">
-<link href="{%static '/static/css/fonts.css'%}" rel="stylesheet" type="text/css">
-<link href="{%static '/static/css/animate.css'%}" rel="stylesheet"  type="text/css">
-<link href="{%static '/static/css/styles.css'%}" rel="stylesheet"  type="text/css">
-<link href="{%static '/static/css/login.css'%}" rel="stylesheet"  type="text/css">
-<link rel="stylesheet" type="text/css" href="{%static '/static/custom/css/header.css' %}">
+<!-- build:css styles/main.css -->
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+<link href="{% static '/static/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static '/static/css/bootstrap-social.min.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" media="screen" href="{% static '/static/custom/css/notifIt.css' %}">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="{% static '/static/custom/css/mystyles.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.2.1/nouislider.min.css" rel="stylesheet">
+<!-- endbuild -->
 
-<!-- Compiled and minified CSS -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css"> -->
-<!-- Compiled and minified JavaScript -->
-<style>
-  div.dd {
-   /*position: relative; /* IE is dumb */
-    display: block;              
-    float: left;     
-    width: 500px; 
-    height: 30px; 
-    margin: 0 0 2px; 
-    background: #fff; 
-}
-
-div.dd div.blue {
-    /*position: relative; */
-    background: #00f; 
-    height: 16px; 
-    width: 75%; 
-    text-align:right; 
-    display:block;
-    float: left;
-}
-div.dd div.red { 
-    /*position: relative; */
-    background: #f00; 
-    height: 16px; 
-    width: 75%; 
-    text-align:right; 
-    display:block;
-    float: left;
-}
-div.dd div.white { 
-    /*position: relative; */
-    background: rgb(47, 150, 232); 
-    height: 16px; 
-    width: 75%; 
-    text-align:right; 
-    display:block;
-    float: left;
-}
-div.dd div.yellow { 
-    /*position: relative; */
-    background: white; 
-    height: 16px; 
-    width: 75%; 
-    text-align:right; 
-    display:block;
-    float: left;
-}
-</style>
-
-<script type="text/javascript" src="{% static '/static/js/jquery.min.js' %}"></script>
-<script src="{% static '/static/custom/js/alertify.js' %}"></script>
-<script type="text/javascript" src="{% static '/static/js/cycle.js' %}"></script>
-
-<!-- <script src="{% static '/static/custom/js/notifIt.min.js' %}"></script> -->
-
-<link rel="stylesheet" type="text/css" media="screen" href="{% static '/static/custom/css/notifIt.css' %}" />
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/>
-
+<!-- build:js styles/main.js -->
+<script src="{% static '/static/js/jquery.min.js' %}"></script>
+<script src="{% static '/static/js/bootstrap.min.js' %}"></script> 
+<script src="{% static '/static/custom/js/notifIt.min.js' %}"></script>
+<script src="https://raw.githubusercontent.com/wenzhixin/bootstrap-show-password/master/bootstrap-show-password.min.js"></script>
+<script src="{% static '/static/custom/js/myscripts.js' %}"></script>
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
-<!-- <script type="text/javascript" src="{% static '/static/custom/js/jquery_notification_v.1.js' %}"></script> -->
-<script src="{% static '/static/custom/js/notifIt.min.js' %}"></script>
-<link rel="stylesheet" type="text/css" media="screen" href="{% static '/static/custom/css/notifIt.css' %}" />
-<script>
-  $(function() {
-    $(document).tooltip({
-      position: {
-        my: "center bottom",
-        at: "center top",
-      }
-    });
-
- $(document).tooltip({
-     open: function(event, ui) {
-   $(ui.tooltip).fadeTo(2000,0);
-     }
- })
-  });
-
-
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.2.1/nouislider.min.js"></script>
+<!-- endbuild -->
 
 {% block head_js_css %}
     
 {% endblock head_js_css %}
-
-<!-- Use for check net online or connection lost -->
-<!-- <link rel="stylesheet" href="{% static '/static/custom/css/checknet.css'%}" media="all" /> -->
-<!-- <script src="{% static '/static/custom/js/jquery.checknet-1.6.min.js' %}"></script> -->
-<!--
-<script>
-//   $(document).ready(function(){
-//     // $.fn.checknet();
-//   });
-// </script>
--->
-<!-- end connection lost code -->
-
-<script type="text/javascript">
-function call_login(){
-  $("#e_regid").trigger('click',(function(){ $("#logpanel").show(); $("#register").show();$("#login").hide();   }))
-}
-
-  call_login();
-
-  $(document).ready(function() {  $(".buttons").click(function(){  $(".pop").show();    });});
-  $(document).ready(function read() {  $(".e_regid").click(function(){ $("#logpanel").show(); $("#register").show();$("#login").hide();    });});
-  $(document).ready(function() {  $(".logid").click(function(){ $("#logpanel").show(); $("#register").hide();$("#login").show();    });});
-  $(document).ready(function() {  $(".lo1").click(function(){  $("#login").show();$("#register").hide();    });});
-  $(document).ready(function() {  $(".re1").click(function(){  $("#login").hide();$("#register").show();    });});
-  
-  $(document).ready(function() {  $(".close-button").click(function(){  $("#logpanel").hide();   $(".pop").hide();
-        var url = $('#youtube-video').attr('src');
-        //Then assign the src to null, this then stops the video been playing
-        $('#youtube-video').attr('src', '');
-        //// Finally you reasign the URL back to your iframe, so when you hide and load it again you still have the link
-        $('#youtube-video').attr('src', url);
-     });});
-  
-  $(document).ready(function() {  $("#pu").click(function(){ $("#pop").show(); $("#popup").show();    });});
-  $(document).ready(function() {  $("#cbutton").click(function(){  $("#pop").hide();    });});
-  $(document).ready(function() {  $("#cbutton").click(function(){  $("#pop").hide();    });});
-  $(document).ready(function() {  $("#menu1").click(function(){  $("#drop").slideToggle();    });});
-  $(document).ready(function() {  $(".sign-btn").click(function(){  $(".user-menu").slideToggle();   });});
-  $(document).ready(function() {  $(".sign-btn-1").click(function(){  $(".user-menu-1").slideToggle();   });});
-
-  $('#teplace').cycle({'fx':'scrollLeft','timeout':5000});
-
-   $(document).ready(function() {  
-    $("#teplace").hover(function(){ cycle().stop();  
-    });});
-</script>
-</head>
-
-<body id="ex3">
-<section id="logpanel">
-  <div id="register">
-    <div class="boss" style="border-bottom: 3px solid black;">
-      <li class="active" style="color:green;font-size: 21.5px;">Welcome to Clat</li>
-      <div class="close-button" data-icon="z" title="Close"></div>
+</head> 
+<header> 
+<nav class="navbar navbar-default navbar-static-top custom-navbar">
+<div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- Logo for md,lg view -->
+      <div class="hidden-xs">
+        <a class="navbar-brand" href="{% if user.teacher %}/teacher/{% else %}/home/{% endif %}">
+              <strong>CLAT</strong>
+        </a>
+      </div>
+      <!-- End -->
+      <!-- Logo for Mobile view -->
+      <div class="hidden-md hidden-lg hidden-sm">
+        <a class="navbar-brand" href="{% if user.teacher %}/teacher/{% else %}/home/{% endif %}">
+            <strong>CLAT</strong>
+        </a>
+      </div>
+      <!-- End -->
     </div>
-    <p style="font-size: 12px;font-weight: bold;color:blue;text-align: center;">New User</p>
-    <a href="/register/" style=" text-decoration:none" >
-    <div style="text-align: center">
-    Click here to <a href="/register/" style="color: blue;">create a new account.</a>
+    <div class="collapse navbar-collapse navbar-left" style='margin-top:1%;color:black;' id="navbar">
+      <ul class="nav navbar-nav navbar-side-right" id="normal-view-navbar-collapse">
+<!--         <li><a href="#">Link</a></li>
+ -->        <li class="dropdown">
+             {% if not user.is_authenticated %} 
+            <div class="sign-btn e_regid" id="e_regid">
+              <a style="font-size:18px;text-align: center"  id="action" href="javascript:void(0)" onclick="$('#loginRegisterModal').modal({ keyboard: false, backdrop: 'static' });">
+                Login/Register
+              </a>
+            </div>
+             {% else %}
+              <div class="dropdown">
+                  <p data-toggle="dropdown" style='font-size:16px;' id="action">{{user}}
+                      <span class=" glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                  </p>
+                  <ul class="dropdown-menu sharp">
+                      {% if user.teacher and not user.teacher.is_superuser %}
+                        <li><a href="/teacher/">My Courses</a></li>
+                        <!-- <li><a href="/profile/">Profile</a></li> -->
+                      {% elif user.is_superuser %}
+                        <li><a href="/anaylse/">Anaylse</a></li>
+                      {% else %}
+                        <li><a href="/set/goal/">Set Goal</a></li>
+                        <li><a href="/dashboard/">My Courses</a></li>
+                        <li><a href="/profile/">Profile</a></li>
+                        <li><a href="/certificates/">Certificate</a></li>
+                      {% endif %}
+                        <li class="divider"></li>
+                        <li><a href="/logout/">Sign Out</a></li>
+                  </ul>
+              </div>
+            {% endif %}
+            </li>
+      </ul>
+
+      <form class="navbar-form navbar-center"  style='margin-left:10%;' role="search" id="search_course_form" action="/allcourses/" method="get">
+        <div class="input-group form-group" id="search_box" style='color:white;' title="Type course name to search.">
+          <span class="input-group-addon sharp" title="Click to view all courses.">
+          <a href="/allcourses/" style=" text-decoration:none">
+            <span class="glyphicon glyphicon-th fa-2x" style='color:#0066ff;'></span>
+          </a>
+          </span>
+        <input type="text" name="course_name" id="course_name" class="form-control input-lg sharp" placeholder="Search for Courses" autocomplete="off" required>
+        <span class="input-group-addon sharp" id="search_link">
+          <a href="javascript:void(0);">
+            <span class="glyphicon glyphicon-search fa-2x"></span>
+          </a>
+        </span>
+      </div>
+      </form>
+
+      <div class="nav navbar-nav navbar-side-right" id="mobile-view-navbar-collapse" style="margin-top: -110px;">
+        <table class="table table-hover" style="margin-left: 20%;margin-right: 20%;width:70%;">
+          <thead>
+          {% if not user.is_authenticated %}
+          <tr id="action">
+            <th><a style="font-size:18px;text-align: center;" href="javascript:void(0)" onclick="$('#loginRegisterModal').modal({ keyboard: false, backdrop: 'static' });">
+                Login/Register
+              </a></th>
+          </tr>
+          {% else %}
+            <tr>
+              <th class="center">{{user|title}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if user.teacher and not user.teacher.is_superuser %}
+            <tr>
+              <td><a href="/teacher/">My Courses</a></td>
+            </tr>
+            <tr>
+              <td><a href="/profile/">Profile</a></td>
+            </tr>
+            {% elif user.is_superuser %}
+            <tr>
+              <td><a href="/anaylse/">Anaylse</a></td>
+            </tr>
+            {% else %}
+            <tr>
+              <td><a href="/dashboard/">My Courses</a></td>
+            </tr>
+            <tr>
+              <td><a href="/profile/">Profile</a></td>
+            </tr>
+            <tr>
+              <td><a href="/certificates/">Certificate</a></td>
+            </tr>
+            {% endif %}
+            <tr>
+              <td><a href="/logout/">Sign Out</a></td>
+            </tr>
+            {% endif %}
+          <tr><td class="center">
+          <form class="navbar-form" role="search" id="search_course_form_mobile_view" action="/allcourses/" method="get">
+              <div class="input-group form-group" id="search_box_1" style='color:white;' title="Search course here">
+                <span class="input-group-addon sharp" title="Click to view all courses.">
+                <a href="/allcourses/">
+                  <span class="glyphicon glyphicon-th fa" style='color:#0066ff;'></span>
+                </a>
+                </span>
+              <input type="search" name="course_name" id="course_name_1" class="form-control input-md sharp" placeholder="Search here..." autocomplete="off" required>
+              <span class="input-group-addon sharp" id="search_link_1">
+                <a href="javascript:void(0);">
+                  <span class="glyphicon glyphicon-search fa"></span>
+                </a>
+              </span>
+            </div>
+            </form>
+            </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    </a>
-    <!-- <a href="/accounts/facebook/login/?process=login">
-    <div class="login-with facebook">
-      <div class="s" data-icon=";"></div>
-      Login with Facebook </div>
-    </a> <a href="/accounts/google/login/?process=login">
-    <div class="login-with gmail">
-      <div class="s" data-icon="'"></div>
-      Login with Google 
     </div>
-    </a> -->
-    <div class="col-sm-4">
-    </div>
-    <div class="col-sm-8">
-    <h3 style="font-size: 12px;font-weight: bold;color:blue;"><hr>Existing user</h3>
-    </div>
-    <div class="col-sm-12">
-    </div>
-    {% include '_login_form.html'%}
-    </div>
-  
-  <!--  Login Con   -->
-  <div id="login">
-  </div>
-</section>
-</div>
-<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<section id="container">
-<p id='_b_notification' style='background-color:yellow;text-align:center;display: none;'>
-      Please update your browser to latest version for good support <span><a href="http://outdatedbrowser.com/en" target="_blank">click here</a></span>&nbsp;.</p>
-<header id='lms_header'>
-{% block header %}
-  {% include '_home_header.html'%}
-{% endblock %}
+</nav>
 </header>
-{% block body %}
-<section id="slider">
-  <div class="pop">
-    <div class="close-button" data-icon="z"></div>
-    <div class="video-pop">
-      <iframe width="100%" id="how_it_work" height="100%" src="https://www.youtube.com/embed/PO6WyU7BxX0?enablejsapi=1&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
-</section>
-<section id="slider1"  style="margin-top:60px;">
-  <div class="con">
-    <div class="slider-content">
-      <div class="slider_con">
-        <div id="teplace" style="overflow: hidden;">
-          <div class="whole_con as1" >
-            <h1>A <strong>Clat</strong> For <strong>Students</strong> Through Quality, Employability  Skill And Training</h1>
-            <div class="buttons">About CLAT</div>
-          </div>
-          <div class="whole_con as2">
-            <h1>Nation's <strong>First</strong> Intelligent e-Quality  Learning Management System  Hosting <strong>Online Certification</strong></h1>
-            <div class="buttons">About CLAT</div>
-          </div>
-          <div class="whole_con as3">
-            <h1>If "Quality is Your  Goal Statement, Then It's <strong>Our Mission To Help You</strong> Achieve That"</h1>
-            <div class="buttons">About CLAT</div>
-          </div>
+
+<div id="confirmModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Message</h4>
+            </div>
+            <div class="modal-body">
+                <p id="confirm_message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirm_action">Agree</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel_action">Cancel</button>
+            </div>
         </div>
+    </div>
+</div>
+
+
+<div id="loginRegisterModal" class="modal fade" tabindex="-1" role="dialog">
+{% if login_error %}
+<input type="hidden" value="{{login_error}}" id="login_error">
+{% endif %}
+  <div class="modal-dialog modal-md">
+      <div class="modal-content">
+          <div class="modal-header login-register-header center">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close"><span class="glyphicon glyphicon-remove-circle"></span></button>
+              <label class="modal-title welcome-msg">Welcome to e-QUEST</label>
+          </div>
+          <div class="modal-body">
+              <div class="row center">
+                <div class="col-lg-5 col-md-5 col-xs-3 col-sm-5">
+                  <hr>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-2">
+                  <label class="font-20">Sign In</label>
+                </div>
+                <div class="col-lg-5 col-md-5 col-xs-3 col-sm-5">
+                  <hr>
+                </div>
+                <br>
+              </div>
+              <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-1">
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                <form  action="/user/login/" method="POST" role="form" id="login_form">
+                {% csrf_token %}
+                    <div class="form-group">
+                      <label for="username">Username</label>
+                      <input type="text" class="form-control sharp" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="password">Password</label>
+                      <input type="password" class="form-control sharp" id="password" name="password" data-toggle="password" required>
+                      <p style="font-size: 12px;margin-top: 4px;"><a href="/troubleshoot/student/" style="text-decoration: none;float: left;">Forgot Credentials?</a><br></p>
+                    </div>
+                    <div class="checkbox">
+                      <label><input type="checkbox" name="remembered" value="true"> Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block sharp" style="border-radius:none;">Login</button>
+                  </form>
+              </div>
+                  <div class="col-lg-1 col-md-1 col-sm-1">
+                  </div>
+              </div><br>
+
+              <div class="row center">
+                <div class="col-lg-4 col-md-4 col-xs-1 col-sm-4">
+                  <hr>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-9 col-sm-4">
+                  <label class="font-20">or sign in with</label>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-1 col-sm-4">
+                  <hr>
+                </div>
+                <br>
+              </div>
+              <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-1">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-5 glink">
+                  <a class="btn btn-block btn-social btn-google-plus sharp" href="/accounts/google/login/?process=login">
+                   <span class="fa fa-google-plus"></span> 
+                   Google
+                  </a>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-5 fblink">
+                  <a class="btn btn-block btn-social btn-facebook sharp" href="/accounts/facebook/login/?process=login">
+                   <span class="fa fa-facebook"></span> 
+                   Facebook
+                  </a>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-1">
+                </div>
+              </div><hr>
+              <div class="row center">
+                <label class="font-20">New to e-QUEST?</label>
+              </div>
+              <div class="row center">
+                <div class="col-lg-1 col-md-1 col-sm-1">
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                <a class="btn btn-block btn-info sharp" href="/register/">
+                  Register Here
+                </a>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1">
+                </div>
+              </div>
+
+    </div>
+}
+</div>
+</div>
+</div>
+
+<div id="aboutVideoModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header login-register-header center">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close"><span class="glyphicon glyphicon-remove-circle"></span></button>
+              <label class="modal-title welcome-msg">About e-QUEST</label>
+          </div>
+          <div class="modal-body">
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/PO6WyU7BxX0" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
       </div>
     </div>
-  </div>
-  </div>
-  </div>
-</section>
-<section id="course">
-  <div class="con" style='width:80%;margin: -60px auto;'>
+</div>
+
+<body>
+<div class="start container">
+{% block body %}
+<div class="row">
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="item active">
+            <div class="row">
+            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+            </div>
+            <div class="col-lg-8 col-md-8 col-xs-10 col-sm-8">
+            <br><br>
+              <h2>An <strong>CLAT</strong> For <strong>Digital India</strong> Through Quality, Employability  Skill And Training.</h2>
+              <button type="button" class="btn aboutbutton sharp">About e-Quest</button>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+            </div>
+            </div>
+            </div>
+            <div class="item">
+            <div class="row">
+            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+            </div>
+            <div class="col-lg-8 col-md-8 col-xs-10 col-sm-8">
+            <br><br>
+              <h2>Nation's <strong>First</strong> Intelligent e-Quality  Learning Management System  Hosting <strong>Online Certification.</strong></h2>
+              <button type="button" class="btn aboutbutton sharp">About e-Quest</button>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+            </div>
+            </div>
+            </div>
+            <div class="item">
+            <div class="row">
+            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+            </div>
+            <div class="col-lg-8 col-md-8 col-xs-10 col-sm-8">
+            <br><br>
+              <h2>If "Quality is Your  Goal Statement, Then It's <strong>Our Mission To Help You</strong> Achieve That".</h2>
+              <button type="button" class="btn aboutbutton sharp">About e-Quest</button>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br>
+<div class="row center course-list-heading">
   {% if user.teacher %}
-  <h1> Your Courses</h1>
+    <h1>Your Courses</h1>
   {% else %}
-  <h1> Our Most Popular Courses</h1>
+    <h1>Our Most Popular Courses</h1>
   {% endif %}
-  
-  {% block course_list %}
-  <div class="row courses-list" id='uniqe'> {%block course%}
-    {%include 'course_mang/course_list.html'%}
-    {%endblock%} </div>
-  {% endblock %} </section>
-{% endblock %}
-
-
-
-
-<!-- Notification message template --> 
-{% include '_notifications.html' %}
-
-{% block footer %}
-{% include '_footer.html' %} 
-
-<div class="after-footer">
-  <div class="con">
-    <p style="width:60%; margin-left:20%; text-align:center;">© CLAT. All Rights Reserved. Copyright 2016. </p>
-  </div>
+</div>
+<br>
+<div class="container-fluid">
+<div class="row">
+<div class="col-lg-1 col-md-1 col-sm-1">
+</div>
+<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+<div class="row">
+  {% include 'course_mang/course_list.html' %}
+</div>
+<div class="col-lg-1 col-md-1 col-sm-1">
+</div>
+</div>
+</div>
 </div>
 {% endblock %}
-{% if login_error %} 
-<script>
-       $('#reg_lgn_id').trigger( "click" );
-</script> 
-{% endif %}
 
 {% block footer_css_js %}
-
-{%endblock%} 
-<script src="{%static '/static/js/custom.js'%}"></script> 
-<script src="{% static '/static/custom/js/footer_js.js'%}"></script> 
 <script>
+$(document).ready(function($) {
+  $('.aboutbutton').click(function(event) {
+  $('#aboutVideoModal').modal({ keyboard: false, backdrop: 'static' });
+  });
+  if(Boolean($('#login_error').val()) === true){$('#loginRegisterModal').modal('show');}
+});
 
-function  hello(){
-    alertify.alert("Message");
-}
-
-function checkForCourseName(){
-  var target_id = event.target.id;
+</script>
+{%endblock%}
+</div> 
+<!-- End body starter DIV here -->
+<script>
+  function showConfirmModal(action, confirm_message, form, cancel_message){
+    $('#confirm_message').html(' '+confirm_message);
+    $('#confirmModal').modal({ keyboard: false, backdrop: 'static' });
+    $('#confirm_action').click(function(event) {
+      if(action === "refreshPage" && form == null){
+        $('#confirm_action').html('Click to refresh');
+        window.location = window.location;
+      }
+      else if(action === "infoMessage" && form == null){
+        $('#confirmModal').modal('hide');
+      }
+      else{
+        console.log(form,$(form));
+        $(form).submit();
+      }
+    });
+    $('#cancel_action').click(function(event) {
+      $('#confirmModal').modal('hide');
+      notif({
+            type: "info",
+            msg: cancel_message,
+            position: "center",
+            timeout : 3000,
+            });
+    });
+    return true;
+  }
+  function checkForCourseName(target_id){
   if(target_id === 'search_link_1'){
   if($('#course_name_1').val().replace(/ /g,'')===''){
-      $('#search_box_1').css('background-color','red');
       return false;
     }
   }
   if(target_id === 'search_link'){
   if($('#course_name').val().replace(/ /g,'')===''){
-      $('#search_box').css('background-color','red');
       return false;
     }
   }
   return true;
 }
-  $('#search_link').click(function(event) {
-    if(checkForCourseName(event))    
-      $('#search_course_form').submit();
-  return false;
-  });
-  $('#search_link_1').click(function(event) {
-    if(checkForCourseName(event))    
-      $('#search_course_form_1').submit();
-  return false;
-  });
-$('#search_course_form').submit(function(event) {
-  if(!checkForCourseName())    
-      return false;
-  return true;
-});
+
 
 $(function() {
+
+  $('#search_link').click(function(event) {
+    if(!checkForCourseName(event.currentTarget.id))    
+      return false;
+    $('#search_course_form').submit();
+  });
+  $('#search_link_1').click(function(event) {
+    if(!checkForCourseName(event.currentTarget.id))    
+      return false;
+    $('#search_course_form_mobile_view').submit();
+  });
+
   $("#course_name").autocomplete({
     source: "/get/course_names/",
     minLength: 2,
@@ -332,8 +464,7 @@ $(function() {
         }
 
   });
-
-  $("#course_name_1").autocomplete({
+   $("#course_name_1").autocomplete({
     source: "/get/course_names/",
     minLength: 2,
     select: function(event, ui) {
@@ -344,8 +475,6 @@ $(function() {
         }
 
   });
-
-
 
   $.ui.autocomplete.prototype._renderItem = function (ul, item) {        
         var t = String(item.value).replace(
@@ -358,19 +487,13 @@ $(function() {
     };
 });
 
-$(document).ready(function() {  $(".close-button").click(function(){  $("#logpanel").hide();   $(".pop").hide();
-        var url = $('#how_it_work').attr('src');
-        $('#how_it_work').attr('src', '');
-        $('#how_it_work').attr('src', url);
-     });
-
-});
-$("body").live('click', function(e) { 
-   if( e.which == 2 ) {
-      alert("middle button"); 
-   }
-});
-
 </script>
 </body>
+{% include '_notifications.html' %}
+<!-- End of block body ....... -->
+<footer>
+  {% include '_footer.html' %}
+  <!-- In <body> -->
+
+</footer>
 </html>

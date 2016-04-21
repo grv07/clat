@@ -1,0 +1,141 @@
+{% extends 'new_home.html' %}
+{% load static %}
+
+{% block slider %}
+{% endblock %}
+
+{% block body %}
+{% if user.teacher %}
+<div class="upload_videos_div" style="margin-bottom: 5%;margin-top:5%;margin-left: 20%;margin-right: 20%;">
+<h1 style="text-align: center">Upload a video under a specific module</h1>
+<div style="background-color: antiquewhite">
+    <ol style="font-size:15px; color: brown;margin: 10px;"><span style="font-weight: bold;">Add a new video here for the module.</span>
+    <li>Select the module name from the dropdown.A module contains only 1 course video.</li>
+    <li>Select the type of video you want to add.</li>
+    <li>You can upload a MP4, Youtube and ZIP file based on what you selected in step 2.</li>
+    <li>If no module options are shown, then either you haven't created any module or all modules already have videos inside them.</li>
+    </ol>
+    <p style="background-color: brown;height: 5px;"></p>
+    </div>
+<br>
+<form id="upload_courses_form" action="/upload/videos/{{course_uuid}}/" method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+        <fieldset>
+		<div class="boss" style="margin-top: 20px;">
+        <label style="font-size: 18px;">Name of Module : </label>
+        {{course_videos_form.module_name}}
+                <label class="text-sbox" id="no_module_label" style="color:red;"></label>
+        <p class="error">{{course_videos_form.errors.module_name}}</p>
+		</div>
+        <div class="boss" id="course_video_choices" style="margin-top: 10px;">
+        <label style="font-size: 18px;">Type : </label><br>
+          {{course_videos_form.video_type}}
+        </div><br>
+        <div class="boss" style="margin-top: 20px;">
+            <label class="" id="help_label_1" for="articulate_file" style="font-size: 16px;">
+            Select Your <span id="type_display">Video</span> File<span style="color:red">*</span>
+            </label>
+            <label class="" id="help_label_2" style="display:none;">Type a Youtube URL</label>
+            <br>
+            <div id="mp4_zip_upload_div">
+                {{course_videos_form.video_file}}
+            </div>
+            <div style="display: none;" id="youtube_upload_div">
+                {{course_videos_form.video_url}}
+            </div><br>
+            <p class="error"> {{course_videos_form.errors.video_file}}</p>
+            {% if youtube_error %}
+               <p class="error">Youtube video link expected!!!</p>
+            {% endif %}
+      </div>
+		<hr>
+         <div class="boss" style="margin-top: 20px;margin-bottom: 20px;">
+            <button type="submit" class="ssubmit">Submit</button>
+        </div>
+        </fieldset>
+</form>
+</div>
+<input id="c_id" value="{{course_id}}" type="hidden">
+{% else %}
+<h1>Nothing to show!!!</h1>
+{% endif %}
+
+{%block courses_list %}
+{%endblock%}
+
+{%endblock%}
+
+{% block footer_css_js %}
+<script>
+//AJAX for loading modules of navigated course
+window.onload=getModules();
+function getModules(){
+  $.ajax({
+              url : '/get_modules/',
+              data : { 'c_id':$('#c_id').val()},
+              type : "GET",
+              success : function(json_from_view) {
+                if(json_from_view[0]===undefined)
+                {
+                  $('#module_name').append('<option value="no_module">Select any module...</option>');
+                  $('#no_module_label').html("Either you haven't created any module or all modules already have videos inside them.")
+                  $('button[type="submit"]').prop('disabled',true);
+                }
+                else{
+                  $('#no_module_label').attr('class', '');
+
+             for(var i=0;i<json_from_view.length;i++){
+
+              $('#module_name').append('<option value='+escape(json_from_view[i])+'>'+json_from_view[i]+'</option>');
+             }
+           }
+          },
+
+          error : function(xhr,errmsg,err) {
+                console.log('error in retrieving Module');
+        }
+    
+  }); 
+
+}
+
+
+ // For toggling between dropdown video type values
+  $('#video_type').change(function(){
+    var value = $(this).find('option:selected').attr('value');
+    if(value === 'mp4'|| value === 'articulate'){
+        $('#articulate_file').val('');
+        $('#youtube_course_url').val('');
+        $('#help_label_1').css('display','inline-block');
+        $('#help_label_2').css('display','none');
+        if(value === 'articulate'){
+            $('#type_display').html('ZIP');
+        }
+        if(value === 'mp4'){
+            $('#type_display').html('Video');
+        }
+    $('#mp4_zip_upload_div').css('display','inline-block');
+      $('#youtube_upload_div').css('display','none');
+    }
+    else{
+        $('#articulate_file').val('');
+        $('#youtube_course_url').val('');
+        $('#help_label_2').css('display','inline-block');
+        $('#help_label_1').css('display','none');
+        $('#mp4_zip_upload_div').css('display','none');
+        $('#youtube_upload_div').css('display','inline-block');
+
+    }
+});
+
+   //For checking field empty
+    function checkYoutubeURL(element){
+      if(element.value.replace(/ /g,'')==='')
+       {
+        $('#youtube_course_url + p').css('color','red').html("Can't leave field blank!!!");
+        return false;
+       } 
+       return true;
+    }
+</script>
+{%endblock%} 

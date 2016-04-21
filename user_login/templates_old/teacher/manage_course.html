@@ -1,0 +1,557 @@
+{% extends 'teacher/teacher_home.html' %}
+{% load static %}
+{% load default_tags %}
+
+{% load course_tags %}
+{%block head_script %}
+{%endblock%} 
+{% block body %}
+<style>
+ol { counter-reset: item; }
+ol li { display: block; }
+ol li:before {
+  content: counter(item) ". ";
+  counter-increment: item;
+  color: red;
+  margin-right: 10px;
+} 
+</style>
+<br>
+ <div id="multiple_use_course_modal" class="modal">
+        <div class="modal-content" style="height:400px;">
+        <div id="delete_modal_body" class="row">
+      <div class="input-field col s12 m12">
+          <h5 id="confirm_question">Do you really want to delete the course?</h5>
+          </div>
+          <div id="register" class="row">
+      <div class="input-field col s12 m12">
+          <h3 class="black-text" id="confirm_detail_1">Course Name : <span id="course_to_delete_name" style="color:blue;"></span></h3>
+          </div>
+          </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        <a href="javascript:void(0);" class=" modal-action modal-close waves-effect waves-green btn-flat" id="confirm_operation">Delete It</a>
+        <a href="javascript:void(0);" id="cancel_operation" class=" modal-action modal-close waves-effect waves-green btn-flat" onclick="$('#multiple_use_course_modal').closeModal();">Cancel</a>
+        </div>
+    </div>
+
+    <div id="modal_course_rules" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <p style="font-size: 24px;" class="black-text">Rules for filling up the details and objective for the course.</p>
+      <ol style="color:blue;">
+        <li>To move to a new line, please type <span class="black-textp">**</span>. This will produce a new line.</li>
+      </ol>
+    </div>
+    <div class="modal-footer">
+      <a href="javascript:void(0);" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+    </div>
+  </div>
+
+
+
+<div class="row">
+      <div class="col s3">
+        <div class="row">
+          <img src="{{ course|get_course_img }}" alt="Course Picture" class="rectangle responsive-img">
+	  <div class="row">
+	    {% if course.course_demo_file == 'img' %}
+            <input class="filled-in" type="checkbox" id="showVideo" checked>
+	    {% else %}
+	    <input class="filled-in" type="checkbox" id="showVideo">
+	    {% endif %}
+	    <label for="showVideo">Do you want to show this image on course detail page instead of demo video?</label>
+	  </div>
+        </div>
+        <div class="row">
+        <h5 class="flow-text black-text" style="font-weight: bold;">{{ course.course_name }}</h5>
+        </div>
+        <div class="row">
+          <a class="waves-effect waves-light btn" href="createquiz/">Create Quiz</a>
+        </div>
+        <div class="row">
+          <a class="waves-effect waves-light btn" href="/change/testschedules/{{ course.course_uuid }}/">Change Tests</a>
+        </div>
+        <div class="row">
+          <a class="waves-effect waves-light btn" href="changeordering/">Change Ordering</a>
+        </div>
+        <div class="row">
+          <a class="waves-effect waves-light btn" href="/users/xls/{{ course.course_uuid }}/">Download Enrolled users <i class="material-icons">play_for_work</i></a>
+        </div>
+      </div>
+
+      <div class="col s9">
+        <div class="row">
+        <h5 class="flow-text blue-text" style="font-weight: bold;color:blue;">Upload a Course Image&nbsp;<sup style="font-size:12px;" class="red-text">Image should be of width (250-300px) and height (200-300px)</sup></h5><hr class="sep">
+        <label for="first_name">Course Image</label>
+        <form id="update_course_demo_image_form" action="/upload/course_demo_image/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="course_id" value="{{ course.course_uuid }}">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Change Image</span>
+            {{ course_image_form.picture }}
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" id="course_image_file_upload_text">
+          </div>
+        </div>
+        </div><br>
+        <div class="row">
+        <div class="col offset-s8" style="margin-top: -50px;">
+        <button class="waves-effect waves-light btn" id="course_demo_image_upload_button" type="submit">Update Course Image</button>
+        </div>
+        </div>
+
+        </form>
+
+      <form id="js_valdate">
+        <hr class="style-four">
+        <div class="row">
+        <div class="col s12">
+        <h5 class="flow-text blue-text" style="font-weight: bold;color:blue;">Edit Course details<a href="javascript:void(0);" style="text-decoration: none;" onclick="$('#modal_course_rules').openModal();"><sup style="color:red;margin-left: 5px;font-size: 12px;">RULES</sup></a></h5><hr class="sep">
+        <div class="row">
+        <label for="course_description">Course description</label>
+        <textarea id="course_description" class="materialize-textarea validate">
+        {{ course.course_information.description }}
+        </textarea>
+        </div>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col s12">
+        <div class="row">
+        <label for="course_objective">Course Objective</label>
+        <textarea id="course_objective" class="materialize-textarea validate">
+        {{ course.course_information.objective }}
+        </textarea>
+        </div>
+        </div>
+        </div>
+	
+	<div class="row">
+        <label for="course_certificationbenefits">Certification Benefits</label>
+        <textarea id="course_certificationbenefits" class="materialize-textarea validate">
+        {{ course.course_information.crt_benefits }}
+        </textarea>
+        </div>
+
+	<div class="row">
+        <label for="course_short_description">Short Description</label>
+        <textarea id="course_short_description" class="materialize-textarea validate">
+        {{ course.course_information.short_description }}
+        </textarea>
+        </div>
+
+        <div class="row">
+        <div class="col s12">
+        <div class="row">
+        <label for="course_eligibility">Course Eligibility</label>
+        <textarea id="course_eligibility" class="materialize-textarea validate">
+        {{ course.course_information.eligibility }}
+        </textarea>
+        </div>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col offset-s8" style="margin-top: -50px;">
+        <button class="waves-effect waves-light btn" id="update_course_details_button" type="button">Update Course Details</button>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col s12">
+        <label for="course_name">Course name</label>
+        </div>
+        <input type="text" name="course_name" value="{{ course.course_name }}" id="course_name" autocomplete="off" class="black-text">
+        </div>
+        <div class="row">
+        <div class="col s12">
+        <label class="course_type">Type</label>
+        
+        <select name="course_type" id="course_type" class="black-text">
+          <option value="" disabled selected>Choose new course type</option>
+          <option value="Auto Components">Auto Components</option>
+          <option value="Automobiles">Automobiles</option>
+          <option value="Aviation">Aviation</option>
+          <option value="Biotechnology">Biotechnology</option>
+          <option value="Chemicals">Chemicals</option>
+          <option value="Construction">Construction</option>
+          <option value="Defence Manufacturing">Defence Manufacturing</option>
+          <option value="Electrical Machinery">Electrical Machinery</option>
+          <option value="Electronic System Design and Manufacturing">Electronic System Design and Manufacturing</option>
+          <option value="Food Processing">Food Processing</option>
+          <option value="IT and BPM">IT and BPM</option>
+          <option value="Leather">Leather</option>
+          <option value="Media and Entertainment">Media and Entertainment</option>
+          <option value="Mining">Mining</option>
+          <option value="Oil and Gas">Oil and Gas</option>
+          <option value="Pharmaceuticals">Pharmaceuticals</option>
+          <option value="Ports">PortsPorts</option>
+          <option value="Railways">Railways</option>
+          <option value="Roads and Highways">Roads and Highways</option>
+          <option value="Renewable Energy">Renewable Energy</option>
+          <option value="Space">Space</option>
+          <option value="Textiles">Textiles</option>
+          <option value="Thermal Power">Thermal Power</option>
+          <option value="Tourism and Hospitality">Tourism and Hospitality</option>
+          <option value="Wellness">Wellness</option>
+        </select>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col s12">
+        <label class="course_duration">Duration</label>
+        
+        <select name="course_duration" id="course_duration" class="black-text">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+        </select>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col offset-s8">
+        <button class="waves-effect waves-light btn" id="course_type_name_update_details_button" data-course-name='{{course.course_name}}' data-course-type='{{course.course_sectors_and_associates}}' data-course-duration="{% if course.course_durations == '01' %} {{ course|course_week }} {% else %} {{ course.course_durations }} {% endif %}" type="button" >Update Details</button>
+        </div>
+        </div>
+
+        <hr class="style-four">
+        <div class="row">
+        <h5 class="flow-text blue-text" style="font-weight: bold;">Edit Course week details</h5><hr class="sep">
+        <div class="col s6">
+        <label for='week' id="week_text">Select any week</label>
+        <select class="select1" name="week" id='week'>
+        </select>
+        <div class="row">
+        <br>
+        <label for="first_name">Week details</label>
+        <textarea id="week_details" class="materialize-textarea validate">
+        </textarea>
+        <h5 class="flow-text" id="results_week_detail" style="color:red;font-size: 16px;">First select a module</h5>
+
+        </div>
+        </div>
+        <div class="col s6">
+        <label for='module' id="module_text">Select any module</label>
+        <h5 class="flow-text" id="results" style="color:red;font-size: 16px;"></h5>
+        <select class="select1" name="module" id='module'>
+        </select> 
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="col-s12">
+          <button class="waves-effect waves-light btn" id="delete_module_button" type="button" style="background-color:red;margin-right: 20px;" disabled>Delete Weekly Module</button>
+          <button class="waves-effect waves-light btn" id="delete_video_button" type="button" style="background-color:red;margin-right: 20px;" disabled>Delete Weekly video</button>
+          <button class="waves-effect waves-light btn" type="button" id="update_details_button" disabled>Update Weekly Details</button>
+        </div>
+        </div>
+      </div>
+
+{% endblock %}
+
+{%block footer_script %}
+    <script>
+
+    $(document).ready(function(){
+      $('#showVideo').change(function(){
+	   $.ajax({
+                    url : "/teacher/change/displayDemoImageVideo/",
+                    data : { '_c_id' : '{{course.course_uuid}}', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    type : "POST",
+
+                    success : function(json_from_view) {
+			if(json_from_view)
+                      	    window.location.reload()
+			else
+			    alert("Can't change display of Image on course detail page.Try again.");
+				
+              },
+
+                    error : function(xhr,errmsg,err) {
+                      alert("Server error : Can't change display of Image on course detail page."); 
+                }
+                });
+	});
+      $('#course_type > option[value="{{course.course_sectors_and_associates}}"]').prop('selected', true);
+      $('#course_duration > option[value="{% if course.course_durations == '01' %}{{ course|course_week }}{% else %}{{ course.course_durations }}{% endif %}"]').prop('selected', true);
+
+      for(var i=1;i<=parseInt('{{weeks}}');i++){
+                $('#week').append('<option value="'+i+'">'+'Week '+i+'</option>');
+                }
+      $('select').material_select();    
+      $('.caret').remove();
+
+    getModules();
+        });
+
+
+    function getModules(){
+      $.ajax({
+                    url : "/load_modules/",
+                    data : { 'week' : $('#week').val(),'_c_id' : '{{course.course_uuid}}'},
+                    type : "GET",
+
+                    success : function(json_from_view) {
+                      $('#module').empty().html('');
+                       $('#results').empty().html('');
+                       if(json_from_view.length!=0){
+                for(var i=0;i<json_from_view.length;i++){
+                $('#module').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+                }
+              }
+              else{
+              $('#results').html("No modules present!!!"); 
+              $('#module').append('<option value="">Nothing</option>');
+              $('#update_details_button').prop('disabled',true);
+
+
+              }
+              $('#module').material_select();
+                 $('.caret').remove();
+                },
+                    error : function(xhr,errmsg,err) {
+                      $('#update_details_button').prop('disabled',true);
+                        $('#results').html("Modules are not loading!!!"); 
+                }
+                });
+    }
+
+
+function getWeekDetails(){
+      $.ajax({
+                    url : "/load_week_details/",
+                    data : { 'week' : $('#week').val(),'_c_id' : '{{course.course_uuid}}','module' : $('#module').val() },
+                    type : "GET",
+
+                    success : function(json_from_view) {
+                      $('#update_details_button').prop('disabled',false);
+                      $('#delete_module_button').prop('disabled',false);
+                      $('#delete_video_button').prop('disabled',false);
+
+                      if(json_from_view.length!=0){
+                      $('#week_details').html('');
+                      $('#results_week_detail').html('');
+                      $('#week_details').html(json_from_view);
+                    }else{
+                        $('#results_week_detail').html("Week Details are not loading!!!"); 
+                        $('#update_details_button').prop('disabled',true);
+                        $('#delete_module_button').prop('disabled',true);
+                        $('#delete_video_button').prop('disabled',true);
+
+                    }
+                    }
+                ,
+                    error : function(xhr,errmsg,err) {
+                      $('#update_details_button').prop('disabled',true);
+                      $('#delete_module_button').prop('disabled',true);
+                      $('#delete_video_button').prop('disabled',true);
+                      $('#results_week_detail').html("Week Detail are not loading!!!"); 
+                }
+                });
+    }
+
+
+  //AJAX GET request for loading modules when a week is selected or changed
+  $("#week").change(function(event) {
+            getModules();
+        });
+
+
+
+  $('#module').change(function(event) {
+                getWeekDetails();
+  });
+
+
+  $('#course_image_file_upload').change(function(event) {
+      var extension_of_picture = $(this).val().split('.').pop().toLowerCase();
+
+    if(['jpeg','jpg','gif','png', 'JPEG', 'JPG', 'GIF', 'PNG'].indexOf(extension_of_picture) === -1 )
+    {      
+      alert('Only jpg,gif and png files are allowed!!!');
+    }
+
+  });
+
+  $('#course_type_name_update_details_button').click(function(event) {
+    $('#multiple_use_course_modal').openModal({dismissible: false});
+    $('#confirm_question').html('<p class="flow-text black-text" style="font-weight:bold;">Do you really want to update type and name?</p>');
+    $("#confirm_detail_1").html('<p style="font-size:15px;">New Course Name : '+$('#course_name').val()+'</p><p style="font-size:15px;margin-bottom:1px;">New Course Type : '+$('#course_type').val()+'</p><p style="font-size:15px;">New Course Duration : '+$('#course_duration').val()+'</p>')
+    $('#confirm_operation').html('Update It');
+    $('#confirm_operation').attr('data-course-operation', 'change_course_type_name_duration');
+  });
+
+
+
+
+$('#update_course_details_button').click(function(event) {
+    $('#multiple_use_course_modal').openModal({dismissible: false});
+    $('#confirm_question').html('<p class="flow-text black-text" style="font-weight:bold;">Do you really want to update details, objective, certfication benefits and eligibility ?</p>');
+    $("#confirm_detail_1").html('')
+    $('#confirm_operation').html('Update It');
+    $('#confirm_operation').attr('data-course-operation', 'change_course_details_objective');              
+  });
+
+
+  $('#update_details_button').click(function(event) {
+    $('#multiple_use_course_modal').openModal({dismissible: false});
+    $('#confirm_question').html('<p class="flow-text black-text" style="font-weight:bold;">Do you really want to update details for module '+ $('#module').val() +' under week '+ $('#week').val() +' ?</p>');
+    $("#confirm_detail_1").html('')
+    $('#confirm_operation').html('Update It');
+    $('#confirm_operation').attr('data-course-operation', 'change_course_weekly_module_details');
+  });
+
+
+  $('#delete_module_button').click(function(event) {
+    $('#multiple_use_course_modal').openModal({dismissible: false});
+    $('#confirm_question').html('<p class="flow-text black-text" style="font-weight:bold;">Do you really want to delete module '+ $('#module').val() +' under week '+ $('#week').val() +' ?</p>');
+    $("#confirm_detail_1").html('');
+    $('#confirm_operation').html('Delete It');
+    $('#confirm_operation').attr('data-course-operation', 'delete_course_weekly_module');              
+    });
+
+  $('#delete_video_button').click(function(event) {
+    $('#multiple_use_course_modal').openModal({dismissible: false});
+    $('#confirm_question').html('<p class="flow-text black-text" style="font-weight:bold;">Do you really want to delete module '+ $('#module').val() +' under week '+ $('#week').val() +' ?</p>');
+    $("#confirm_detail_1").html('');
+    $('#confirm_operation').html('Delete It');
+    $('#confirm_operation').attr('data-course-operation', 'delete_module_video');              
+    });
+
+   $('#confirm_operation').click(function(event) {
+    var operation_type = $(event.target).data('course-operation');
+    if(operation_type === 'change_course_type_name_duration'){
+              $.ajax({
+                      url : "/teacher/update/course/typeandname/",
+
+                      data : { '_c_name' : $('#course_name').val(), '_c_type' : $('#course_type').val() ,'_c_id' : '{{course.course_uuid}}','_c_duration':$('#course_duration').val(),'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                      type : "POST",
+
+                      success : function(json_from_view) {
+
+                        if(json_from_view){
+                        window.location.reload();
+                      }else{
+                          alert('Cannot save new course and type!!!'); 
+                      }
+                      },
+                      error : function(xhr,errmsg,err) {
+                          alert('Error in updating the course name and type!!!'); 
+                  }
+                  });
+            }
+    if(operation_type === 'change_course_details_objective'){
+      $.ajax({
+                    url : "/teacher/update/course/details/",
+                    data : { '_c_desc':$('#course_description').val(), '_c_objve':$('#course_objective').val(),'_c_eligbty':$('#course_eligibility').val() , '_c_cbf' : $('#course_certificationbenefits').val(), '_c_csd' : $('#course_short_description').val(), '_c_id' : '{{course.course_uuid}}', 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    type : "POST",
+
+                    success : function(json_from_view) {
+                      if(json_from_view){
+                      window.location.reload();
+                    }else{
+                        alert('Cannot update the course details!!!'); 
+
+                    }
+                    },
+                    // handle a non-successful response
+                    error : function(xhr,errmsg,err) {
+
+                        alert('Error in updating the details!!!'); 
+                            //console.log(xhr.status + ": " + xhr.responseText);         }
+                }
+                });
+    }
+    if(operation_type == 'change_course_weekly_module_details'){
+    $.ajax({
+                    url : "/teacher/update/course/week/details/",
+
+                    data : { '_week' : $('#week').val(),'_c_id' : '{{course.course_uuid}}','_module' : $('#module').val(),'_week_details':$('#week_details').val(),'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    type : "POST",
+
+                    success : function(json_from_view) {
+                                            $('#update_details_button').prop('disabled',false);
+
+                      if(json_from_view){
+                      window.location = window.location;
+                    }else{
+                        alert('Cannot save your week details!!!'); 
+                        $('#update_details_button').prop('disabled',true);
+
+                    }
+                    },
+                    error : function(xhr,errmsg,err) {
+                      $('#update_details_button').prop('disabled',true);
+                        alert('Error in updating weekly the details!!!'); 
+                }
+                });
+    }
+    if(operation_type === 'delete_course_weekly_module'){
+      $.ajax({
+                      url : "/teacher/delete/module/",
+                      data : { '_week' : $('#week').val(),'_c_id' : '{{course.course_uuid}}','_module' : $('#module').val(),'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                      type : "POST",
+
+                      success : function(json_from_view) {
+                        if(json_from_view){
+                        window.location = window.location;
+                      }else{
+                          alert('Cannot delete the course module '+$('#module').val()+' under week '+ $('#week').val()); 
+
+                      }
+                      },
+                      error : function(xhr,errmsg,err) {
+                          alert('Error in deleting the module!!!'); 
+                  }
+                  });
+
+    }
+
+    if(operation_type === 'delete_module_video'){
+      $.ajax({
+                      url : "/teacher/delete/video/",
+                      data : { '_week' : $('#week').val(),'_c_id' : '{{course.course_uuid}}','_module' : $('#module').val(),'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                      type : "POST",
+
+                      success : function(json_from_view) {
+                        if(json_from_view){
+                        window.location = window.location;
+                      }else{
+                          alert('Cannot delete the course video '+$('#module').val()+' under week '+ $('#week').val()); 
+                      }
+                      },
+                      error : function(xhr,errmsg,err) {
+                          alert('Error in deleting the video'); 
+                  }
+                  });
+
+    }
+          
+   });
+
+    </script>
+
+{% endblock %}
+
+

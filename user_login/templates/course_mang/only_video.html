@@ -11,27 +11,30 @@
 {% block slider %}
 {% endblock %}
 {% block body %}
-<section id="privacy">
-<div class="con"  id="pro">
-<div class="col-lg-4 right" >
-<div class="col-lg-4" id="course" style="margin-top:-5%;">
+<div class="row onlyvideo">
+<div class="row">
+<div class="col-md-1"></div>
+<div class="col-md-10">
+<div class="row text-center">
 <input name="timeInSeconds" value="0" type="hidden" id="timeInSeconds">
-<br><br>
 {% if user.teacher %}
-    <a href="/course/videos/teacher/{{ course_uuid }}/" style="text-decoration: none;">
-      <button type="button" class="ssubmit" style="float:left;">View All Videos</button>
+    <a href="/course/videos/teacher/{{ course_uuid }}/" class="btn btn-info btn-lg sharp">View Videos Menu
     </a>
 {% else %}
   {% with ''|cache_url as url %}
-    <a href="/course/videos/{{ course_uuid }}/{{url}}" style="text-decoration: none;">
-      <button type="button" class="ssubmit" id="menu_button" style="display: none;" title="Go back to course videos">View Videos Menu</button>
+    <a href="/course/videos/{{ course_uuid }}/" class="btn btn-info btn-lg sharp">View Videos Menu
     </a>
   {%endwith%}
 {% endif %}
-<iframe width="100%" height="700" id="frame_id" src='http://{{ request.META.HTTP_HOST }}/{{path}}' style="margin-top: 8px;" frameborder="0" >
+</div>
+<div class="embed-responsive embed-responsive-4by3">
+  <iframe class="embed-responsive-item" id="frame_id" src='http://{{ request.META.HTTP_HOST }}/{{path}}' style="margin-top: -48px;" frameborder="0" >
 </iframe>
-</div></div></div>
-</section>
+</div>
+<div class="col-md-1"></div>
+</div>
+</div>
+</div>
 {%endblock%}
 {% block footer_css_js %}
 <script src="{% static '/static/custom/js/only_video.js'%}"></script> 
@@ -39,25 +42,18 @@
 <script src="{% static '/static/custom/js/timeme.js'%}"></script>
 
     <script type="text/javascript">
-      function set_timeme(){
-        TimeMe.stopTimer();
-        TimeMe.setIdleDurationInSeconds(20);
+      var iframe = document.getElementById('frame_id');
+      iframe.onload=function(){
+        TimeMe.setIdleDurationInSeconds(2700);
         TimeMe.setCurrentPageName("Course-Videos");
         TimeMe.initialize();
-      }
-      
-      set_timeme();
-      var iframe = document.getElementById('frame_id');
-      
-      iframe.onload=function(){
-        console.log('load the articulate');
-        
         $('#menu_button').css('display','inline-block');
         setInterval(function(){
         var timeSpentOnPage = TimeMe.getTimeOnCurrentPageInSeconds();
         $('#timeInSeconds').val(timeSpentOnPage.toFixed(0));
         }, 1000);
       }
+
 
       function postTime(){
         $.ajax({
@@ -66,23 +62,16 @@
               data : { '_timespent' : $('#timeInSeconds').val(), '_currentpath' : location.href ,'csrfmiddlewaretoken': '{{ csrf_token }}' },
               type : "POST",
 
-              success : function(json_from_view) {
-                TimeMe.resetAllRecordedPageTimes("Course-Videos");
-                set_timeme();
-              },
-              error : function(xhr,errmsg,err) {
-                TimeMe.resetAllRecordedPageTimes("Course-Videos");
-                set_timeme();
-              }
+              success : function(json_from_view) {},
+              error : function(xhr,errmsg,err) {}
           });
       }
 
-      setInterval(function(){ postTime(); }, 40000);
 
-      $(window).bind('beforeunload', function(){
-                 postTime();
-          });
+$(window).bind('beforeunload', function(){
+           postTime();
+    });
 
-</script>
+    </script>
 
 {%endblock%} 
