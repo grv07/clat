@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+
 from user_login import urls as user_login
 from teacher import urls as teacher_url
 from student import urls as student_url
@@ -8,6 +9,8 @@ from course_mang import urls as course_url
 from rating_managment import urls as rating_url
 from course_test_handling import urls as course_test_handling_url
 from payment import urls as payment_url
+from goal_mang import urls as goal_url
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -28,6 +31,7 @@ urlpatterns = [
     url(r'', include(student_url)),
     url(r'', include(course_url)),
     url(r'', include(rating_url)),
+    url(r'', include(goal_url)),
     url(r'^order/', include(payment_url)),
     url(r'',include(course_test_handling_url)),
     # url(r'^api-auth/$', include('rest_framework.urls', namespace='rest_framework')),

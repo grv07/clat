@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'tracker',
     'rating_managment',
     'payment',
+    'goal_mang',
     'django_extensions',
     'kronos',
     #'payu',

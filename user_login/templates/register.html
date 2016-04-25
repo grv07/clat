@@ -24,8 +24,8 @@ $("#d_o_b").datepicker({
   <div class="col-md-2"></div>
   <div class="col-md-8">
     <div class="row">
-      <h2 class="text-center hidden-xs">Create an eQuest account</h2>
-      <h4 class="text-center hidden-md hidden-lg">Create an eQuest account</h4>
+      <h2 class="text-center hidden-xs">Create an CLAT account</h2>
+      <h4 class="text-center hidden-md hidden-lg">Create an CLAT account</h4>
     </div>
     <div class="row">
     <form  method="post" action="/register/student/" role="form" id="reg_form" autocomplete="off">
@@ -170,7 +170,7 @@ $("#d_o_b").datepicker({
         </div>
         <div class="col-lg-7 col-md-7 col-sm-7">
           <label for="i_agree">
-            I agree to the eQuest <a href="/termsandservices/" target="_blank">Terms of Service</a><span class="error">*</span>
+            I agree to the CLAT <a href="/termsandservices/" target="_blank">Terms of Service</a><span class="error">*</span>
           </label>
         </div>
       </div>
@@ -184,7 +184,7 @@ $("#d_o_b").datepicker({
           </div>
           <div class="row">
             <label for="i_agree">
-              I agree to the eQuest <a href="/termsandservices/" target="_blank">Terms of Service</a><span class="error">*</span>
+              I agree to the CLAT <a href="/termsandservices/" target="_blank">Terms of Service</a><span class="error">*</span>
             </label>
           </div>
       </div>
@@ -219,7 +219,7 @@ $('#d_o_b').keydown(function() {
 });
 
 function getCities(){
-   //AJAX GET request for loading cities when a state in selected or changed
+   //AJAX GET rCLAT for loading cities when a state in selected or changed
     $.ajax({
             url : "/load_cities/",
             data : { 'state' : $('#state').val()},
@@ -250,7 +250,7 @@ $(document).ready(function(){
   setGender();
   setDOB();
   setEducation();
-  //AJAX GET request for loading cities when a state is selected or changed
+  //AJAX GET rCLAT for loading cities when a state is selected or changed
   document.getElementById('state').onchange = getCities;
 });
 

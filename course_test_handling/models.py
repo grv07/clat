@@ -1,7 +1,9 @@
 from django.db import models
 from course_mang import utilities
+
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+
 from course_mang.models import CourseDetail
 
 
@@ -11,7 +13,6 @@ from course_mang.models import CourseDetail
     E - End Term
 '''
 class Tests(models.Model):
-
     course = models.ForeignKey(CourseDetail, related_name = 'tests_for_course')
     schedule_key = models.CharField(max_length = 10, unique = True)
     module_name  = models.CharField(max_length = 100)

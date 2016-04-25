@@ -1,0 +1,147 @@
+{% extends 'new_home.html' %}
+{% load default_tags %}
+
+{% load static %}
+{% block head_js_css %}
+    <!-- <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script> -->
+    <!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/> -->
+<script>
+  var avail_options = []; 
+
+  $(function() {
+    $( "#goal_start_date" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 3,
+      minDate: new Date(),
+      onClose: function( selectedDate ) {
+        $( "#goal_end_date" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#goal_end_date" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 3,
+      minDate: new Date(),
+      onClose: function( selectedDate ) {
+        $( "#goal_start_date" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+    $("#goal_start_date").datepicker('setDate', new Date());
+    $("#goal_end_date").datepicker('setDate', new Date());
+  });
+
+  // Get all module name options for course.
+  function set_modules(){
+   //AJAX GET rCLAT for loading cities when a state in selected or changed
+    $.ajax({
+            url : "/get/modules/",
+            data : { 'course_id' : $('#enr_course').val()},
+            type : "GET",
+
+            success : function(json_from_view) {
+              avail_options = json_from_view
+              $('#start_module').empty().html('<option value="">--Select One--</option>');
+              $('#end_module').empty().html('');
+              for(var i=0;i<json_from_view.length;i++){
+                $('#start_module').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+                // $('#end_module').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+              }
+           },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("Cities are not loading!!!"); 
+          }
+          });
+        };
+
+  // Call on start_module select, Only left module avail for end_module options.  
+  function set_end_module(){
+        $('#end_module').empty().html('<option value="">--Select One--</option>');
+        var set_next = false;
+        for(var i=0;i<avail_options.length;i++){
+          if($('#start_module').val() == avail_options[i]){
+            set_next = true;
+          }
+          if (set_next){
+            $('#end_module').append('<option value="'+avail_options[i]+'">'+avail_options[i]+'</option>');
+          }
+      }
+  }      
+
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid" style="margin-top:50px;">
+  <div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="row">
+      <h2 class="text-center hidden-xs">Create a new Goal</h2>
+      <h4 class="text-center hidden-md hidden-lg">Create your Goal</h4>
+    </div>
+    <div class="row">
+    <!-- {{form.course}} -->
+    <form  method="post" action="/set/goal/" role="form" id="reg_form" autocomplete="off">
+          {% csrf_token %}
+          <div class="col-md-12 form-group">
+            <label for="goal_name">Goal Name<span class="error">*</span></label>
+            <input type="text" class="form-control sharp"  value="{{form.goal_name.value|default:''}}"  name="goal_name" id="goal_name"> 
+            <p class="error">{{form.goal_name.errors}}</p>
+          </div>
+          <div class="col-md-12 form-group">
+            <label for="course_name">Course<span class="error">*</span></label>
+            <select name="enr_course" id="enr_course" class="form-control sharp" onchange="set_modules()">
+                  <option value="">-- Select one --</option>
+                {% for enr_course_obj in enroll_courses %}
+                  <option value="{{enr_course_obj.course.id}}">{{enr_course_obj.course.course_name}}</option>
+                {%endfor%}
+            </select>
+          </div>
+
+         <div class="col-md-6 form-group left">
+            <label for="start_module">Start Module<span class="error">*</span></label>
+            <select name="start_module" id="start_module" class="form-control sharp" onchange="set_end_module()">
+                  <option value="">Please Select Course First</option>
+            </select>
+            <p class="error">{{form.start_module.errors}}</p>
+         </div>
+
+         <div class="col-md-6 form-group left">
+            <label for="end_module">End Module<span class="error">*</span></label>
+            <select name="end_module" id="end_module" class="form-control sharp" onchange="">
+                  <option value="">Please Select Course First</option>
+            </select>
+            <p class="error">{{form.start_module.errors}}</p>
+         </div>
+
+        <div class="col-md-6 form-group">
+            <label for="goal_start_date">From<span class="error">*</span></label>
+            <input type="text" class="form-control sharp" placeholder="Enter Start Date"  name="goal_start_date" id="goal_start_date" 
+            value="{{form.goal_start_date.value|default:''}}">
+            <p class="error">{{form.goal_start_date.errors}}</p>
+         </div>
+
+         <div class="col-md-6 form-group">
+            <label for="goal_end_date">To<span class="error">*</span></label>
+            <input type="text" class="form-control sharp" placeholder="Enter End Date"  name="goal_end_date" id="goal_end_date" 
+            value="{{form.goal_end_date.value|default:''}}">
+            <p class="error">{{form.goal_end_date.errors}}</p>
+         </div>
+
+         <div class="col-md-12 form-group">
+            <input type="submit" class="btn btn-block btn-primary sharp" value="Create your Goal">
+         </div>
+    </form>
+</div>
+<hr>
+</div>
+<div class="col-md-2"></div>
+<br><hr>
+</div>
+</div>
+{% endblock %}
+
+{% block footer_css_js %}
+{%endblock%} 
