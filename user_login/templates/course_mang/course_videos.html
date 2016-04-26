@@ -65,7 +65,6 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
               <div class="panel-body">
                 <div class="list-group">
                 {% for module, video in modules.items %}
-                    {{video}}
                     {% if module|check_access_status:enr_course %}
                         {% if video.0.0 %}
                           <a type="button" title="Click to watch it." href="/video{{video.0.0|cut:'.zip'}}/story.html" class="list-group-item text-center">{{ module }}

@@ -22,7 +22,7 @@
     </a>
 {% else %}
   {% with ''|cache_url as url %}
-    <a href="/course/videos/{{ course_uuid }}/" class="btn btn-info btn-lg sharp">View Videos Menu
+    <a href="/course/videos/{{ course_uuid }}/" id='menu_button' class="btn btn-info btn-lg sharp">View Videos Menu
     </a>
   {%endwith%}
 {% endif %}
@@ -42,18 +42,25 @@
 <script src="{% static '/static/custom/js/timeme.js'%}"></script>
 
     <script type="text/javascript">
-      var iframe = document.getElementById('frame_id');
-      iframe.onload=function(){
-        TimeMe.setIdleDurationInSeconds(2700);
+      function set_timeme(){
+        TimeMe.stopTimer();
+        TimeMe.setIdleDurationInSeconds(20);
         TimeMe.setCurrentPageName("Course-Videos");
         TimeMe.initialize();
+      }
+      
+      set_timeme();
+      var iframe = document.getElementById('frame_id');
+      
+      iframe.onload=function(){
+        console.log('load the articulate');
+        
         $('#menu_button').css('display','inline-block');
         setInterval(function(){
         var timeSpentOnPage = TimeMe.getTimeOnCurrentPageInSeconds();
         $('#timeInSeconds').val(timeSpentOnPage.toFixed(0));
         }, 1000);
       }
-
 
       function postTime(){
         $.ajax({
@@ -62,16 +69,23 @@
               data : { '_timespent' : $('#timeInSeconds').val(), '_currentpath' : location.href ,'csrfmiddlewaretoken': '{{ csrf_token }}' },
               type : "POST",
 
-              success : function(json_from_view) {},
-              error : function(xhr,errmsg,err) {}
+              success : function(json_from_view) {
+                TimeMe.resetAllRecordedPageTimes("Course-Videos");
+                set_timeme();
+              },
+              error : function(xhr,errmsg,err) {
+                TimeMe.resetAllRecordedPageTimes("Course-Videos");
+                set_timeme();
+              }
           });
       }
 
+      setInterval(function(){ postTime(); }, 30000);
 
-$(window).bind('beforeunload', function(){
-           postTime();
-    });
+      $(window).bind('beforeunload', function(){
+                 postTime();
+          });
 
-    </script>
+</script>
 
 {%endblock%} 
