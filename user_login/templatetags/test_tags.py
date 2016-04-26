@@ -73,8 +73,7 @@ def check_access_status(module_name, enrolledcourse):
 @register.filter(name = 'check_progress_status')
 def check_progress_status(module_name, enrolledcourse):
 	try:
-		userprogress = UserCourseProgress.objects.get(enrolled_courses = enrolledcourse, course_week = CourseWeek.objects.get(week_module_name = module_name))
-		assert userprogress.progress_status == 'COMPLETE','AssertError: ON userprogress.progress_status == "COMPLETE"'
+		userprogress = UserCourseProgress.objects.get(enrolled_courses = enrolledcourse, course_week = CourseWeek.objects.get(week_module_name = module_name), progress_status = 'COMPLETE')
 		# if userprogress.progress_status == 'COMPLETE':
 		return True
 		# return False
@@ -215,31 +214,17 @@ def is_user_take_test(test, email):
 
 @register.filter(name = 'get_inline_test_key')
 def get_inline_test_key(module_name, user):
-    test_result = 'FAIL'
-    test = Tests.objects.get(module_name = module_name, test_type = 'I')
-    can_attempt = is_user_take_test(test, user.email)
-    if can_attempt[1]:
-    	return [test.schedule_key, can_attempt[0], can_attempt[2]]
-    else:
-    	return [None, can_attempt[0], 0]	
-    # for idx,test in enumerate(tests):
-                    # print user.email
-                    # can_attempt = is_user_take_test(test, user.email)
-                    # #print '................'+str(can_attempt)
-                    # #print idx
-                    # if can_attempt[1]:
-                    #         if can_attempt[0] == 'PASS':
-                    #                 test_result = 'PASS'
-                    #                 if idx < 2:
-                    #                      continue
-                    #                 else:
-                    #                      return [None, test_result, idx]
-                    #         else:
-                    #               return [test.schedule_key, test_result, idx+1]
-                    # elif idx == 2:
-                    #         #print 'End condition'
-                    #         return [None, test_result, idx]
-					
+	test_result = 'FAIL'
+	try:
+		test = Tests.objects.get(module_name = module_name, test_type = 'I')
+		can_attempt = is_user_take_test(test, user.email)
+		if can_attempt[1]:
+			return [test.schedule_key, can_attempt[0], can_attempt[2]]
+		else:
+			return [None, can_attempt[0], 0]
+	except Exception as e:
+		print e.args
+		return None
 			
 
 @register.filter(name='inline_test_key')

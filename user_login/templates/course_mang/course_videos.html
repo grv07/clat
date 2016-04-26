@@ -74,8 +74,8 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
                         {% else %}
                         <a type="button" href="javascript:void(0)" class="list-group-item" title="This video is unavailable.">{{ module }}<sup class="error">&nbsp;&nbsp;Not-Avail</sup></a>
                         {% endif %}
-
-                        {% if module|check_progress_status:enrolledcourse %}
+                        <!-- Bug ....... -->
+                        {% if module|check_progress_status:enr_course %}
                         
                         {%with schedule_data=module|get_inline_test_key:user %}
                             {% if schedule_data %}
@@ -129,13 +129,14 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
 
                           {%endwith%}
                           {% else %}
-                      {% if module|get_midterm_url:course %}
-                          <a type="button" href="javascript:void(0)" class="list-group-item" title="This test is unavailable.">Mid Term Quiz<sup class="error">NA</sup></a>
-                      {% endif %}
-                      {% if module|get_inline_url:course %}
-                          <a type="button" href="javascript:void(0)" class="list-group-item" title="This test is unavailable.">Inline Quiz<sup class="red">NA</sup></a>
-                      {% endif %}
-                    {% endif %}
+                            {% if module|get_midterm_url:course %}
+                                <a type="button" href="javascript:void(0)" class="list-group-item" title="This test is unavailable.">Mid Term Quiz<sup class="error">NA</sup></a>
+                            {% endif %}
+                            {% if module|get_inline_url:course %}
+                                <a type="button" href="javascript:void(0)" class="list-group-item" title="This test is unavailable.">Inline Quiz<sup class="red">NA</sup></a>
+                            {% endif %}
+                        {% endif %}
+                        <!-- Bugie....... -->
                     {% else %}
                     <a type="button" onclick="isAllowedToWatch(this);" title="This video is locked." href="javascript:void(0)" class="list-group-item">{{ module }}<span class="glyphicon glyphicon-lock error right"></span></a>
                     {% endif %}

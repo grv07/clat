@@ -349,7 +349,6 @@ def course_details_action(request, uuid):
 @login_required
 def course_videos_display(request,course_uuid):
     try:
-        print 'call funn ..........'
         course_detail_obj = CourseDetail.objects.get(course_uuid=course_uuid)
         if EnrolledCourses.objects.is_student_enrolled(request.user,course_detail_obj):
             logger.info('under course_mang.course_handling.course_videos_display student is enrolled.'+' UID-'+str(request.user.id)) 
@@ -370,7 +369,6 @@ def course_videos_display(request,course_uuid):
             data =  {'course': course_detail_obj,'weeks':weeks}
             data['enr_course'] = EnrolledCourses.objects.get(course=course_detail_obj,user=request.user)
             data['weekly_details'] = weekly_details 
-            print data 
             # cache.set(CACHE_KEYS['cvd'] % (request.user.id, course_detail_obj.id,), data)
             return render(request, 'course_mang/course_videos.html', data)
             # return render(request, 'course_mang/course_videos.html', cvd_cache)      
