@@ -64,17 +64,10 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
             <div id="collapseOne{{week}}" class="panel-collapse collapse">
               <div class="panel-body">
                 <div class="list-group">
-                {% for module,video in modules.items %}
+                {% for module, video in modules.items %}
                   {% if module|check_access_status:enrolledcourse %}
                     {% if video.0.0 %}
                     <a type="button" title="Click to watch it." href="/video{{video.0.0|cut:'.zip'}}/story.html" class="list-group-item text-center">{{ module }}
-                    {% with progress=module|time_progress:user %}
-                       {%if progress >= 100%}
-                         <i class="fa fa-check-circle right" style='color: green;'></i> 
-                       {%else%}
-                         <span class="badge" title="{{progress}}% viewed.">{{progress}}%</span>
-                       {%endif%}
-                    {% endwith %}     
                     <span class="glyphicon glyphicon-play-circle left"></span>
                     </a>
                     {% else %}

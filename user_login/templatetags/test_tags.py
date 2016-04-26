@@ -67,6 +67,7 @@ def check_access_status(module_name, enrolledcourse):
 		assert userprogress.access_status == 'OPEN','AssertError: ON userprogress.access_status == "OPEN"'
 		return True
 	except Exception as e:
+		print 'check_access_status ',e.args
 		return False
 
 

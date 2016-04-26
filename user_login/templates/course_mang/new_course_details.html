@@ -33,7 +33,19 @@
             <br>
           {% else %}
               {% if user and user.student_profile.student %}
-               <form method="post" action="/order/checkout/" id="enroll_course_form">
+               <form method="post" action="/enroll/student/" id="enroll_course_form">
+                  {% csrf_token %}
+                     <!-- <input type="hidden" name="course_uid" value="{{ course.course_uuid }}"> -->
+                     <input type="hidden" name="productinfo" value="{{course.course_uuid}}">
+                     <!-- <input type="hidden" name="amount" value="{{ course.amount }}">
+                     <input type="hidden" name="txnid" value="{{ txnid }}">
+                     <input type="hidden" name="email" value="{{ user.email }}">
+                     <input type="hidden" name="phone" value="{{ user.student_profile.phone_number }}">
+                     <input type="hidden" name="firstname" value="{{ user.student_profile.full_name }}"> -->
+
+                     <button type="submit" class="enroll-btn" style=" text-decoration:none">Enroll Now</button>
+                </form>
+               <!-- <form method="post" action="/order/checkout/" id="enroll_course_form">
                 {% csrf_token %}
                    <input type="hidden" name="productinfo" value="{{ course.course_name }}">
                    <input type="hidden" name="amount" value="{{ course.amount }}">
@@ -43,7 +55,7 @@
                    <input type="hidden" name="fullname" value="{{ user.student_profile.full_name }}">
 
                    <button type="submit" class="btn btn-lg btn-block btn-primary sharp">Pay Now</button>
-              </form>
+              </form> -->
                 {% endif %}
                  {% if user.teacher and course.teacher_id == user.id %}
                  <a class="btn btn-block btn-success sharp" href="/course/videos/teacher/{{course.course_uuid}}/">View Course</a><br>
