@@ -168,7 +168,6 @@ class UserCourseProgress(models.Model):
 ProfilePictureManger model & manager
 '''
 class ProfilePictureManger(models.Manager):
-
     def get_obj(self, user):
         try:
            return ProfilePicture.objects.get(user = user)    

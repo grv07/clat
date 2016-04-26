@@ -65,16 +65,18 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
               <div class="panel-body">
                 <div class="list-group">
                 {% for module, video in modules.items %}
-                  {% if module|check_access_status:enrolledcourse %}
-                    {% if video.0.0 %}
-                    <a type="button" title="Click to watch it." href="/video{{video.0.0|cut:'.zip'}}/story.html" class="list-group-item text-center">{{ module }}
-                    <span class="glyphicon glyphicon-play-circle left"></span>
-                    </a>
-                    {% else %}
-                    <a type="button" href="javascript:void(0)" class="list-group-item" title="This video is unavailable.">{{ module }}<sup class="error">&nbsp;&nbsp;Not-Avail</sup></a>
-                    {% endif %}
+                    {{video}}
+                    {% if module|check_access_status:enr_course %}
+                        {% if video.0.0 %}
+                          <a type="button" title="Click to watch it." href="/video{{video.0.0|cut:'.zip'}}/story.html" class="list-group-item text-center">{{ module }}
+                          <span class="glyphicon glyphicon-play-circle left"></span>
+                          {{module|str_m_time_progress:user}}%
+                          </a>
+                        {% else %}
+                        <a type="button" href="javascript:void(0)" class="list-group-item" title="This video is unavailable.">{{ module }}<sup class="error">&nbsp;&nbsp;Not-Avail</sup></a>
+                        {% endif %}
 
-                    {% if module|check_progress_status:enrolledcourse %}
+                        {% if module|check_progress_status:enrolledcourse %}
                         
                         {%with schedule_data=module|get_inline_test_key:user %}
                             {% if schedule_data %}
@@ -127,8 +129,7 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
                               {%endif%}
 
                           {%endwith%}
-
-                    {% else %}
+                          {% else %}
                       {% if module|get_midterm_url:course %}
                           <a type="button" href="javascript:void(0)" class="list-group-item" title="This test is unavailable.">Mid Term Quiz<sup class="error">NA</sup></a>
                       {% endif %}
@@ -136,9 +137,9 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
                           <a type="button" href="javascript:void(0)" class="list-group-item" title="This test is unavailable.">Inline Quiz<sup class="red">NA</sup></a>
                       {% endif %}
                     {% endif %}
-                  {% else %}
+                    {% else %}
                     <a type="button" onclick="isAllowedToWatch(this);" title="This video is locked." href="javascript:void(0)" class="list-group-item">{{ module }}<span class="glyphicon glyphicon-lock error right"></span></a>
-                  {% endif %}
+                    {% endif %}
                 {% endfor %}
                   </div>
               </div>

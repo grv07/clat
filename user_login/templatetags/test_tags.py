@@ -63,8 +63,7 @@ def check_for_midendterm_pass(test, user):
 @register.filter(name = 'check_access_status')
 def check_access_status(module_name, enrolledcourse):
 	try:
-		userprogress = UserCourseProgress.objects.get(enrolled_courses = enrolledcourse, course_week = CourseWeek.objects.get(week_module_name = module_name))
-		assert userprogress.access_status == 'OPEN','AssertError: ON userprogress.access_status == "OPEN"'
+		userprogress = UserCourseProgress.objects.get(enrolled_courses = enrolledcourse, course_week = CourseWeek.objects.get(week_module_name = module_name), access_status = 'OPEN')
 		return True
 	except Exception as e:
 		print 'check_access_status ',e.args
