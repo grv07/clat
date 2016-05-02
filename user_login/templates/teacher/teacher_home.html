@@ -5,7 +5,7 @@
 
     <head>
       <title>Clat</title>
-   	  <link rel="icon" type="image/gif" href="{%static '/static/logo/Equest_DarkBlue_Symbol.gif' %}"/>
+   	  <link rel="icon" type="image/gif" href=""/>
 
   	  <!-- Compiled and minified CSS -->
   	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
@@ -52,9 +52,9 @@
 	   <nav class="lighten-1" role="navigation" style="background-color: white;">
     <div class="nav-wrapper container">
     {% if user.teacher and not user.is_superuser %}
-      <a id="logo-container" href="/teacher/" class="brand-logo"><img src="{%static '/static/images/logo.png'%}" alt="edx"  width="105"></a>
+      <a id="logo-container" href="/teacher/" class="brand-logo" style="color: black">CLAT</a>
     {% elif user.is_superuser %}
-    <a id="logo-container" href="/home/" class="brand-logo"><img src="{%static '/static/images/logo.png'%}" alt="edx"  width="105"></a>
+    <a id="logo-container" href="/home/" class="brand-logo" style="color: black">CLAT</a>
     {% endif %}
       <a href="#" data-activates="mobile-demo" class="button-collapse" style="background-color: #BDBDBD;"><i class="mdi-navigation-menu"></i></a>
       <ul class="right hide-on-med-and-down">
