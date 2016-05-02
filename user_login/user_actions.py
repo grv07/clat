@@ -52,4 +52,4 @@ def logout_user(request):
     messages.info(request,'You logged out successfully.')
     return redirect("/home/")
 
-
+    
