@@ -6,7 +6,8 @@ from CLAT.services import pagination
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # from django.core.cache import cache
-from course_mang.utilities import CACHE_KEYS, is_verified_user
+from course_mang.utilities import is_verified_user
+from CLAT.services.constants import CACHE_KEYS
 
 
 '''Login a user here'''

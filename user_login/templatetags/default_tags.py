@@ -4,6 +4,13 @@ from tracker.models import StudentTracker, Progress
 from course_mang.models import CourseWeek
 from course_test_handling.models import Tests
 
+try:
+  from CLAT.local_settings import RESTRICT_MODULE_TIME
+except ImportError as e:
+  from CLAT.prod_settings import RESTRICT_MODULE_TIME
+
+  
+
 register = Library()
 
 # @stringfilter
@@ -40,7 +47,7 @@ def _module_time_progress(str_course_module,user):
       course_module = CourseWeek.objects.filter(week_module_name = str(str_course_module))
       stu_tracker = StudentTracker.objects.get(student=user,module=course_module)
       progress = Progress.objects.get(tracker = stu_tracker)
-      data = round((float(progress.time_progress)/60)*100/40)
+      data = round((float(progress.time_progress)/60)*100/RESTRICT_MODULE_TIME)
       if data > 100:
         data = 100
       return data    

@@ -3,7 +3,7 @@ from teacher.models import Teacher
 # from course_test_handling.models import InlineTest,MidTermTest
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-import utilities
+from CLAT.services import constants
 from PIL import Image as img
 import math
 
@@ -33,10 +33,10 @@ class CourseDetail(models.Model):
 
     course_durations = models.CharField(max_length = 2)
     
-    course_sectors_and_associates = models.CharField(max_length = 100, choices = utilities.SECTORS_ASSOCIATES_CHOICES, default = 'others')
+    course_sectors_and_associates = models.CharField(max_length = 100, choices = constants.SECTORS_ASSOCIATES_CHOICES, default = 'others')
     course_demo_file = models.FileField(upload_to = user_directory_path, default = "utb")
     course_demo_file_url = models.URLField(max_length = 200, default = 'www.example.com')
-    course_status = models.CharField(max_length = 40, choices = utilities.STATUS_CHOICES, default = 'PENDING')    
+    course_status = models.CharField(max_length = 40, choices = constants.STATUS_CHOICES, default = 'PENDING')    
     
     amount = models.IntegerField(default = 0)
     language = models.CharField(max_length = 50, default = 'English')
@@ -168,7 +168,7 @@ class CourseVideos(models.Model):
 
     added_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
-    video_type = models.CharField(max_length = 40, choices = utilities.TYPE_CHOICES, default = 'MP4')
+    video_type = models.CharField(max_length = 40, choices = constants.TYPE_CHOICES, default = 'MP4')
     
     class Meta:
         verbose_name = _('Course Videos')

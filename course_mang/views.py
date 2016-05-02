@@ -4,8 +4,10 @@ import json
 from django.http import HttpResponse
 from user_login.models import City
 from django.contrib.auth.decorators import login_required
-from .utilities import SECTORS_ASSOCIATES_CHOICES, student_required, is_enrolled
+from .utilities import student_required, is_enrolled
+
 from CLAT.services import tracking_engine
+from CLAT.services.constants import SECTORS_ASSOCIATES_CHOICES
 from course_test_handling.models import Tests
 from django.contrib import messages
 from student.models import UserCourseProgress
@@ -281,7 +283,7 @@ def post_time_spent(request):
 			else:
 				request.session['_timespent'] += time_spent
 			# When collect-time more then 60
-			if request.session['_timespent'] >= 60:	
+			if request.session['_timespent'] >= 10:	
 				tracking_engine.start_tracking(request.user, current_url, request.session['_timespent'])
 				del request.session['_timespent']
 			return HttpResponse(json.dumps(True), content_type = 'application/json')

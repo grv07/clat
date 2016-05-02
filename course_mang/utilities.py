@@ -1,10 +1,24 @@
 from __future__ import division
-import os,sys
+import os, sys, uuid, re
 from django.contrib.auth.models import User
 try:
 	from CLAT.local_settings import RESTRICT_MODULE_TIME
 except ImportError as e:
 	from CLAT.prod_settings import RESTRICT_MODULE_TIME
+
+from django.shortcuts import redirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import redirect
+from django.core.exceptions import ObjectDoesNotExist
+
+from user_login.tasks import send_mail
+from student.models import Student
+from CLAT.settings import LOGIN_REDIRECT_URL
+from student.models import EnrolledCourses
+from allauth.socialaccount.models import SocialAccount
+from payment.models import CoursePayment
+from assesment_engine.models import AssesmentRegisterdUser, UserResult
+# from com.mettl.api.schedule.ScheduleInfo import ScheduleInfo
 
 # Set the path for the Mettl API SDK
 app_folder = os.path.abspath(os.path.join(os.path.dirname(__file__) , "../"))
@@ -72,84 +86,6 @@ PROFESSIONAL_CERTIFICATE_HTML = CLAT_LOGO_HTML + '<p>Hi<br><p>Reference your Reg
 
 TRANSACTION_FAILURE_HTML = CLAT_LOGO_HTML + '<p>Hi<br><p>Your transaction for course <b>{course}</b> has been declined due to a server error.Please mail this issue with your transaction ID <b>({txnid})</b> to our support team at <a href="mailto:equestsupport@qcin.org?Subject=Transaction Server Error">equestsupport@qcin.org</a> .</p>'
 
-TYPE_CHOICES = (
-		('mp4', 'mp4'),
-		('youtube', 'youtube'),
-		('articulate', 'articulate'),
-)
-
-CERTIFICATE_CHOICES = (
-	
-		('PASS', 'PASS'),
-		('PARTICIPATE', 'PARTICIPATE'),
-)
-
-
-
-STATUS_CHOICES = (
-		('PENDING', 'Pending'),
-		('DONE', 'Done'),
-		('WAITING','Waiting'),
-)
-
-
-ACCESS_STATUS = (
-	('OPEN','OPEN'),
-	('CLOSE','CLOSE'),
-	)
-
-PROGRESS_STATUS = (
-	('WAITING','WAITING'),
-	('COMPLETED','COMPLETED'),
-	('UNDERPROCESS','UNDERPROCESS'),
-	)
-
-
-ASSESMENT_TEST_CHOICE = (
-		('INLINE', 'INLINE'),
-		('MIDTERM', 'MIDTERM'),
-		('END_COURSE', 'END_COURSE'),
-)
-
-INLINE_QUIZ_GAP = 4   # 4 modules
-
-SECTORS_ASSOCIATES_CHOICES = (
-		('Auto Components', 'Auto Components'),
-		('Automobiles', 'Automobiles'),
-		('Aviation', 'Aviation'),
-		('Biotechnology', 'Biotechnology'),
-		('Chemicals', 'Chemicals'),
-		('Construction', 'Construction'),
-		('Defence Manufacturing', 'Defence_Manufacturing'),
-		('Electrical Machinery', 'Electrical_Machinery'),
-		('Electronic System Design and Manufacturing', 'Electronic System Design and Manufacturing'),
-		('Food Processing', 'Food Processing'),
-		('IT and BPM', 'IT and BPM'),
-		('Leather', 'Leather'),
-		('Media and Entertainment', 'Media and Entertainment'),
-		('Mining', 'Mining'),
-		('Oil and Gas', 'Oil and Gas'),
-		('Pharmaceuticals', 'Pharmaceuticals'),
-		('Ports', 'Ports'),
-		('Railways', 'Railways'),
-		('Roads and Highways', 'Roads and Highways'),
-		('Renewable Energy', 'Renewable Energy'),
-		('Space', 'Space'),
-		('Textiles', 'Textiles'),
-		('Thermal Power', 'Thermal Power'),
-		('Tourism and Hospitality', 'Tourism and Hospitality'),
-		('Wellness', 'Wellness'),
-)
-
-WEEKS = tuple( ( (i,i,) for i in xrange(1,21)) )
-
-# '''Cache configuration'''
-CACHE_KEYS = {
-	'cvd' : 'cvd%d%d',
-	'd' : 'd%d',
-	'cda' : 'cda%d',
-}
-
 
 """
 decorator for checking if the logged in user is a admin or not
@@ -157,7 +93,7 @@ If yes, then allow him/her. Otherwise, redirect to error page.
 """
 def admin_required(function=None, redirect_url_=None):
 		if redirect_url_ == None:
-				from CLAT.settings import LOGIN_REDIRECT_URL
+				
 				redirect_url_ = LOGIN_REDIRECT_URL
 		def wrapper(request, *args, **kwargs):
 				try:
@@ -175,10 +111,8 @@ decorator for checking if the logged in user is a teacher or not
 If yes, then allow him/her. Otherwise, redirect to error page.
 """
 def teacher_required(function=None, redirect_url_=None):
-		from django.shortcuts import redirect
-		from django.core.exceptions import ObjectDoesNotExist
+
 		if redirect_url_ == None:
-				from CLAT.settings import LOGIN_REDIRECT_URL
 				redirect_url_ = LOGIN_REDIRECT_URL
 		def wrapper(request, *args, **kwargs):
 				try:
@@ -195,16 +129,11 @@ If yes, then allow him/her. Otherwise, redirect to error page.
 """
 def student_required(function=None, redirect_url_=None):
 		# print 'Name of function that is call this decorator '+str(function.__name__)
-		from django.shortcuts import redirect
-		from django.core.exceptions import ObjectDoesNotExist
-		from student.models import Student
+
 		if redirect_url_ == None:
-				from CLAT.settings import LOGIN_REDIRECT_URL
 				redirect_url_ = LOGIN_REDIRECT_URL
 
 		def wrapper(request, *args, **kwargs):
-				from allauth.socialaccount.models import SocialAccount
-
 				if Student.objects.filter(student=request.user.id) or SocialAccount.objects.filter(user=request.user.id):
 						return function(request, *args, **kwargs)
 				else:                        
@@ -217,8 +146,6 @@ def student_required(function=None, redirect_url_=None):
 
 
 def verify_account(student):
-    import uuid
-
     if not student.is_verified:
         student.is_verified = True
         student.uuid_key = 'eq' + str(uuid.uuid4().fields[-1])[:8]
@@ -231,7 +158,6 @@ def verify_account(student):
 
 def get_student_from_user(user):
     try:
-    	from student.models import Student
         student = Student.objects.get(student=user.id)
         if student:
             return student
@@ -283,7 +209,6 @@ def verification_mail(user, domain, msg = None, **kwargs):
                     <a href="' + complete_link + '"style= "-webkit-appearance: button;-moz-appearance: button;appearance: button;text-decoration: none;color: blue;">Click Here</a></h3>\
                     <h3 style="color:red;">NOTE    :    In case if our button link is not working, please copy and paste following link in browser URL</h3>\
                     <p>'+ complete_link +'</p>'
-        from user_login.tasks import send_mail
         send_mail(msg, student.email)
     else:
         pass
@@ -291,7 +216,6 @@ def verification_mail(user, domain, msg = None, **kwargs):
 
 def is_enrolled(user, course):
 	try:
-		from student.models import EnrolledCourses
 		if EnrolledCourses.objects.is_student_enrolled(user, course):
 			return [True, EnrolledCourses.objects.get(course=course, user=user)]
 		return [False,None]
@@ -320,7 +244,6 @@ def fetch_results(schedule_key, user_email):
 Check whether quiz URL is of METTL
 """
 def check_quiz_link(quiz_key):
-		import re
 		if re.match(r'[a-zA-Z0-9]{8,22}',quiz_key):
 				return True
 		return False
@@ -337,9 +260,6 @@ def check_progress_time(progress_time):
 
 
 def get_schedule_details(schedule_key):
-	
-	from com.mettl.api.schedule.ScheduleInfo import ScheduleInfo
-	
 	public  = "4a9bbe63-b533-49de-b1bb-9f6adcc38dc5"
 	private = "66ba7de5-4bff-4ba9-88a4-12b7d8d568f9"
 	is_prod = True
@@ -430,8 +350,6 @@ def rescue_user_result(schedule_key,user_email):
 	%2FivwsPYvNqm%2FQ%3D%3D&fname=anshul&aname=Clinical+Audit+Measuring+level+of+performance'}
 
 	'''
-	from assesment_engine.models import AssesmentRegisterdUser,UserResult
-
 	try:
 		edit_schedule_info(schedule_key)
 		test_result_status = fetch_results(schedule_key, user_email)
@@ -463,8 +381,6 @@ def create_users_xls(users_enroll_course, _sm_course_name, course_name):
 	# Course name is small form if large then 20 char.
 	import xlwt
 	import ast
-
-	from payment.models import CoursePayment
 	try:
 		style0 = xlwt.easyxf('font: name Times New Roman,height 270,color-index red, bold on',
 			num_format_str='#,##0.00')
@@ -553,7 +469,6 @@ def create_users_xls(users_enroll_course, _sm_course_name, course_name):
 
 
 def check_password(value):
-	import re
 	pattern = "^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[@#&^%!*%$])[a-zA-Z0-9@#&^%!*%$]{8,20}$"
 	if not re.findall(pattern, str(value)):
 		return False

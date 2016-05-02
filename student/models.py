@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image as img
 from course_mang.models import CourseDetail, CourseWeek
-from course_mang import utilities
+from CLAT.services import constants
 
 """
 Student profile table and other info.
@@ -121,7 +121,7 @@ class Certificate(models.Model):
     """ Model to represent Certificate Database """
     uuid_key = models.CharField(max_length = 20)
     enr_course = models.OneToOneField(EnrolledCourses, related_name = 'certified_course_enrolled_detail')
-    status = models.CharField(max_length = 40, choices = utilities.CERTIFICATE_CHOICES, default = 'PARTICIPATE')
+    status = models.CharField(max_length = 40, choices = constants.CERTIFICATE_CHOICES, default = 'PARTICIPATE')
     max_marks = models.IntegerField(default = 0)
     marks_score = models.IntegerField(default = 0)
 
@@ -146,8 +146,8 @@ User Course Progress - stores permission for access and progress status.
 '''
 class UserCourseProgress(models.Model):
     course_week = models.ForeignKey(CourseWeek, related_name = 'user_course_progress_week')
-    access_status = models.CharField(max_length = 5, choices = utilities.ACCESS_STATUS, default = 'CLOSE')
-    progress_status = models.CharField(max_length = 15, choices = utilities.PROGRESS_STATUS, default = 'WAITING')
+    access_status = models.CharField(max_length = 5, choices = constants.ACCESS_STATUS, default = 'CLOSE')
+    progress_status = models.CharField(max_length = 15, choices = constants.PROGRESS_STATUS, default = 'WAITING')
     enrolled_courses = models.ForeignKey(EnrolledCourses, related_name = 'enroll_user_course_progress')
 
     added_date = models.DateTimeField(default = timezone.now)

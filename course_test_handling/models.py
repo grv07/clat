@@ -1,6 +1,4 @@
 from django.db import models
-from course_mang import utilities
-
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 

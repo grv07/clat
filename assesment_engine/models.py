@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from course_mang import utilities
 from student.models import EnrolledCourses
 from course_test_handling.models import Tests
 

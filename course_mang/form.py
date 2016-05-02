@@ -2,15 +2,15 @@ from django import forms
 import validators
 from user_login.form import MyForm
 from course_mang.models import CourseDetail, CourseVideos, CourseWeek, CourseInformation, CourseImage
-import utilities
+from CLAT.services import constants
 import datetime
 from CLAT.services import course_service
 
 class CourseDetailForm(forms.ModelForm):
     course_name = forms.CharField(widget=forms.TextInput(attrs={'type':"text",'id':"course_name",'placeholder':"Please Enter your Course Name",'autocomplete':"off",'class':"text-sbox", 'autocomplete':'off'}),max_length=200, label='Course Name')
-    course_sectors_and_associates = forms.ChoiceField(choices=utilities.SECTORS_ASSOCIATES_CHOICES,widget=forms.Select(attrs={'class':"selectpicker text-sbox"}))
+    course_sectors_and_associates = forms.ChoiceField(choices=constants.SECTORS_ASSOCIATES_CHOICES,widget=forms.Select(attrs={'class':"selectpicker text-sbox"}))
     course_demo_file_url = forms.URLField(widget=forms.URLInput(attrs={'id':"youtube_demo_url",'placeholder':"Please enter a valid You Tube URL.",'class':"text-sbox",'style':"width: 40em;onblur=checkYoutubeURL(this);",'autocomplete':'off'}),max_length=200,required=False)
-    course_durations =  forms.ChoiceField(choices=utilities.WEEKS,widget=forms.Select(attrs={'class':"selectpicker text-sbox"}))
+    course_durations =  forms.ChoiceField(choices=constants.WEEKS,widget=forms.Select(attrs={'class':"selectpicker text-sbox"}))
     show_video = forms.BooleanField(initial=True,required=False)
     
     def clean(self):
@@ -80,7 +80,7 @@ class CourseVideosForm(forms.ModelForm):
     video_file = forms.FileField(widget=forms.FileInput(attrs={'id':'articulate_file','type':'file','placeholder':'File format must be in .zip or mp4 format','class':'text-sbox','onchange':'checkForMime(this)'}),required=False)
     module_name = forms.CharField(widget=forms.Select(attrs={'type':'text','class':'text-sbox','id':'module_name','onblur':'checkModuleName(this)','autocomplete':'off'}))
     video_url = forms.URLField(widget=forms.URLInput(attrs={'id':"youtube_course_url",'placeholder':"Please enter a valid You Tube URL.",'class':"text-sbox",'style':"width: 40em;",'onblur':"checkYoutubeURL(this);",'autocomplete':'off'}),max_length=200,required=False)
-    video_type = forms.ChoiceField(widget=forms.Select(attrs={'class':"selectpicker text-sbox",'id':'video_type'}),choices=utilities.TYPE_CHOICES)
+    video_type = forms.ChoiceField(widget=forms.Select(attrs={'class':"selectpicker text-sbox",'id':'video_type'}),choices=constants.TYPE_CHOICES)
 
     def clean(self):
         video_type_value = self.cleaned_data['video_type']

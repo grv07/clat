@@ -9,7 +9,8 @@ from models import CourseDetail, Comments, CourseVideos, CourseWeek, CourseImage
 from django.contrib.auth.decorators import login_required
 import os,json
 from rating_managment.models import Rating
-from utilities import admin_required, teacher_required, student_required, ADDED_VIDEO_MAIL_HTML, CACHE_KEYS
+from utilities import admin_required, teacher_required, student_required, ADDED_VIDEO_MAIL_HTML
+from CLAT.services.constants import CACHE_KEYS
 from student.models import EnrolledCourses, ProfilePicture, StudentInterests
 from django.core.exceptions import ObjectDoesNotExist
 from user_login.tasks import send_mail, send_bulk_mail

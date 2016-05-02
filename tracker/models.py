@@ -26,7 +26,7 @@ This contains progress info. - time spent (in seconds).
 """
 class Progress(models.Model):
     tracker = models.ForeignKey(StudentTracker)
-    uuid_key = models.TextField(max_length = 100)    
+    uuid_key = models.TextField(max_length = 100)  
     time_progress = models.IntegerField()
     # module_progress = models.IntegerField(null=True)
     # total_progress = models.IntegerField()

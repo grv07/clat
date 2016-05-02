@@ -61,3 +61,83 @@ TRANSACTION_ERROR_SERVER = '<h3>A server error has occured. If you have paid for
 TRANSACTION_FAILURE = '<h3>Your transaction has failed. Try again.</h3>'
  
 TRANSACTION_CANCELLED = '<h3>Your transaction has been cancelled.</h3>'
+
+
+# // start
+TYPE_CHOICES = (
+		('mp4', 'mp4'),
+		('youtube', 'youtube'),
+		('articulate', 'articulate'),
+)
+
+CERTIFICATE_CHOICES = (
+	
+		('PASS', 'PASS'),
+		('PARTICIPATE', 'PARTICIPATE'),
+)
+
+
+
+STATUS_CHOICES = (
+		('PENDING', 'Pending'),
+		('DONE', 'Done'),
+		('WAITING','Waiting'),
+)
+
+
+ACCESS_STATUS = (
+	('OPEN','OPEN'),
+	('CLOSE','CLOSE'),
+	)
+
+PROGRESS_STATUS = (
+	('WAITING','WAITING'),
+	('COMPLETED','COMPLETED'),
+	('UNDERPROCESS','UNDERPROCESS'),
+	)
+
+
+ASSESMENT_TEST_CHOICE = (
+		('INLINE', 'INLINE'),
+		('MIDTERM', 'MIDTERM'),
+		('END_COURSE', 'END_COURSE'),
+)
+
+INLINE_QUIZ_GAP = 4   # 4 modules
+
+SECTORS_ASSOCIATES_CHOICES = (
+		('Auto Components', 'Auto Components'),
+		('Automobiles', 'Automobiles'),
+		('Aviation', 'Aviation'),
+		('Biotechnology', 'Biotechnology'),
+		('Chemicals', 'Chemicals'),
+		('Construction', 'Construction'),
+		('Defence Manufacturing', 'Defence_Manufacturing'),
+		('Electrical Machinery', 'Electrical_Machinery'),
+		('Electronic System Design and Manufacturing', 'Electronic System Design and Manufacturing'),
+		('Food Processing', 'Food Processing'),
+		('IT and BPM', 'IT and BPM'),
+		('Leather', 'Leather'),
+		('Media and Entertainment', 'Media and Entertainment'),
+		('Mining', 'Mining'),
+		('Oil and Gas', 'Oil and Gas'),
+		('Pharmaceuticals', 'Pharmaceuticals'),
+		('Ports', 'Ports'),
+		('Railways', 'Railways'),
+		('Roads and Highways', 'Roads and Highways'),
+		('Renewable Energy', 'Renewable Energy'),
+		('Space', 'Space'),
+		('Textiles', 'Textiles'),
+		('Thermal Power', 'Thermal Power'),
+		('Tourism and Hospitality', 'Tourism and Hospitality'),
+		('Wellness', 'Wellness'),
+)
+
+WEEKS = tuple( ( (i,i,) for i in xrange(1,21)) )
+
+# '''Cache configuration'''
+CACHE_KEYS = {
+	'cvd' : 'cvd%d%d',
+	'd' : 'd%d',
+	'cda' : 'cda%d',
+}

@@ -12,7 +12,7 @@ function refresh_it(){
    alertify.confirm("After test completion, please refresh your page.", function (e) {
         if (e) {
             window.location = window.location;
-            alertify.success( 'Refreshing page.' );
+            alertify.success('Refreshing page.');
         } else {
           alertify.error( 'Please refresh this page for latest updates in your account.' );
         }
@@ -68,8 +68,8 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
                     {% if module|check_access_status:enr_course %}
                         {% if video.0.0 %}
                           <a type="button" title="Click to watch it." href="/video{{video.0.0|cut:'.zip'}}/story.html" class="list-group-item text-center">{{ module }}
-                          <span class="glyphicon glyphicon-play-circle left"></span>
-                          {{module|str_m_time_progress:user}}%
+                            <span class="glyphicon glyphicon-play-circle left"></span>
+                            <span class="right" style="color: green;">{{module|str_m_time_progress:user}}%</span>
                           </a>
                         {% else %}
                         <a type="button" href="javascript:void(0)" class="list-group-item" title="This video is unavailable.">{{ module }}<sup class="error">&nbsp;&nbsp;Not-Avail</sup></a>

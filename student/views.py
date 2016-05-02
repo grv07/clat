@@ -13,7 +13,8 @@ from CLAT.cities import cities
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
-from course_mang.utilities import student_required, CACHE_KEYS, verify_account, verification_mail
+from course_mang.utilities import student_required, verify_account, verification_mail
+from CLAT.services.constants import CACHE_KEYS
 from teacher.models import Teacher
 from course_mang.models import CourseDetail
 from student.form import ProfilePictureForm
