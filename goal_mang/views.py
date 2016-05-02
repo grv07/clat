@@ -11,28 +11,38 @@ import json
 from course_mang.models import CourseDetail, CourseWeek
 from student.models import EnrolledCourses
 
-from models import GoalModel, Goal
+from models import GoalModel, Goal, GoalBadge
 from form import CreateGoalForm
 
 @login_required()
 def create_goal(request):
 	if request.method == 'GET':
 		enroll_courses = EnrolledCourses.objects.all()
+		print enroll_courses
 		data = {'enroll_courses' : enroll_courses}
 		return render(request, 'goal_mang/create_goal.html', data)
 
 	elif request.method == 'POST':
-		print type(request.user)
+		print request.POST
 	 	create_goal = CreateGoalForm(request.POST)
 	 	user = request.user
+	 	print user
 	 	if create_goal.is_valid():
-	 		goal = GoalModel(data = request.POST)
-	 		goal.enr_course = EnrolledCourses.objects.get(pk = request.POST.get('enr_course'))
-	 		goal = goal.save(commit = False)
-	 		goal.user = request.user
-	 		goal.save()
+	 		if not Goal.objects.filter(user = user, goal_name = request.POST.get('goal_name')):
+		 		goal = GoalModel(data = request.POST)
+		 		goal.enr_course = EnrolledCourses.objects.get(pk = request.POST.get('enr_course'))
+		 		goal = goal.save(commit = False)
+		 		goal.user = request.user
+		 		goal.save()
+		 		badges_id_list = request.POST.getlist('badges')
+		 		goal_badges = GoalBadge.objects.create(goal = Goal.objects.get(pk=1), user = request.user)
+		 		if badges_id_list:
+		 			for badges_id in badges_id_list:
+		 				goal_badges.add_badge_to_list(badges_id)
+		 		messages.success(request,'Goal create successfully.')
+		 	else:
+		 		messages.info(request,'This goal name exit with this course.')
 
-	 		messages.success(request,'Goal create successfully.')
 	 		data = {'enroll_courses' : EnrolledCourses.objects.all()}
 	 		
 	 		return render(request, 'goal_mang/create_goal.html', data)
@@ -47,8 +57,11 @@ def create_goal(request):
 def get_module_name_list(request):
 	if request.method == 'GET':
 		try:
-			week_module_names = list(CourseWeek.objects.filter(course = CourseDetail.objects.get(pk = request.GET.get('course_id'))).values('week_module_name'))
+			week_module_names = list(CourseWeek.objects.filter(course = EnrolledCourses.objects.get(pk = 
+				request.GET.get('enr_course_id')).course).values('week_module_name'))
+			
 			week_module_names =  [module_name.get('week_module_name') for module_name in week_module_names]
+			
 			return HttpResponse(json.dumps(week_module_names), content_type = "application/json")
 		except Exception as e:
 			print e.args
@@ -57,7 +70,6 @@ def get_module_name_list(request):
 @login_required()
 def goal_list_actions(request):
 	goals = Goal.objects.filter(user_id = request.user.id)
-	# print request.user.id
 	data = {'goals': goals}
 	return render(request, 'goal_mang/goal_list.html', data)
 

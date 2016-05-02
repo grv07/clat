@@ -75,4 +75,20 @@ class Query(models.Model):
     added_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+class Badges(models.Model):
+    badge_name  = models.CharField(max_length = 50)
+    badge_description = models.CharField(max_length = 250)
+    badge_color = models.CharField(max_length = 50)
+
+    # select_bases = 
+    min_percentage = models.IntegerField(default = 40)
+
+    added_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
+
+
+class BadgesModel(ModelForm):
+    class Meta:
+        model = Badges
+        fields = '__all__'
 # Create your models here.

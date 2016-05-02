@@ -21,6 +21,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from course_mang.utilities import student_required, check_password, CONTACT_US, PASSWORD_RESET, ASK_QUERY, verify_account
 from .form import ContactForm, QueryForm
+from .models import Badges
 
 import logging
 logger = logging.getLogger(__name__)
@@ -29,6 +30,15 @@ from qna_api.user_manager import register_user
 def update(request):
 	update_pre_enroll_users_db.update_for_enroll_users()
 	return ' /.........Done'
+
+def badges(request):
+	if request.method == 'GET':
+		all_badges = Badges.objects.filter(min_percentage__lte=request.GET.get('percentage'))
+		data = []
+		if all_badges:
+			for badges in all_badges:
+				data.append({'id':badges.id, 'name':badges.badge_name, 'color':badges.badge_color})
+		return HttpResponse(json.dumps(data), content_type="application/json")
 
 ''' Handle paginate ajax call for Courses '''
 def paginate_action(request):

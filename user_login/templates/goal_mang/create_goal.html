@@ -36,7 +36,7 @@
    //AJAX GET rCLAT for loading cities when a state in selected or changed
     $.ajax({
             url : "/get/modules/",
-            data : { 'course_id' : $('#enr_course').val()},
+            data : { 'enr_course_id' : $('#enr_course').val()},
             type : "GET",
 
             success : function(json_from_view) {
@@ -67,6 +67,26 @@
             $('#end_module').append('<option value="'+avail_options[i]+'">'+avail_options[i]+'</option>');
           }
       }
+  }
+
+  function get_badges(){
+    //AJAX GET rCLAT for loading badges on bases of percentage in selected or changed
+    $.ajax({
+            url : "/get/badges/",
+            data : { 'percentage' : $('#percentage').val()},
+            type : "GET",
+            success : function(json_from_view) {
+              avail_options = json_from_view
+              $('#badges_here').empty().html('');
+              for(var i=0;i<json_from_view.length;i++){
+                 $('#badges_here').append('<input class="hidden" name="badges" value="'+json_from_view[i].id+'"></input><span class="label label-default" style = "margin-left:10px;color:#D0D7D9;background-color:'+json_from_view[i].color+'"">'+json_from_view[i].name+'</span>');
+                }
+           },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("Cities are not loading!!!"); 
+          }
+          });
   }      
 
 </script>
@@ -80,6 +100,7 @@
     <div class="row">
       <h2 class="text-center hidden-xs">Create a new Goal</h2>
       <h4 class="text-center hidden-md hidden-lg">Create your Goal</h4>
+      <a href='/goal/list/' class="btn btn-success btn-lg sharp right"><span class="glyphicon glyphicon-list">&nbsp</span></a>
     </div>
     <div class="row">
     <!-- {{form.course}} -->
@@ -95,7 +116,7 @@
             <select name="enr_course" id="enr_course" class="form-control sharp" onchange="set_modules()">
                   <option value="">-- Select one --</option>
                 {% for enr_course_obj in enroll_courses %}
-                  <option value="{{enr_course_obj.course.id}}">{{enr_course_obj.course.course_name}}</option>
+                  <option value="{{enr_course_obj.id}}">{{enr_course_obj.course.course_name}}</option>
                 {%endfor%}
             </select>
           </div>
@@ -115,7 +136,28 @@
             </select>
             <p class="error">{{form.start_module.errors}}</p>
          </div>
-
+         <div class="col-md-6 form-group left" id="badges_here">
+              <!-- Get badges Ui here  -->
+         </div>
+         
+         <div class="col-md-12 form-group">
+            <label for="percentage">Select Percentage of Goal<span class="error">*</span></label>
+            <select name="percentage" id="percentage" class="form-control sharp" onchange="get_badges()">
+                  <option value="45" style="color: #66b3ff; font-weight: bolder;">45</option>
+                  <option value="50" style="color: #66b3ff;font-weight: bolder;">50</option>
+                  <option value="55" style="color: #66b3ff;font-weight: bolder;">55</option>
+                  <option value="60" style="color: #669999;font-weight: bolder;">60</option>
+                  <option value="65" style="color: #669999;font-weight: bolder;">65</option>
+                  <option value="70" style="color: #669999;font-weight: bolder;">70</option>
+                  <option value="75" style="color: #e68a00;font-weight: bolder;">75</option>
+                  <option value="80" style="color: #e68a00;font-weight: bolder;">80</option>
+                  <option value="85" style="color: #e68a00;font-weight: bolder;">85</option>
+                  <option value="90" style="color: #663300;font-weight: bolder;">90</option>
+                  <option value="95" style="color: #663300;font-weight: bolder;">95</option>
+                  <option value="100" style="color: #663300;font-weight: bolder;">100</option>
+            </select>
+            <p class="error">{{form.start_module.errors}}</p>
+         </div>
         <div class="col-md-6 form-group">
             <label for="goal_start_date">From<span class="error">*</span></label>
             <input type="text" class="form-control sharp" placeholder="Enter Start Date"  name="goal_start_date" id="goal_start_date" 

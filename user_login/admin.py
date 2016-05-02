@@ -1,10 +1,12 @@
 from django.contrib import admin
-from user_login.models import Foo
+from user_login.models import Foo,Badges
 from django.conf.urls import patterns, include, url
 
 @admin.register(Foo)
+@admin.register(Badges)
 class AuthorAdmin(admin.ModelAdmin):
     pass
+
 from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
