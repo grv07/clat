@@ -265,7 +265,7 @@ except ImportError as e:
     pass
 
 try:
-    from server_settings import *
+    from prod_settings import *
     '''USE TO GENERATE TEST LINK TO REDIRECT AFTER TAKE TEST'''
    
 except ImportError as e:
