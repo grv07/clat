@@ -64,8 +64,7 @@ def inline_progress(request, course_uuid, module_name):
 		try:
 			data = {}
 			course = CourseDetail.objects.get(course_uuid = course_uuid)
-			data['course'] = course
-			data['bar_width'] = 15
+			data['course_name'] = course.course_name
 			data['week_module_name'] = module_name
 			
 			schedule_key = Tests.objects.get(course = course, module_name = module_name, test_type = 'I').schedule_key
@@ -75,9 +74,9 @@ def inline_progress(request, course_uuid, module_name):
 			user_results =  UserResult.objects.filter(assesmentRegisterdUser = asm_user)
 			for user_result in user_results:
 				data_temp += [round(float(user_result.marks_scored)/float(user_result.max_marks)*100, 2)]
-			print data_temp    
+			
 			data['data_temp'] = data_temp
-			print data
+
 			return render(request, 'student/inline_progress.html', data)
 		except Exception as e:
 			print e.args
