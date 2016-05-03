@@ -18,9 +18,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="{% static '/static/custom/css/mystyles.css' %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.2.1/nouislider.min.css" rel="stylesheet">
-
 <!-- endbuild -->
-
 <!-- build:js styles/main.js -->
 <script src="{% static '/static/js/jquery.min.js' %}"></script>
 <script src="{% static '/static/js/bootstrap.min.js' %}"></script> 
@@ -318,30 +316,31 @@
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="item active">
-            <div class="row">
-            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-xs-10 col-sm-8">
+                    <br><br>
+                    <h2>An <strong>CLAT</strong> For <strong>Digital India</strong> Through Quality, Employability  Skill And Training.</h2>
+                    <button type="button" class="btn aboutbutton sharp">About CLAT</button>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+                  </div>
+                </div>
             </div>
-            <div class="col-lg-8 col-md-8 col-xs-10 col-sm-8">
-            <br><br>
-              <h2>An <strong>CLAT</strong> For <strong>Digital India</strong> Through Quality, Employability  Skill And Training.</h2>
-              <button type="button" class="btn aboutbutton sharp">About CLAT</button>
-            </div>
-            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
-            </div>
-            </div>
-            </div>
+            
             <div class="item">
-            <div class="row">
-            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
-            </div>
-            <div class="col-lg-8 col-md-8 col-xs-10 col-sm-8">
-            <br><br>
-              <h2>Nation's <strong>First</strong> Intelligent e-Quality  Learning Management System  Hosting <strong>Online Certification.</strong></h2>
-              <button type="button" class="btn aboutbutton sharp">About CLAT</button>
-            </div>
-            <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
-            </div>
-            </div>
+              <div class="row">
+              <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+              </div>
+              <div class="col-lg-8 col-md-8 col-xs-10 col-sm-8">
+              <br><br>
+                <h2>Nation's <strong>First</strong> Intelligent e-Quality  Learning Management System  Hosting <strong>Online Certification.</strong></h2>
+                <button type="button" class="btn aboutbutton sharp">About CLAT</button>
+              </div>
+              <div class="col-lg-2 col-md-2 col-xs-1 col-sm-2">
+              </div>
+              </div>
             </div>
             <div class="item">
             <div class="row">
@@ -468,9 +467,9 @@ $(function() {
    $("#course_name_1").autocomplete({
     source: "/get/course_names/",
     minLength: 2,
-    select: function(event, ui) {
+    select: function(event, ui){
             var url = ui.item.value;
-            if(url != '#') {
+            if(url != '#'){
                 location.href = '/allcourses/?course_name=' + url;
             }
         }
@@ -490,6 +489,8 @@ $(function() {
 </script>
 </body>
 {% include '_notifications.html' %}
+
+
 <!-- End of block body ....... -->
 <footer>
   {% include '_footer.html' %}

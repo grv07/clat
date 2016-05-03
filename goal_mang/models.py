@@ -36,7 +36,7 @@ class GoalModel(ModelForm):
 class GoalBadge(models.Model):
 	goal = models.ForeignKey(Goal, related_name='goal')
 	user = models.ForeignKey(User)
-	
+
 	badge_list = models.CharField(max_length = 550, default = '')
 
 	added_date = models.DateTimeField(auto_now_add = True)
@@ -47,6 +47,11 @@ class GoalBadge(models.Model):
 			self.badge_list += ','
 		self.badge_list += str(badge_id)	
 		self.save()
+	
+	def get_badge_list(self):
+		if len(self.badge_list) > 0:
+			return self.badge_list.split(',')
+		return []
 
 class GoalBadgeModel(ModelForm):
     class Meta:

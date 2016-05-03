@@ -4,29 +4,25 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-
 import json
-
 
 from course_mang.models import CourseDetail, CourseWeek
 from student.models import EnrolledCourses
 
 from models import GoalModel, Goal, GoalBadge
+
 from form import CreateGoalForm
 
 @login_required()
 def create_goal(request):
 	if request.method == 'GET':
 		enroll_courses = EnrolledCourses.objects.all()
-		print enroll_courses
 		data = {'enroll_courses' : enroll_courses}
 		return render(request, 'goal_mang/create_goal.html', data)
 
 	elif request.method == 'POST':
-		print request.POST
 	 	create_goal = CreateGoalForm(request.POST)
 	 	user = request.user
-	 	print user
 	 	if create_goal.is_valid():
 	 		if not Goal.objects.filter(user = user, goal_name = request.POST.get('goal_name')):
 		 		goal = GoalModel(data = request.POST)
@@ -35,7 +31,7 @@ def create_goal(request):
 		 		goal.user = request.user
 		 		goal.save()
 		 		badges_id_list = request.POST.getlist('badges')
-		 		goal_badges = GoalBadge.objects.create(goal = Goal.objects.get(pk=1), user = request.user)
+		 		goal_badges = GoalBadge.objects.create(goal = goal, user = request.user)
 		 		if badges_id_list:
 		 			for badges_id in badges_id_list:
 		 				goal_badges.add_badge_to_list(badges_id)
@@ -47,7 +43,6 @@ def create_goal(request):
 	 		
 	 		return render(request, 'goal_mang/create_goal.html', data)
 	 	else:
-	 		print create_goal.errors
 	 		enroll_courses = EnrolledCourses.objects.all()
 	 		data = {'form' : create_goal, 'enroll_courses' : enroll_courses}
 	 		messages.error(request,'Please try again.')
@@ -70,6 +65,7 @@ def get_module_name_list(request):
 @login_required()
 def goal_list_actions(request):
 	goals = Goal.objects.filter(user_id = request.user.id)
+	
 	data = {'goals': goals}
 	return render(request, 'goal_mang/goal_list.html', data)
 

@@ -1,5 +1,5 @@
 {% extends 'new_home.html' %}
-{% load default_tags %}
+{% load goal_tags %}
 
 {% load static %}
 {% block head_js_css %}
@@ -18,10 +18,30 @@
           <h4>{{goal.goal_name}}</h4>
         </div>
         <div class="panel-body">
-            <span style="color: green;font-size: 15px;">Start/End Time: </span>{{goal.goal_start_time}} to {{goal.goal_end_time}}<br> 
+          <div class="col-md-3">
+            <span style="color: green;font-size: 15px;">Start Time: </span>{{goal.goal_start_time}}<br> 
+            <span style="color: green;font-size: 15px;">End Time: </span>{{goal.goal_end_time}}<br> 
+            <hr width="1">
+          </div>
+          <div class="col-md-3">  
             <span style="color: green;font-size: 15px;">Start Module: </span>{{goal.start_module}}<br> 
             <span style="color: green;font-size: 15px;">End Module: </span>{{goal.end_module}}<br> 
             <span style="font-size: 15px;">{{goal.goal_description}}</span>
+          </div>
+          <div class="col-md-3">
+            <span style="color: green;font-size: 15px;">Badges: </span>
+            {%with badges=goal|get_badges%}
+              {%for badge in badges%}
+                <span class="label label-default" style="margin-left:10px;color:#D0D7D9;background-color:{{badge.badge_color}}">
+                  {{badge.badge_name}}
+                </span>
+              {%empty%}
+                &nbsp; Not Have any badges here :(
+              {%endfor%}
+            {%endwith%}
+            <br> 
+          </div>
+
         </div>
         <div class="panel-footer">
            <div class="progress">

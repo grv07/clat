@@ -59,7 +59,6 @@ def video_action(request, path):
 @login_required
 @student_required
 def inline_progress(request, course_uuid, module_name):
-	logger.info('>>>>>> Under course_mang.inline_progress')
 	if request.method == 'GET':
 		try:
 			data = {}
