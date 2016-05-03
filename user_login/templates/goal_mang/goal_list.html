@@ -14,8 +14,13 @@
   <div class="col-md-2"></div>
   <div class="panel-group">
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4>{{goal.goal_name}}</h4>
+        <div class="col-md-12 panel-heading">
+          <div class="col-md-3"> 
+            <h4>{{goal.goal_name}}</h4>
+          </div>
+          <div class="col-md-3 right">
+            <a href="/goal/delete/{{goal.id}}/" class="btn btn-danger">Delete</a>
+          </div>
         </div>
         <div class="panel-body">
           <div class="col-md-3">

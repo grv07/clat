@@ -5,10 +5,10 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 
 import json
+from django.shortcuts import redirect
 
 from course_mang.models import CourseDetail, CourseWeek
 from student.models import EnrolledCourses
-
 from models import GoalModel, Goal, GoalBadge
 
 from form import CreateGoalForm
@@ -49,6 +49,19 @@ def create_goal(request):
 	 		return render(request, 'goal_mang/create_goal.html', data)
 
 @login_required()
+def goal_list_actions(request):
+	goals = Goal.objects.filter(user_id = request.user.id)
+	
+	data = {'goals': goals}
+	return render(request, 'goal_mang/goal_list.html', data)
+
+@login_required()
+def goal_delete_action(request, goal_id):
+	goal = Goal.objects.get(pk = goal_id)
+	goal.delete()
+	return redirect('/goal/list/')	
+
+@login_required()
 def get_module_name_list(request):
 	if request.method == 'GET':
 		try:
@@ -62,11 +75,6 @@ def get_module_name_list(request):
 			print e.args
 			return HttpResponse(False, content_type = "application/json")
 
-@login_required()
-def goal_list_actions(request):
-	goals = Goal.objects.filter(user_id = request.user.id)
-	
-	data = {'goals': goals}
-	return render(request, 'goal_mang/goal_list.html', data)
+
 
 # Create your views here.
