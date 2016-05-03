@@ -6,6 +6,7 @@ from user_login.models import City
 from django.contrib.auth.decorators import login_required
 from .utilities import student_required, is_enrolled
 
+from assesment_engine.models import AssesmentRegisterdUser, UserResult
 from CLAT.services import tracking_engine
 from CLAT.services.constants import SECTORS_ASSOCIATES_CHOICES
 from course_test_handling.models import Tests
@@ -69,8 +70,8 @@ def inline_progress(request, course_uuid, module_name):
 			data['bar_width'] = 15
 			data['week_module_name'] = module_name
 			
-			Tests.objects.get(course = course, module_name = module_name, test_type = 'I').schedule_key
-			asm_user = AssesmentRegisterdUser.objects.get(schedule_key = schedule_key, student_email = user.email)
+			schedule_key = Tests.objects.get(course = course, module_name = module_name, test_type = 'I').schedule_key
+			asm_user = AssesmentRegisterdUser.objects.get(schedule_key = schedule_key, student_email = request.user.email)
 			data_temp = []
 			# for asm_user in asm_reg_user:
 			user_results =  UserResult.objects.filter(assesmentRegisterdUser = asm_user)
