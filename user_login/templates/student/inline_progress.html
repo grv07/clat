@@ -1,3 +1,11 @@
+{% extends 'new_home.html' %}
+{% load static %}
+{% load default_tags %}
+{% load test_tags %}
+
+{% block slider %}
+{% endblock %}
+{% block footer_css_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.0.2/Chart.js"></script>
 <canvas id="myChart" width="200" height="80"></canvas>
 <script>
@@ -39,3 +47,11 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
+{%endblock%} 
+
+{% block body %}
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
