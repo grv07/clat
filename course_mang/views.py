@@ -12,6 +12,7 @@ from CLAT.services.constants import SECTORS_ASSOCIATES_CHOICES
 from course_test_handling.models import Tests
 from django.contrib import messages
 from student.models import UserCourseProgress
+from assesment_engine.models import AssesmentRegisterdUser, UserResult
 import logging
 logger = logging.getLogger(__name__)
 
@@ -58,9 +59,6 @@ def video_action(request, path):
 @login_required
 @student_required
 def inline_progress(request, course_uuid, module_name):
-	'''
-
-	'''
 	logger.info('>>>>>> Under course_mang.inline_progress')
 	if request.method == 'GET':
 		try:
@@ -78,7 +76,7 @@ def inline_progress(request, course_uuid, module_name):
 			for user_result in user_results:
 				data_temp += [round(float(user_result.marks_scored)/float(user_result.max_marks)*100, 2)]
 			print data_temp    
-
+			
 			return render(request, 'student/inline_progress.html', data)
 		except Exception as e:
 			print e.args

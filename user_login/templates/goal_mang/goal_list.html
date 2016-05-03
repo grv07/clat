@@ -34,9 +34,28 @@
       </div>
   </div>
   </div>
+{%empty%}
+<div class="row">
+  <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+        </div>
+        <div class="panel-body">
+            <span style="color: green;">Goal(s) Not found with your account.</span>
+            <br>
+            <br>
+            <br>
+            <a href="/set/goal/">Create a goal</a> with enrolled courses and test your skill(s)
+        </div>
+        <div class="panel-footer">
+           
+        </div>
+      </div>
+  </div>
+</div>
 {% endfor %}
 <div class="col-md-2"></div>
-<br>
+  <br>
 </div>
 {% endblock %}
 
