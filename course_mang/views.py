@@ -76,7 +76,8 @@ def inline_progress(request, course_uuid, module_name):
 			for user_result in user_results:
 				data_temp += [round(float(user_result.marks_scored)/float(user_result.max_marks)*100, 2)]
 			print data_temp    
-			
+			data['data_temp'] = data_temp
+			print data
 			return render(request, 'student/inline_progress.html', data)
 		except Exception as e:
 			print e.args
