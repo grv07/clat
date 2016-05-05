@@ -106,31 +106,12 @@ ASSESMENT_TEST_CHOICE = (
 INLINE_QUIZ_GAP = 4   # 4 modules
 
 SECTORS_ASSOCIATES_CHOICES = (
-		('Auto Components', 'Auto Components'),
-		('Automobiles', 'Automobiles'),
-		('Aviation', 'Aviation'),
-		('Biotechnology', 'Biotechnology'),
-		('Chemicals', 'Chemicals'),
+		('MBA', 'MBA'),
+		('BANKING', 'BANKING'),
+		('CLAT', 'CLAT'),
+		('SSC', 'SSC'),
+		('GATE', 'GATE'),
 		('Construction', 'Construction'),
-		('Defence Manufacturing', 'Defence_Manufacturing'),
-		('Electrical Machinery', 'Electrical_Machinery'),
-		('Electronic System Design and Manufacturing', 'Electronic System Design and Manufacturing'),
-		('Food Processing', 'Food Processing'),
-		('IT and BPM', 'IT and BPM'),
-		('Leather', 'Leather'),
-		('Media and Entertainment', 'Media and Entertainment'),
-		('Mining', 'Mining'),
-		('Oil and Gas', 'Oil and Gas'),
-		('Pharmaceuticals', 'Pharmaceuticals'),
-		('Ports', 'Ports'),
-		('Railways', 'Railways'),
-		('Roads and Highways', 'Roads and Highways'),
-		('Renewable Energy', 'Renewable Energy'),
-		('Space', 'Space'),
-		('Textiles', 'Textiles'),
-		('Thermal Power', 'Thermal Power'),
-		('Tourism and Hospitality', 'Tourism and Hospitality'),
-		('Wellness', 'Wellness'),
 )
 
 WEEKS = tuple( ( (i,i,) for i in xrange(1,21)) )
