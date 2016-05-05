@@ -3,6 +3,7 @@ from student import views
 
 urlpatterns = patterns('',
 			url(r'^register/$', views.register_student_form, name="register-student"),
+			url(r'^student/bookmark/$', views.get_bookmarks, name="student-bookmark"),
 			url(r'^register/student/$', views.user_action, name="register-students-action"),
 			url(r'^verify_email/$', views.user_email_verification, name="register-students-verfiy-email"),
 			url(r'^verify/certificate/$', views.verify_certificate, name="students-certi-verfiy-email"),
@@ -22,6 +23,6 @@ urlpatterns = patterns('',
 			url(r'^(?P<course_uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/progress/$',views.test_progress,name='test-progress'),
 			url(r'^download/report/(?P<test_type>[a-z]+)/(?P<schedule_key>[A-Za-z0-9]{4,10})/(?P<attempt_no>\d+)/$',views.download_test_report,name='download-test-report'),
 			url(r'^download/certificate/(?P<course_uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$',views.download_certificate,name='download-certificate'),
-				url(r'^certificates/$',views.certificates,name='certificates'),
+			url(r'^certificates/$',views.certificates,name='certificates'),
 
 )

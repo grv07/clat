@@ -28,22 +28,16 @@ from django.core.cache import cache
 import logging
 
 logger = logging.getLogger(__name__)
-# app_folder = os.path.abspath(os.path.join(os.path.dirname(__file__) , "../"))
-# sys.path.insert(0,app_folder + "/mettl-api-sdk/src")
-
-
-# from com.mettl.api.register.CandidateRegister import CandidateRegister
-# from com.mettl.api.results.Results import Results
-# from com.mettl.model.Candidates import Candidates
-# from com.mettl.api.assessment.AssessmentInfo import AssessmentInfo
-# from com.mettl.api.schedule.CreateSchedule import CreateSchedule
-# from com.mettl.api.schedule.ScheduleInfo import ScheduleInfo
-# from com.mettl.api.schedule.EditScheduleInfo import EditScheduleInfo
 
 
 def register_student_form(request):
 	return render(request, 'register.html')
 
+@login_required
+@student_required
+def get_bookmarks(request):
+	print request.GET
+	return render(request, 'student/book_mark_questions.html', {})
 
 def user_action(request):
 	post_req_data = request.POST
@@ -666,9 +660,6 @@ def download_certificate(request, course_uuid):
 			return render(request, 'student/verify_certificate.html',data)		
 		else:
 			return redirect('/dashboard/')
-
-
-
 
 @login_required
 @student_required

@@ -3,7 +3,7 @@
 {% load course_tags %}
 
 {% block body %}
-<div class="row" style='margin:3px;'>
+<!-- <div class="row" style='margin:3px;'>
     <input id="factor" value="{{ total_courses }}" type="hidden">
     <input id="factor_course_type" value="{{ total_count_course_type }}" type="hidden">
     <div class="loader">
@@ -17,7 +17,7 @@
     <br>
     <br>
     <br>
-</div>
+</div> -->
 <div class="col-sm-12">
 <div class="col-sm-3 hidden-xs">
         <h3 class="center"></h3>
@@ -92,71 +92,56 @@ See More &#43;
 {%endblock%}
 
 {% block footer_css_js %}
-<script>
-  // Start moda on click ...
-  $('.ctgry_filter').click(function(event) {
-    $('#category_filterModal').modal({ keyboard: false, backdrop: 'static' });
-  });
 
+<script>
     $(window).load(function() {
         // Animate loader off screen
-        // $(".loader").fadeOut("slow");
+        $(".loader").fadeOut("slow");
       });
     var course_type_value = '';
     var total_count_course_type = 0;
-  function fetch_courses(event){
-    $.ajax({
-                type:'GET',
-                url: 'http://{{ request.META.HTTP_HOST }}/filter/courses/',
-                data: { 'based_on': $(event.target).data('filter-type'), 'value': $(event.target).data('course-type'), 'min_on': $('#lower_value').text(), 'max_on': $('#upper_value').text()},
-                success:function(json_from_view){
-                    if(json_from_view){
-                        $('#course').html(json_from_view['html']);
-                        
-                        ans_text = json_from_view['course_count']+' Results '
-                        
-                        if(json_from_view['category_name']){
-                           ans_text += 'for <b>'+json_from_view['category_name']+'</b>'      
-                        }
-                        
-                        $('#total_courses_count').html(ans_text);
-                        }else{
-                        $('#course').html('<h1>Error in filtering courses. Try again!!!</h1>');
-                    } 
-                    total_count_course_type = json_from_view['course_count'];
-                    if(total_count_course_type>3){
-                        $('#fetch_courses_basedon_type').css('display','inline-block');
-                        $('#fetch_courses').css('display','none');
-
-                    }
-                    else{
-                        $('#fetch_courses_basedon_type').css('display','none');
-                        $('#fetch_courses').css('display','none');
-
-                    }
-                    // $(".loader").fadeOut("slow");
-                },
-                error: function(data){
-                    alert('Server error : Error in filtering courses :( .');
-                        // $(".loader").fadeOut("slow");
-                }
-            });
-  }
-
-    $('#course_category_filter_md, #course_category_filter_xs').click(function(event) {
-        // $(".loader").fadeIn();
+    $('.course_category_filter').click(function(event) {
+        $(".loader").fadeIn();
         $('#fetch_courses').attr('disabled',true);
-        // course_type_value  = $(event.target).data('course-type');
-        fetch_courses(event);    
-        $('#category_filterModal').modal('hide'); 
+        course_type_value  = $(event.target).data('course-type');
+        $.ajax({
+            type:'GET',
+            url: 'http://{{ request.META.HTTP_HOST }}/filter/courses/',
+            data: { 'based_on': $(this).parent().data('filter-type'), 'value': $(event.target).data('course-type') },
+            success:function(json_from_view){
+                if(json_from_view){
+                    $('#course').html(json_from_view['html']);
+                    $('#total_courses_count').html(json_from_view['course_count']+' Results for <b>'+json_from_view['category_name']+'</b>');
+
+                    }else{
+                    $('#course').html('<h1>Error in filtering courses. Try again!!!</h1>');
+                } 
+                total_count_course_type = json_from_view['course_count'];
+                if(total_count_course_type>3){
+                    $('#fetch_courses_basedon_type').css('display','inline-block');
+                    $('#fetch_courses').css('display','none');
+
+                }else{
+                    $('#fetch_courses_basedon_type').css('display','none');
+                    $('#fetch_courses').css('display','none');
+
+                }
+                $(".loader").fadeOut("slow");
+
+            },
+            error: function(data){
+                alert('Server error : Error in filtering courses :( .');
+                    $(".loader").fadeOut("slow");
+            }
+        });
     });
 
 
 
     var starting_filter_score = 2;
-    var factor = Math.ceil(parseInt($('#factor').val())/6);
+    var factor = Math.ceil('{{ total_courses }}'/6);
     $('#fetch_courses').click(function(event) {
-        // $(".loader").fadeIn();
+        $(".loader").fadeIn();
         $.ajax({
             type:'GET',
             url: '/filtermore/courses/',
@@ -172,20 +157,20 @@ See More &#43;
                 else{
                     $('#course').html('Error in filtering courses. Try again!!!');
                 } 
-                // $(".loader").fadeOut("slow");
+                $(".loader").fadeOut("slow");
             },
             error: function(data){
                 alert('Error : Error in filtering courses!!!');
-                // $(".loader").fadeOut("slow");
+                $(".loader").fadeOut("slow");
             }
         });
     });
 
 
     var start_course_type = 2;
-    var factor_course_type = Math.ceil(parseInt($('#factor_course_type').val())/6);
+    var factor_course_type = Math.ceil('{{ total_count_course_type }}'/6);
     $('#fetch_courses_basedon_type').click(function(event) {
-        // $(".loader").fadeIn();
+        $(".loader").fadeIn();
         $.ajax({
             type:'GET',
             url: '/filter/courses/',
@@ -196,7 +181,7 @@ See More &#43;
                     start_course_type = json_from_view['start_course_type'] + 1;
                     if(start_course_type > factor_course_type){
                         $('#fetch_courses_basedon_type').css('display','none');
-                      }
+                    }
                     }
                 else{
                     $('#course').html('Error in filtering courses. Try again!!!');
@@ -205,46 +190,10 @@ See More &#43;
             },
             error: function(data){
                 alert('Error : Error in filtering courses!!!');
-                // $(".loader").fadeOut("slow");
+                $(".loader").fadeOut("slow");
             }
         });
     });
-
-
-var slider = document.getElementById('slider');
-
-noUiSlider.create(slider, {
-    start: [1000, 4000],
-    connect: true,
-    step: 500, // Slider moves in increments of '10'
-    direction: 'rtl',
-    range: {
-        'min': 1000,
-        'max': 9000,
-    },
-    pips: { // Show a scale with the slider
-        mode: 'steps',
-        density: 2
-    }
-});
-function doSomething ( values, handle, unencoded, tap ) {
-    lower_v = document.getElementById('lower_value');
-    upper_v = document.getElementById('upper_value');
-
-    lower_v.innerHTML = values[0]
-    upper_v.innerHTML = values[1]
-    
-    $('#course_category_filter_md').click();
-    // values: Current slider values;
-    // handle: Handle that caused the event;
-    // unencoded: Slider values without formatting;
-    // tap: Event was caused by the user tapping the slider (bool);
-
-
-}
-
-slider.noUiSlider.on('change', doSomething);
-
 </script>
 
 {%endblock%}

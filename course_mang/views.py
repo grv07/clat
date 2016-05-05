@@ -1,18 +1,23 @@
 from django.shortcuts import render, render_to_response, redirect
-from course_mang.models import CourseDetail, CourseWeek
-import json
 from django.http import HttpResponse
 from user_login.models import City
 from django.contrib.auth.decorators import login_required
+from django.template.loader import get_template
+from django.template import Context
+from django.contrib import messages
+
+import json
+
 from .utilities import student_required, is_enrolled
 
 from assesment_engine.models import AssesmentRegisterdUser, UserResult
+from student.models import UserCourseProgress
+from course_mang.models import CourseDetail, CourseWeek
+
 from CLAT.services import tracking_engine
 from CLAT.services.constants import SECTORS_ASSOCIATES_CHOICES
 from course_test_handling.models import Tests
-from django.contrib import messages
-from student.models import UserCourseProgress
-from assesment_engine.models import AssesmentRegisterdUser, UserResult
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -190,13 +195,11 @@ def all_courses(request):
 
 def filter_courses(request):
 	if request.is_ajax() and request.method == 'GET':
+		print request.GET
 		try:
 			offset = 6
 			based_on = request.GET.get('based_on')
 			course_type_value = request.GET.get('course_type_value')
-
-			from django.template.loader import get_template
-			from django.template import Context
 
 			if based_on == 'course_type':
 				value = request.GET['value']
@@ -228,9 +231,6 @@ def more_courses(request):
 	if request.is_ajax() and request.method == 'GET':
 		try:
 			offset = 6
-			from django.template.loader import get_template
-			from django.template import Context
-
 			start = int(request.GET.get('starting_filter_score'))
 			course_list = [course for course in CourseDetail.objects.filter()][offset*(start-1):offset*start]
 			t = get_template('course_mang/course_list.html')
