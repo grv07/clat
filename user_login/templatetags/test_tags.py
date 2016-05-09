@@ -74,9 +74,7 @@ def check_access_status(module_name, enrolledcourse):
 def check_progress_status(module_name, enrolledcourse):
 	try:
 		userprogress = UserCourseProgress.objects.get(enrolled_courses = enrolledcourse, course_week = CourseWeek.objects.get(week_module_name = module_name), progress_status = 'COMPLETE')
-		# if userprogress.progress_status == 'COMPLETE':
 		return True
-		# return False
 	except Exception as e:
 		return False
 
