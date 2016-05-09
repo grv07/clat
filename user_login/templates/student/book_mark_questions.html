@@ -9,53 +9,35 @@
 {% block body %}
 <!-- <a href='/set/goal/' class="btn btn-success btn-lg sharp right"><span class="glyphicon glyphicon-plus">&nbsp</span>Set New Goal</a> -->
 <div class="container-fluid" style="margin-top:50px;">
-  {% for goal in goals %}
+  {% for bookmark_que in bookmark_questions %}
   <div class="row">
   <div class="col-md-2"></div>
   <div class="panel-group">
       <div class="panel panel-default">
         <div class="col-md-12 panel-heading">
           <div class="col-md-3"> 
-            <h4>{{goal.goal_name}}</h4>
+            <h4>{{bookmark_que.level}}</h4>
           </div>
-          <div class="col-md-3 right">
+          <!-- <div class="col-md-3 right">
             <a href="/goal/delete/{{goal.id}}/" class="btn btn-danger">Delete</a>
-          </div>
+          </div> -->
         </div>
         <div class="panel-body">
-          <div class="col-md-3">
-            <span style="color: green;font-size: 15px;">Start Time: </span>{{goal.goal_start_time}}<br> 
-            <span style="color: green;font-size: 15px;">End Time: </span>{{goal.goal_end_time}}<br> 
+          <div class="col-md-12">
+            <span style="color: green;font-size: 15px;">Content: </span>
+              {{bookmark_que.content}} 
             <hr width="1">
           </div>
-          <div class="col-md-3">  
-            <span style="color: green;font-size: 15px;">Start Module: </span>{{goal.start_module}}<br> 
-            <span style="color: green;font-size: 15px;">End Module: </span>{{goal.end_module}}<br> 
-            <span style="font-size: 15px;">{{goal.goal_description}}</span>
-          </div>
-          <div class="col-md-5">
-            <span style="color: green;font-size: 15px;">Badges: </span>
-            {%with badges=goal|get_badges%}
-              {%for badge in badges%}
-                <span class="label label-default" style="margin-left:10px;color:#D0D7D9;background-color:{{badge.badge_color}}">
-                  {{badge.badge_name}}
-                </span>
-              {%empty%}
-                &nbsp; Not Have any badges here :(
-              {%endfor%}
-            {%endwith%}
-            <br> 
-          </div>
-
         </div>
-        <div class="panel-footer">
+        
+     <!--    <div class="panel-footer">
            <div class="progress">
               <div class="progress-bar" role="progressbar" aria-valuenow="70"
                 aria-valuemin="0" aria-valuemax="100" style="width:70%;">
                 70%
               </div>
            </div>
-        </div>
+        </div> -->
       </div>
   </div>
   </div>

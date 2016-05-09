@@ -1,32 +1,38 @@
 from django.shortcuts import render, redirect
-import json, os, sys
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from form import StudentRegistrationForm, UserForm, StudentProfileForm
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.core.cache import cache
+
+from form import StudentRegistrationForm, UserForm, StudentProfileForm
+from student.form import ProfilePictureForm
+
 from student.models import Student, StudentModel, StudentInterests, Certificate, EnrolledCourses, ProfilePicture, UserCourseProgress
 from user_login.models import AddressModel, City, Address
-from user_login import user_actions
-from user_login.tasks import send_mail
-from CLAT.services import constants
-from CLAT.cities import cities
-from django.contrib import messages
-
-from django.contrib.auth.decorators import login_required
-from course_mang.utilities import student_required, verify_account, verification_mail
-from CLAT.services.constants import CACHE_KEYS
 from teacher.models import Teacher
-from course_mang.models import CourseDetail
-from student.form import ProfilePictureForm
-from django.views.decorators.csrf import csrf_exempt
 from allauth.socialaccount.models import SocialAccount
 from course_test_handling.models import Tests
+from course_mang.models import CourseDetail
 from assesment_engine.models import AssesmentRegisterdUser, UserResult
-from user_login.templatetags.test_tags import check_for_max_marks, module_inline_list, inline_test_key, module_midterm_list
-from django.core.cache import cache
-# from payu.utils import generate_hash, verify_hash
-import logging
 
+from user_login import user_actions
+from user_login.tasks import send_mail
+
+from CLAT.services import constants
+
+from CLAT.services.constants import CACHE_KEYS
+from .student_service import update_user_profile, get_users_bookmark, update_thumbnail
+
+from CLAT.cities import cities
+from course_mang.utilities import student_required, verify_account, verification_mail
+
+from user_login.templatetags.test_tags import check_for_max_marks, module_inline_list, inline_test_key, module_midterm_list
+# from payu.utils import generate_hash, verify_hash
+
+import json, os, sys, logging
 logger = logging.getLogger(__name__)
 
 
@@ -36,8 +42,9 @@ def register_student_form(request):
 @login_required
 @student_required
 def get_bookmarks(request):
-	print request.GET
-	return render(request, 'student/book_mark_questions.html', {})
+	user = request.user
+	data = get_users_bookmark(user.username, user.email)
+	return render(request, 'student/book_mark_questions.html', data)
 
 def user_action(request):
 	post_req_data = request.POST
@@ -62,7 +69,6 @@ def user_action(request):
 						messages.error(request,'Error when trying to create the user. Please try again.')
 						data = {'form': register_form,'register_error':True,'value_state':post_req_data.get('state', ''),'value_city':post_req_data.get('city', ''),'mailing_addr':post_req_data.get('mailing_address', '')}
 						return render(request, 'register.html', data)
-
 					try:
 						user = user_form.save()
 						# print user.password
@@ -212,9 +218,6 @@ def profile(request):
 			student_form = StudentProfileForm(data = post_req_data, request = request)
 			if student_form.is_valid():
 				if Student.objects.filter(student = user_id):
-
-					from .student_service import update_user_profile
-
 					if update_user_profile(post_req_data, student):
 						messages.success(request,' Profile details updated successfully.')
 					else:
@@ -287,7 +290,6 @@ def save_profile_picture(request):
 	try:
 		if request.method == 'POST':
 			if 'picture' in request.FILES:
-				from .student_service import update_thumbnail
 				profile_picture_form = ProfilePictureForm(data=request.POST)
 				if profile_picture_form.is_valid():
 					user_profile_picture = update_thumbnail(request.user,request.FILES.get('picture',None))
@@ -314,7 +316,6 @@ def save_profile_picture(request):
 def remove_profile_picture(request):
 	if request.method == 'POST' and request.is_ajax():
 		try:
-			from .student_service import update_thumbnail
 			profile_picture_obj = update_thumbnail(request.user)
 			if profile_picture_obj:
 				return HttpResponse(json.dumps(True), content_type="application/json")

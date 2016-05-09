@@ -1,5 +1,9 @@
 from CLAT.services.constants import ROOT_PATH_FOR_VIDEOS, DEFAULT_PROFILE_IMAGE
-import logging
+
+import json, requests, logging
+
+from CLAT.settings import QNA_PATH
+
 logger = logging.getLogger(__name__)
 
 '''Func. call when try to update user profile'''
@@ -55,3 +59,8 @@ def update_thumbnail(user,picture_name = None):
 	except Exception as e:
 		logger.error('under student.student_service.update_thumbnail '+str(e.args)+' UID-'+str(user.id))
 		return None
+
+'''Create a POST call to get users bookmark'''
+def get_users_bookmark(username, email):
+	d = requests.post(QNA_PATH+'get/bookmarks/', data = {'username':username, 'email':email})
+	return json.loads(d.text)
