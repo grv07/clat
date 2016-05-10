@@ -62,5 +62,9 @@ def update_thumbnail(user,picture_name = None):
 
 '''Create a POST call to get users bookmark'''
 def get_users_bookmark(username, email):
-	d = requests.post(QNA_PATH+'get/bookmarks/', data = {'username':username, 'email':email})
-	return json.loads(d.text)
+	try:
+		d = requests.post(QNA_PATH+'get/bookmarks/', data = {'username':username, 'email':email})
+		return json.loads(d.text)
+	except Exception as e:
+		print e.args
+		return None	

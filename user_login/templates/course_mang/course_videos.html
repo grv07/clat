@@ -63,7 +63,7 @@ alertify.confirm("<p style='text-align:left;'>You can  move to the next module i
           </a>
             <div id="collapseOne{{week}}" class="panel-collapse collapse">
               <div class="panel-body">
-                <div class="list-group">
+                <div class="list-group sharp">
                 {% for module, video in modules.items %}
                     {% if module|check_access_status:enr_course %}
                         {% if video.0.0 %}
