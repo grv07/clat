@@ -44,8 +44,7 @@
               $('#start_module').empty().html('<option value="">--Select One--</option>');
               $('#end_module').empty().html('');
               for(var i=0;i<json_from_view.length;i++){
-                $('#start_module').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
-                // $('#end_module').append('<option value="'+json_from_view[i]+'">'+json_from_view[i]+'</option>');
+                $('#start_module').append('<option value="'+json_from_view[i].module_number+'">'+json_from_view[i].name+'</option>');
               }
            },
             // handle a non-successful response
@@ -60,11 +59,11 @@
         $('#end_module').empty().html('<option value="">--Select One--</option>');
         var set_next = false;
         for(var i=0;i<avail_options.length;i++){
-          if($('#start_module').val() == avail_options[i]){
+          if($('#start_module').val() == avail_options[i].module_number){
             set_next = true;
           }
           if (set_next){
-            $('#end_module').append('<option value="'+avail_options[i]+'">'+avail_options[i]+'</option>');
+            $('#end_module').append('<option value="'+avail_options[i].module_number+'">'+avail_options[i].name+'</option>');
           }
       }
   }

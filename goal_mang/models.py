@@ -14,8 +14,10 @@ class Goal(models.Model):
 	user = models.ForeignKey(User)
 
 	goal_name  = models.CharField(max_length = 100)
-	start_module  = models.CharField(max_length = 100)
-	end_module  = models.CharField(max_length = 100)
+
+	start_module  = models.IntegerField()
+	end_module  = models.IntegerField()
+	progress = models.IntegerField(null=True, blank= True)
 	goal_description = models.CharField(max_length = 250, null = True, blank = True)
 	percentage = models.IntegerField(null=True, blank= True)
 	

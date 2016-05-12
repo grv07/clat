@@ -7,8 +7,11 @@ from django.contrib.auth.models import User
 import json
 from django.shortcuts import redirect
 
+from CLAT.settings import RESTRICT_MODULE_TIME
+
 from course_mang.models import CourseDetail, CourseWeek
 from student.models import EnrolledCourses
+from tracker.models import StudentTracker, Progress
 from models import GoalModel, Goal, GoalBadge
 
 from form import CreateGoalForm
@@ -51,25 +54,43 @@ def create_goal(request):
 @login_required()
 def goal_list_actions(request):
 	goals = Goal.objects.filter(user_id = request.user.id)
-	
 	data = {'goals': goals}
+	for goal in goals:
+		try:
+			goal_module_watch_time = (goal.end_module - goal.start_module+1)*RESTRICT_MODULE_TIME*60
+			total_watch_time = 0
+			for course_week in CourseWeek.objects.filter(course = goal.enr_course.course, module_number__range=(goal.start_module, goal.end_module)):
+				try:
+					st_tracker_progress = Progress.objects.get(tracker = StudentTracker.objects.get(student = request.user, module = course_week))
+					if st_tracker_progress.time_progress > RESTRICT_MODULE_TIME*60:
+						total_watch_time += RESTRICT_MODULE_TIME*60
+					else:
+						total_watch_time += st_tracker_progress.time_progress
+				except Exception as e:
+					print e.args
+			progress  = (total_watch_time*100)/goal_module_watch_time
+			if progress > 100:
+				goal.progress = 100
+			else:
+				goal.progress = progress
+			goal.save()
+		except Exception as e:
+			print e.args
 	return render(request, 'goal_mang/goal_list.html', data)
 
 @login_required()
 def goal_delete_action(request, goal_id):
 	goal = Goal.objects.get(pk = goal_id)
 	goal.delete()
-	return redirect('/goal/list/')	
+	return redirect('/goal/list/')
 
 @login_required()
 def get_module_name_list(request):
 	if request.method == 'GET':
 		try:
 			week_module_names = list(CourseWeek.objects.filter(course = EnrolledCourses.objects.get(pk = 
-				request.GET.get('enr_course_id')).course).values('week_module_name'))
-			
-			week_module_names =  [module_name.get('week_module_name') for module_name in week_module_names]
-			
+				request.GET.get('enr_course_id')).course).values('module_number', 'week_module_name'))
+			week_module_names =  [{'module_number':str(module_name.get('module_number')), 'name':module_name.get('week_module_name')} for module_name in week_module_names]
 			return HttpResponse(json.dumps(week_module_names), content_type = "application/json")
 		except Exception as e:
 			print e.args
